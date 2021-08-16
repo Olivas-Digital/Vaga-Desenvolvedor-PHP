@@ -1,4 +1,4 @@
-<a href="https://www.olivas.digital" target="_blank"><img src="https://www.olivas.digital/wp-content/themes/olivasdigital/dist/img/logotipo.svg" width="320" align="center" /></a>
+<a href="https://www.olivas.digital" target="_blank" style="background-color: #fff"><img src="https://www.olivas.digital/wp-content/themes/olivasdigital/dist/img/logotipo.svg" style="background-color: #fff" width="320" align="center" /></a>
 
 
 Vaga Desenvolvedor PHP
