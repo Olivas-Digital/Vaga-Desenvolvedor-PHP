@@ -54,7 +54,7 @@ ___
     - Email*
     - Imagem*
     - Telefones <em>(Relacionamento N pra N, com obrigatoriedade de ao menos 1 telefone)</em>
-    - Tipo de clinte* <em>(Relacionamento 1 pra N)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
+    - Tipo de cliente* <em>(Relacionamento 1 pra N)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
 
     ***Campos obrigatórios**
 2) **Disparar um e-mail** de “Boas vindas” para o cliente
