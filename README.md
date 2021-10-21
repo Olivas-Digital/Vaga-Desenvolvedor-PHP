@@ -6,8 +6,6 @@ Vaga Desenvolvedor PHP
 Nós da Olivas Digital buscamos um(a) desenvolvedor(a) para transformar ideias em códigos que estará envolvido em vários aspectos, desde o conceito até o produto final, incluindo UX, criação e codificação utilizando PHP.
 
 
-
-
 # Sobre a vaga
 ##### Responsabilidades:
 - Desenvolvimento de plataformas, sites, e-commerce e aplicativos
@@ -49,18 +47,23 @@ ___
 
 ### Escopo do projeto
 
+1) **Criar um CRUD** de Vendedor com os campos
+    - Nome*
+Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
+    
 1) **Criar um CRUD** de Clientes com os campos
     - Nome*
     - Email*
     - Imagem*
-    - Telefones <em>(Relacionamento N pra N, com obrigatoriedade de ao menos 1 telefone)</em>
+    - Telefones <em>(Relacionamento 1 pra N, com obrigatoriedade de ao menos 1 telefone)</em>
     - Tipo de cliente* <em>(Relacionamento 1 pra N)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
+    - Vendedores <em>(Relacionamento N pra N)</em>. Pode estar vinculado a um ou vários vendedores.
 
     ***Campos obrigatórios**
 2) **Disparar um e-mail** de “Boas vindas” para o cliente
 3) Utilizar **migrations** para a criação das tabelas
 4) Utilizar o **[Eloquent](https://laravel.com/docs/8.x/eloquent)** para os relacionamentos
-5) Disponilizar os dados de clientes via **API com autenticação JWT**
+5) Disponilizar os dados de clientes via **API com autenticação JWT** permitindo busca por nome
 ___
 ### Critério de avaliação
 - Organização do código: Separação de módulos, view, model e controller
