@@ -49,9 +49,10 @@ ___
 
 1) **Criar um CRUD** de Vendedor com os campos
     - Nome*
+ 
 Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
     
-1) **Criar um CRUD** de Clientes com os campos
+2) **Criar um CRUD** de Clientes com os campos
     - Nome*
     - Email*
     - Imagem*
@@ -60,10 +61,10 @@ Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários cli
     - Vendedores <em>(Relacionamento N pra N)</em>. Pode estar vinculado a um ou vários vendedores.
 
     ***Campos obrigatórios**
-2) **Disparar um e-mail** de “Boas vindas” para o cliente
-3) Utilizar **migrations** para a criação das tabelas
-4) Utilizar o **[Eloquent](https://laravel.com/docs/8.x/eloquent)** para os relacionamentos
-5) Disponilizar os dados de clientes via **API com autenticação JWT** permitindo busca por nome
+3) **Disparar um e-mail** de “Boas vindas” para o cliente
+4) Utilizar **migrations** para a criação das tabelas
+5) Utilizar o **[Eloquent](https://laravel.com/docs/8.x/eloquent)** para os relacionamentos
+6) Disponilizar os dados de clientes via **API com autenticação JWT** permitindo busca por nome
 ___
 ### Critério de avaliação
 - Organização do código: Separação de módulos, view, model e controller
