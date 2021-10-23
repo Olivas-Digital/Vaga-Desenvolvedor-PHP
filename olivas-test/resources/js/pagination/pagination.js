@@ -1,9 +1,10 @@
 import { qSelect, qSelectAll, elContainClass, createHtmlElement } from '../helpers/domElements';
-import { getUrl, getQueryParams } from '../helpers/url';
+import { getUrl, getQueryParams, mountQueryString } from '../helpers/url';
 
 const UISelect = {
   baseUrl: () => qSelect('[data-base-url]').dataset.baseUrl,
   dataSellers: () => qSelectAll('[data-page-seller-id]'),
+  sellerSearchForm: () => qSelect('[data-js="search-seller-form"]'),
 };
 
 const removeElementFromDom = (elementSearch) => {
@@ -11,16 +12,14 @@ const removeElementFromDom = (elementSearch) => {
   return element ? element.remove() : false;
 };
 
-const getResults = (endpoint = '/', data = {}) => {
-  return axios({
-    method: 'GET',
-    url: `${UISelect.baseUrl()}${endpoint}`,
-    data: data
-  });
+const getResults = (endpoint = '/', data) => {
+  let queryString = data ? mountQueryString(data) : '';
+  return axios.get(`${UISelect.baseUrl()}${endpoint}${queryString}`);
 }
 
-const fetchResultDataFor = async (callBack, endPoint = '/') => {
-  return getResults(endPoint)
+const fetchResultDataFor = async (callBack, endPoint = '/', dataParams = false) => {
+  return getResults(endPoint, dataParams)
+    // .then(console.log)
     .then(({ data }) => {
       let { links } = data.data;
       let resultsData = data.data.data;
@@ -61,16 +60,19 @@ const generateSellersPagination = (links) => {
 const generateResultsForSellers = (resultsData, links) => {
   let resultData = generateSellersResultData(resultsData);
   let pagination = generateSellersPagination(links);
-  document.body.appendChild(resultData);
-  document.body.appendChild(pagination);
+  qSelect('main').appendChild(resultData);
+  qSelect('main').appendChild(pagination);
   clickDataSellers();
 }
 
-const fetchSellersResult = () => {
+const getSellersEndPoint = () => {
   let urlPageParam = getQueryParams('page', getUrl());
-  let sellersEndPoint = '/api/vendedores'
-    + (urlPageParam ? `/?page=${urlPageParam}` : '');
-  return fetchResultDataFor(generateResultsForSellers, sellersEndPoint);
+  return '/api/vendedores' + (urlPageParam ? `/?page=${urlPageParam}` : '');
+}
+
+const fetchSellersResult = (data = false) => {
+  let sellersEndPoint = getSellersEndPoint();
+  return fetchResultDataFor(generateResultsForSellers, sellersEndPoint, data);
 }
 
 fetchSellersResult();
@@ -95,3 +97,11 @@ window.onpopstate = function (event) {
   fetchSellersResult();
 };
 
+['submit', 'keyup'].forEach(listener =>
+  UISelect.sellerSearchForm()
+    .addEventListener(listener, e => {
+      e.preventDefault();
+      let searchedValue = e.target.value;
+      return fetchSellersResult({ 'search': searchedValue });
+    })
+)

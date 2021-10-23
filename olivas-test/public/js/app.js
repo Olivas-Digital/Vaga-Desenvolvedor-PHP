@@ -2162,6 +2162,23 @@ var createHtmlElement = function createHtmlElement(elToCreate) {
 
 /***/ }),
 
+/***/ "./resources/js/helpers/strings.js":
+/*!*****************************************!*\
+  !*** ./resources/js/helpers/strings.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "stringIncludes": () => (/* binding */ stringIncludes)
+/* harmony export */ });
+var stringIncludes = function stringIncludes(param, url) {
+  return url.includes(param);
+};
+
+/***/ }),
+
 /***/ "./resources/js/helpers/url.js":
 /*!*************************************!*\
   !*** ./resources/js/helpers/url.js ***!
@@ -2172,17 +2189,43 @@ var createHtmlElement = function createHtmlElement(elToCreate) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getUrl": () => (/* binding */ getUrl),
-/* harmony export */   "getQueryParams": () => (/* binding */ getQueryParams)
+/* harmony export */   "getQueryParams": () => (/* binding */ getQueryParams),
+/* harmony export */   "mountQueryString": () => (/* binding */ mountQueryString)
 /* harmony export */ });
+/* harmony import */ var _helpers_strings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/strings */ "./resources/js/helpers/strings.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 var getUrl = function getUrl() {
   return window.location.href;
 };
 var getQueryParams = function getQueryParams(params, url) {
-  var href = url; // this is an expression to get query strings
-
+  // this is an expression to get query strings
   var regexp = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
-  var qString = regexp.exec(href);
+  var qString = regexp.exec(url);
   return qString ? qString[1] : null;
+};
+var mountQueryString = function mountQueryString(data) {
+  var isAlreadyQueryString = (0,_helpers_strings__WEBPACK_IMPORTED_MODULE_0__.stringIncludes)('?', getUrl());
+  var queryStringSymbol = isAlreadyQueryString ? '&' : '?';
+  var stringUrl = Object.entries(data).reduce(function (acc, crr) {
+    var _crr = _slicedToArray(crr, 2),
+        name = _crr[0],
+        value = _crr[1];
+
+    return acc += "".concat(name, "=").concat(value);
+  }, '');
+  return queryStringSymbol + stringUrl;
 };
 
 /***/ }),
@@ -2213,6 +2256,9 @@ var UISelect = {
   },
   dataSellers: function dataSellers() {
     return (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelectAll)('[data-page-seller-id]');
+  },
+  sellerSearchForm: function sellerSearchForm() {
+    return (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('[data-js="search-seller-form"]');
   }
 };
 
@@ -2223,31 +2269,31 @@ var removeElementFromDom = function removeElementFromDom(elementSearch) {
 
 var getResults = function getResults() {
   var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
-  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return axios({
-    method: 'GET',
-    url: "".concat(UISelect.baseUrl()).concat(endpoint),
-    data: data
-  });
+  var data = arguments.length > 1 ? arguments[1] : undefined;
+  var queryString = data ? (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.mountQueryString)(data) : '';
+  return axios.get("".concat(UISelect.baseUrl()).concat(endpoint).concat(queryString));
 };
 
 var fetchResultDataFor = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
     var endPoint,
+        dataParams,
         _args = arguments;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             endPoint = _args.length > 1 && _args[1] !== undefined ? _args[1] : '/';
-            return _context.abrupt("return", getResults(endPoint).then(function (_ref2) {
+            dataParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
+            return _context.abrupt("return", getResults(endPoint, dataParams) // .then(console.log)
+            .then(function (_ref2) {
               var data = _ref2.data;
               var links = data.data.links;
               var resultsData = data.data.data;
               return callBack(resultsData, links);
             })["catch"](console.log));
 
-          case 2:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -2292,15 +2338,20 @@ var generateSellersPagination = function generateSellersPagination(links) {
 var generateResultsForSellers = function generateResultsForSellers(resultsData, links) {
   var resultData = generateSellersResultData(resultsData);
   var pagination = generateSellersPagination(links);
-  document.body.appendChild(resultData);
-  document.body.appendChild(pagination);
+  (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('main').appendChild(resultData);
+  (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('main').appendChild(pagination);
   clickDataSellers();
 };
 
-var fetchSellersResult = function fetchSellersResult() {
+var getSellersEndPoint = function getSellersEndPoint() {
   var urlPageParam = (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.getQueryParams)('page', (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.getUrl)());
-  var sellersEndPoint = '/api/vendedores' + (urlPageParam ? "/?page=".concat(urlPageParam) : '');
-  return fetchResultDataFor(generateResultsForSellers, sellersEndPoint);
+  return '/api/vendedores' + (urlPageParam ? "/?page=".concat(urlPageParam) : '');
+};
+
+var fetchSellersResult = function fetchSellersResult() {
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var sellersEndPoint = getSellersEndPoint();
+  return fetchResultDataFor(generateResultsForSellers, sellersEndPoint, data);
 };
 
 fetchSellersResult();
@@ -2325,6 +2376,16 @@ var clickDataSellers = function clickDataSellers() {
 window.onpopstate = function (event) {
   fetchSellersResult();
 };
+
+['submit', 'keyup'].forEach(function (listener) {
+  return UISelect.sellerSearchForm().addEventListener(listener, function (e) {
+    e.preventDefault();
+    var searchedValue = e.target.value;
+    return fetchSellersResult({
+      'search': searchedValue
+    });
+  });
+});
 
 /***/ }),
 

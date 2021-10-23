@@ -13,9 +13,11 @@ class SellerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Seller::paginate(5);
+        $inputSearch = $request->input('search');
+
+        $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Seller::paginate(5);
 
         return response()->json([
             'data' => $data,
