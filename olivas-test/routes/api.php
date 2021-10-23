@@ -18,4 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class);
+Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class)->names([
+    'index' => 'seller.index',
+    'create' => 'seller.create',
+    'store' => 'seller.store',
+    'show' => 'seller.show',
+    'edit' => 'seller.edit',
+    'update' => 'seller.update',
+    'destroy' => 'seller.destroy',
+]);
