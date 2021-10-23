@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SellerController extends Controller
 {
@@ -14,7 +15,12 @@ class SellerController extends Controller
      */
     public function index()
     {
-        //
+        $data = Seller::paginate(5);
+
+        return response()->json([
+            'data' => $data,
+            'response_text' => 'Success : ' . Response::HTTP_OK
+        ]);
     }
 
     /**

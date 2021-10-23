@@ -1,4 +1,28 @@
-body {
-  background-color: #000;
-  color: #fff;
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  position: relative;
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+.pagination a.disable {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.pagination a.disable::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  cursor: none;
 }

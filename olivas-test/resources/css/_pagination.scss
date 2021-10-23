@@ -1,0 +1,31 @@
+.pagination {
+    display: inline-block;
+
+    a {
+        position: relative;
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+
+        &.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        &.disable {
+            cursor: not-allowed;
+            opacity: .65;
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                pointer-events: none;
+                cursor: none;
+            }
+        }
+    }
+}

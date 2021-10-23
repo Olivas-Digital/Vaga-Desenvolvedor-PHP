@@ -1,3 +1,2 @@
 require('./bootstrap');
-
-console.log('worked');
+require('./pagination/pagination');
