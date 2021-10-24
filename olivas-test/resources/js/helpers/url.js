@@ -1,5 +1,8 @@
 window.getUrl = () => window.location.href;
 
+window.redirectTo = (endpoint) =>
+  window.location.href = UISelect.baseUrl() + endpoint;
+
 window.getQueryParams = (params, url) => {
   // this is an expression to get query strings
   let regexp = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
