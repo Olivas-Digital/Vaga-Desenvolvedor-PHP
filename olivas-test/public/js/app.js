@@ -2385,6 +2385,8 @@ var clickDataSellers = function clickDataSellers() {
 
 window.onpopstate = function (event) {
   fetchSellersResult();
+  var eventState = event.state.page;
+  document.title = eventState ? "Vendedores - pág: " + eventState : 'Vendedores';
 };
 
 ['submit', 'keyup'].forEach(function (listener) {

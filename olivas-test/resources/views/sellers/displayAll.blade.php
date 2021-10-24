@@ -1,5 +1,5 @@
 @php
-$title = 'Sellers';
+$title = 'Vendedores';
 $dataPage = 'sellers-paginate';
 @endphp
 

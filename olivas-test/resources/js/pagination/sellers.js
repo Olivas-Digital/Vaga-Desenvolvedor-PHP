@@ -63,6 +63,7 @@ const clickDataSellers = () => {
       if (isBtnDisable) return;
 
       let clickedPage = e.target.getAttribute('data-page-seller-id');
+
       history.pushState({ page: clickedPage }, "Vendedores - pág: " + clickedPage, "?page=" + clickedPage);
       fetchSellersResult();
     });
@@ -70,6 +71,8 @@ const clickDataSellers = () => {
 
 window.onpopstate = function (event) {
   fetchSellersResult();
+  let eventState = event.state.page;
+  document.title = eventState ? "Vendedores - pág: " + eventState : 'Vendedores';
 };
 
 ['submit', 'keyup'].forEach(listener => {
