@@ -17,6 +17,16 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/vendedores', function() {
-    return view('sellers/displayAll');
+Route::get('/vendedores', function () {
+    return view('sellers/displayAll', [
+        'title' => 'Vendedores',
+        'dataPage' => 'sellers-paginate'
+    ]);
+});
+
+Route::get('/vendedores/criar', function () {
+    return view('sellers/create', [
+        'title' => 'Criar um vendedor',
+        'dataPage' => 'sellers-create'
+    ]);
 });
