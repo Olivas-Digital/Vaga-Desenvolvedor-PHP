@@ -41,9 +41,14 @@ const getSellersEndPoint = () => {
 }
 
 const fetchSellersResult = (data = false) => {
+  const isInSellersPage = qSelect('[data-page="sellers-paginate"]');
+
+  if (!isInSellersPage) return;
+
   let sellersEndPoint = getSellersEndPoint();
   return fetchResultDataFor(generateResultsForSellers, sellersEndPoint, data);
 }
+
 
 fetchSellersResult();
 
@@ -54,6 +59,7 @@ const clickDataSellers = () => {
     item.onclick = e => {
       e.preventDefault();
       let isBtnDisable = elContainClass(e.target, 'disable');
+
       if (isBtnDisable) return;
 
       let clickedPage = e.target.getAttribute('data-page-seller-id');
@@ -66,11 +72,14 @@ window.onpopstate = function (event) {
   fetchSellersResult();
 };
 
-['submit', 'keyup'].forEach(listener =>
-  UISelect.sellerSearchForm()
-    .addEventListener(listener, e => {
-      e.preventDefault();
-      let searchedValue = e.target.value;
-      return fetchSellersResult({ 'search': searchedValue });
-    })
+['submit', 'keyup'].forEach(listener => {
+  let sellersForm = UISelect.sellerSearchForm();
+  if (!sellersForm) return;
+
+  sellersForm.addEventListener(listener, e => {
+    e.preventDefault();
+    let searchedValue = e.target.value;
+    return fetchSellersResult({ 'search': searchedValue });
+  });
+}
 )

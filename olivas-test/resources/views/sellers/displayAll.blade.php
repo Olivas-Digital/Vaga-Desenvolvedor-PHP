@@ -1,4 +1,7 @@
-{{$title = 'Sellers'}}
+@php
+$title = 'Sellers';
+$dataPage = 'sellers-paginate';
+@endphp
 
 @extends('base/index')
 

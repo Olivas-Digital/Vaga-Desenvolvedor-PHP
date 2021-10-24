@@ -18,5 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/vendedores', function() {
-    return view('sellers');
+    return view('sellers/displayAll');
 });

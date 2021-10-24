@@ -2358,6 +2358,8 @@ var getSellersEndPoint = function getSellersEndPoint() {
 
 var fetchSellersResult = function fetchSellersResult() {
   var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var isInSellersPage = qSelect('[data-page="sellers-paginate"]');
+  if (!isInSellersPage) return;
   var sellersEndPoint = getSellersEndPoint();
   return fetchResultDataFor(generateResultsForSellers, sellersEndPoint, data);
 };
@@ -2386,7 +2388,9 @@ window.onpopstate = function (event) {
 };
 
 ['submit', 'keyup'].forEach(function (listener) {
-  return UISelect.sellerSearchForm().addEventListener(listener, function (e) {
+  var sellersForm = UISelect.sellerSearchForm();
+  if (!sellersForm) return;
+  sellersForm.addEventListener(listener, function (e) {
     e.preventDefault();
     var searchedValue = e.target.value;
     return fetchSellersResult({
