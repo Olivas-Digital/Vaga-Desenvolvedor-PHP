@@ -2080,7 +2080,7 @@ __webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js");
 __webpack_require__(/*! ./pagination/pagination */ "./resources/js/pagination/pagination.js"); // Sellers
 
 
-__webpack_require__(/*! ./pagination/sellers */ "./resources/js/pagination/sellers.js");
+__webpack_require__(/*! ./sellers/sellersPagination */ "./resources/js/sellers/sellersPagination.js");
 
 /***/ }),
 
@@ -2308,10 +2308,10 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/js/pagination/sellers.js":
-/*!********************************************!*\
-  !*** ./resources/js/pagination/sellers.js ***!
-  \********************************************/
+/***/ "./resources/js/sellers/sellersPagination.js":
+/*!***************************************************!*\
+  !*** ./resources/js/sellers/sellersPagination.js ***!
+  \***************************************************/
 /***/ (() => {
 
 var generateSellersResultData = function generateSellersResultData(results) {

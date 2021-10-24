@@ -5,4 +5,4 @@ require('./helpers/_index');
 require('./pagination/pagination');
 
 // Sellers
-require('./pagination/sellers');
+require('./sellers/sellersPagination');
