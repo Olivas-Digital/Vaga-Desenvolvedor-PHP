@@ -2065,6 +2065,73 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/js/apiRequest/_index.js":
+/*!*******************************************!*\
+  !*** ./resources/js/apiRequest/_index.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./getResults */ "./resources/js/apiRequest/getResults.js");
+
+/***/ }),
+
+/***/ "./resources/js/apiRequest/getResults.js":
+/*!***********************************************!*\
+  !*** ./resources/js/apiRequest/getResults.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+window.getResults = function () {
+  var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
+  var data = arguments.length > 1 ? arguments[1] : undefined;
+  var queryString = data ? mountQueryString(data) : '';
+  return axios.get("".concat(UISelect.baseUrl()).concat(endpoint).concat(queryString));
+};
+
+window.fetchResultDataFor = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
+    var endPoint,
+        dataParams,
+        _args = arguments;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            endPoint = _args.length > 1 && _args[1] !== undefined ? _args[1] : '/';
+            dataParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
+            return _context.abrupt("return", getResults(endPoint, dataParams) // .then(console.log)
+            .then(function (_ref2) {
+              var data = _ref2.data;
+              var links = data.data.links;
+              var resultsData = data.data.data;
+              return callBack(resultsData, links);
+            })["catch"](console.log));
+
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -2074,10 +2141,10 @@ module.exports = {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Helpers
 
 
-__webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js"); // Pagination
+__webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js"); // Axios
 
 
-__webpack_require__(/*! ./pagination/pagination */ "./resources/js/pagination/pagination.js"); // Sellers
+__webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Sellers
 
 
 __webpack_require__(/*! ./sellers/sellersPagination */ "./resources/js/sellers/sellersPagination.js");
@@ -2126,6 +2193,8 @@ __webpack_require__(/*! ./strings */ "./resources/js/helpers/strings.js");
 __webpack_require__(/*! ./url */ "./resources/js/helpers/url.js");
 
 __webpack_require__(/*! ./domElements */ "./resources/js/helpers/domElements.js");
+
+__webpack_require__(/*! ./uiSelect */ "./resources/js/helpers/uiSelect.js");
 
 /***/ }),
 
@@ -2195,6 +2264,26 @@ window.stringIncludes = function (param, url) {
 
 /***/ }),
 
+/***/ "./resources/js/helpers/uiSelect.js":
+/*!******************************************!*\
+  !*** ./resources/js/helpers/uiSelect.js ***!
+  \******************************************/
+/***/ (() => {
+
+window.UISelect = {
+  baseUrl: function baseUrl() {
+    return qSelect('[data-base-url]').dataset.baseUrl;
+  },
+  dataSellers: function dataSellers() {
+    return qSelectAll('[data-page-seller-id]');
+  },
+  sellerSearchForm: function sellerSearchForm() {
+    return qSelect('[data-js="search-seller-form"]');
+  }
+};
+
+/***/ }),
+
 /***/ "./resources/js/helpers/url.js":
 /*!*************************************!*\
   !*** ./resources/js/helpers/url.js ***!
@@ -2236,75 +2325,6 @@ window.mountQueryString = function (data) {
   }, '');
   return queryStringSymbol + stringUrl;
 };
-
-/***/ }),
-
-/***/ "./resources/js/pagination/pagination.js":
-/*!***********************************************!*\
-  !*** ./resources/js/pagination/pagination.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-window.UISelect = {
-  baseUrl: function baseUrl() {
-    return qSelect('[data-base-url]').dataset.baseUrl;
-  },
-  dataSellers: function dataSellers() {
-    return qSelectAll('[data-page-seller-id]');
-  },
-  sellerSearchForm: function sellerSearchForm() {
-    return qSelect('[data-js="search-seller-form"]');
-  }
-};
-
-window.getResults = function () {
-  var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
-  var data = arguments.length > 1 ? arguments[1] : undefined;
-  var queryString = data ? mountQueryString(data) : '';
-  return axios.get("".concat(UISelect.baseUrl()).concat(endpoint).concat(queryString));
-};
-
-window.fetchResultDataFor = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
-    var endPoint,
-        dataParams,
-        _args = arguments;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            endPoint = _args.length > 1 && _args[1] !== undefined ? _args[1] : '/';
-            dataParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
-            return _context.abrupt("return", getResults(endPoint, dataParams) // .then(console.log)
-            .then(function (_ref2) {
-              var data = _ref2.data;
-              var links = data.data.links;
-              var resultsData = data.data.data;
-              return callBack(resultsData, links);
-            })["catch"](console.log));
-
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
 
 /***/ }),
 

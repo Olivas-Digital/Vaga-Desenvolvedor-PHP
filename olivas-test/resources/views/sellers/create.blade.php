@@ -2,9 +2,11 @@
 
 @section('content')
 
-<h1>Sellers</h1>
-<form method="GET" action="{{route('seller.index')}}" class="search-form" data-js="search-seller-form">
-  <input type="text" name="search" value="">
+<h1>Criar registro para Vendedor</h1>
+<form method="post" action="{{route('seller.store')}}" class="search-form" data-js="create-seller-form">
+  <input type="text" name="name" value="">
+  <input type="text" name="trade_name" value="">
+  <input type="submit" value="Criar vendedor">
 </form>
 
 @endSection

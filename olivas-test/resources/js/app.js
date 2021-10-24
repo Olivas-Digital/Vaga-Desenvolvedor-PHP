@@ -1,8 +1,8 @@
 require('./bootstrap');
 // Helpers
 require('./helpers/_index');
-// Pagination
-require('./pagination/pagination');
+// Axios
+require('./apiRequest/_index');
 
 // Sellers
 require('./sellers/sellersPagination');
