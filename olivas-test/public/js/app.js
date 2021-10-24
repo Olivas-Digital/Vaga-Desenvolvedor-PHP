@@ -2458,9 +2458,23 @@ var generateSellersResultData = function generateSellersResultData(results) {
   return resultsSection;
 };
 
-var generateSellersPagination = function generateSellersPagination(links) {
+var generateSellersPagination = function generateSellersPagination(links, resultData) {
   removeElementFromDom('[data-js="sellers-pagination"]');
   var div = createHtmlElement('div', ['class', 'pagination sellers-pagination'], ['data-js', 'sellers-pagination']);
+  var queryHasDataResults = resultData.length > 0;
+
+  if (!queryHasDataResults) {
+    div.innerHTML = '<p>Sem resultado para a busca</p>';
+    return div;
+  }
+
+  var pageable = links.length !== 3;
+
+  if (!pageable) {
+    div.innerHTML = '';
+    return div;
+  }
+
   var linksGenerated = links.map(function (_ref2) {
     var url = _ref2.url,
         active = _ref2.active,
@@ -2477,7 +2491,7 @@ var generateSellersPagination = function generateSellersPagination(links) {
 
 var generateResultsForSellers = function generateResultsForSellers(resultsData, links) {
   var resultData = generateSellersResultData(resultsData);
-  var pagination = generateSellersPagination(links);
+  var pagination = generateSellersPagination(links, resultsData);
   qSelect('main').appendChild(resultData);
   qSelect('main').appendChild(pagination);
   clickDataSellers();
@@ -2527,6 +2541,10 @@ window.onpopstate = function (event) {
   sellersForm.addEventListener(listener, function (e) {
     e.preventDefault();
     var searchedValue = e.target.value;
+    history.pushState({
+      page: 1,
+      search: searchedValue
+    }, "Vendedores - pág: " + 1, "?page=" + 1);
     return fetchSellersResult({
       'search': searchedValue
     });

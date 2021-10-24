@@ -9,10 +9,22 @@ const generateSellersResultData = (results) => {
   return resultsSection;
 }
 
-const generateSellersPagination = (links) => {
+const generateSellersPagination = (links, resultData) => {
   removeElementFromDom('[data-js="sellers-pagination"]');
 
   const div = createHtmlElement('div', ['class', 'pagination sellers-pagination'], ['data-js', 'sellers-pagination']);
+
+  let queryHasDataResults = resultData.length > 0;
+  if (!queryHasDataResults) {
+    div.innerHTML = '<p>Sem resultado para a busca</p>';
+    return div;
+  }
+  
+  let pageable = links.length !== 3;
+  if (!pageable) {
+    div.innerHTML = '';
+    return div;
+  }
 
   let linksGenerated = links.map(({ url, active, label }) => {
     let disable = url ? '' : "disable";
@@ -29,7 +41,7 @@ const generateSellersPagination = (links) => {
 
 const generateResultsForSellers = (resultsData, links) => {
   let resultData = generateSellersResultData(resultsData);
-  let pagination = generateSellersPagination(links);
+  let pagination = generateSellersPagination(links, resultsData);
   qSelect('main').appendChild(resultData);
   qSelect('main').appendChild(pagination);
   clickDataSellers();
@@ -82,6 +94,7 @@ window.onpopstate = function (event) {
   sellersForm.addEventListener(listener, e => {
     e.preventDefault();
     let searchedValue = e.target.value;
+    history.pushState({ page: 1, search: searchedValue }, "Vendedores - pág: " + 1, "?page=" + 1)
     return fetchSellersResult({ 'search': searchedValue });
   });
 }
