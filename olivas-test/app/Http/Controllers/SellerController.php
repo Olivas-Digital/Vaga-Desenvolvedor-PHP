@@ -18,21 +18,12 @@ class SellerController extends Controller
     {
         $inputSearch = $request->input('search');
 
-        $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Seller::paginate(5);
+        $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Seller::orderBy('id', 'DESC')->paginate(5);
 
         return response()->json([
             'data' => $data,
             'response_text' => 'Success : ' . Response::HTTP_OK
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
     }
 
     /**
