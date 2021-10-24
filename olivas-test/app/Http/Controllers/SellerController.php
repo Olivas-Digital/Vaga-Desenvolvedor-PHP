@@ -32,7 +32,6 @@ class SellerController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -43,7 +42,13 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $request->all();
+        $name = $request->name;
+
+        return response()->json([
+            'data' => $name,
+            'response_text' => 'Success : ' . Response::HTTP_OK
+        ]);
     }
 
     /**

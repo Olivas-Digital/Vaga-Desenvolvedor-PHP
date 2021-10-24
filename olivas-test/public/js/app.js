@@ -2071,14 +2071,16 @@ module.exports = {
   \*******************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./getResults */ "./resources/js/apiRequest/getResults.js");
+__webpack_require__(/*! ./getRequests */ "./resources/js/apiRequest/getRequests.js");
+
+__webpack_require__(/*! ./postRequests */ "./resources/js/apiRequest/postRequests.js");
 
 /***/ }),
 
-/***/ "./resources/js/apiRequest/getResults.js":
-/*!***********************************************!*\
-  !*** ./resources/js/apiRequest/getResults.js ***!
-  \***********************************************/
+/***/ "./resources/js/apiRequest/getRequests.js":
+/*!************************************************!*\
+  !*** ./resources/js/apiRequest/getRequests.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2132,6 +2134,20 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/apiRequest/postRequests.js":
+/*!*************************************************!*\
+  !*** ./resources/js/apiRequest/postRequests.js ***!
+  \*************************************************/
+/***/ (() => {
+
+window.postRequest = function () {
+  var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
+  var postData = arguments.length > 1 ? arguments[1] : undefined;
+  return axios.post("".concat(UISelect.baseUrl()).concat(endpoint), postData);
+};
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -2147,7 +2163,7 @@ __webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js");
 __webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Sellers
 
 
-__webpack_require__(/*! ./sellers/sellersPagination */ "./resources/js/sellers/sellersPagination.js");
+__webpack_require__(/*! ./sellers/_index */ "./resources/js/sellers/_index.js");
 
 /***/ }),
 
@@ -2279,6 +2295,9 @@ window.UISelect = {
   },
   sellerSearchForm: function sellerSearchForm() {
     return qSelect('[data-js="search-seller-form"]');
+  },
+  sellerCreateForm: function sellerCreateForm() {
+    return qSelect('[data-js="create-seller-form"]');
   }
 };
 
@@ -2325,6 +2344,33 @@ window.mountQueryString = function (data) {
   }, '');
   return queryStringSymbol + stringUrl;
 };
+
+/***/ }),
+
+/***/ "./resources/js/sellers/_index.js":
+/*!****************************************!*\
+  !*** ./resources/js/sellers/_index.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./sellersCreate */ "./resources/js/sellers/sellersCreate.js");
+
+__webpack_require__(/*! ./sellersPagination */ "./resources/js/sellers/sellersPagination.js");
+
+/***/ }),
+
+/***/ "./resources/js/sellers/sellersCreate.js":
+/*!***********************************************!*\
+  !*** ./resources/js/sellers/sellersCreate.js ***!
+  \***********************************************/
+/***/ (() => {
+
+UISelect.sellerCreateForm().addEventListener('submit', function (e) {
+  e.preventDefault();
+  postRequest('/api/vendedores', {
+    name: 'Marcos'
+  }).then(console.log)["catch"](console.log);
+});
 
 /***/ }),
 

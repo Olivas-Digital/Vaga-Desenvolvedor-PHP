@@ -5,4 +5,4 @@ require('./helpers/_index');
 require('./apiRequest/_index');
 
 // Sellers
-require('./sellers/sellersPagination');
+require('./sellers/_index');

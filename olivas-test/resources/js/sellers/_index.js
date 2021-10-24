@@ -1,0 +1,2 @@
+require('./sellersCreate');
+require('./sellersPagination');

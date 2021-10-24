@@ -1,1 +1,2 @@
-require('./getResults');
+require('./getRequests');
+require('./postRequests');
