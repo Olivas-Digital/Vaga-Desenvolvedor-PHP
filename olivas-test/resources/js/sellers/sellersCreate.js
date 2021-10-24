@@ -6,9 +6,11 @@ const sellersCreate = () => {
 
   UISelect.sellerCreateForm().addEventListener('submit', (e) => {
     e.preventDefault();
+    let [name, tradeName] = e.target;
+
     postRequest('/api/vendedores', {
-      name: 'Marcos',
-      // trade_name: 'MSC'
+      name: name.value,
+      trade_name: tradeName.value
     })
       // .then(console.log)
       .then((res) => {

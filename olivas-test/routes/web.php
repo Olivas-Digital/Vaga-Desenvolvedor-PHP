@@ -26,7 +26,7 @@ Route::get('/vendedores', function () {
 
 Route::get('/vendedores/criar', function () {
     return view('sellers/create', [
-        'title' => 'Criar um vendedor',
+        'title' => 'Registrar um vendedor',
         'dataPage' => 'sellers-create'
     ]);
 });

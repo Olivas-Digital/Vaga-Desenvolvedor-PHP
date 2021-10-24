@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Seller\SellerCreate;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -40,15 +41,26 @@ class SellerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SellerCreate $request)
     {
         // $request->all();
-        $name = $request->name;
+        $validated = $request->validated();
+        extract($validated);
+
+        $tradeNameExists = Seller::where('trade_name', '=', $trade_name)->exists();
+
+        if ($tradeNameExists) {
+            return response()->json([
+                'message' => 'Nome fantasia: "' . $trade_name . '" já existe',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        Seller::create($validated);
 
         return response()->json([
-            'data' => $name,
-            'response_text' => 'Success : ' . Response::HTTP_OK
-        ]);
+            'message' => 'Vendedor cadastrado!',
+            'data' => $validated
+        ], Response::HTTP_OK);
     }
 
     /**
