@@ -2,3 +2,4 @@
 
 - Bibliotecas
  - SweetAlert
+ - Bootstrap Icons

@@ -19,6 +19,7 @@
         "sass-loader": "^12.1.0"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.6.1",
         "sweetalert": "^2.1.2"
     }
 }
