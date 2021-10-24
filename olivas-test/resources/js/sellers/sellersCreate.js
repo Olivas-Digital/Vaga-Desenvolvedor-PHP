@@ -1,14 +1,12 @@
 import swal from 'sweetalert';
 
-
-const sellersCreate = () => {
+window.sellersCreate = () => {
   if (!UISelect.sellerCreateForm()) return;
-
   UISelect.sellerCreateForm().addEventListener('submit', (e) => {
     e.preventDefault();
-    let [name, tradeName] = e.target;
+    let [, name, tradeName] = e.target;
 
-    postRequest('/api/vendedores', {
+    axiosRequest('post', '/api/vendedores', {
       name: name.value,
       trade_name: tradeName.value
     })
