@@ -2071,9 +2071,16 @@ module.exports = {
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Helpers
 
-__webpack_require__(/*! ./pagination/pagination */ "./resources/js/pagination/pagination.js");
+
+__webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js"); // Pagination
+
+
+__webpack_require__(/*! ./pagination/pagination */ "./resources/js/pagination/pagination.js"); // Sellers
+
+
+__webpack_require__(/*! ./pagination/sellers */ "./resources/js/pagination/sellers.js");
 
 /***/ }),
 
@@ -2108,20 +2115,26 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/helpers/_index.js":
+/*!****************************************!*\
+  !*** ./resources/js/helpers/_index.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./strings */ "./resources/js/helpers/strings.js");
+
+__webpack_require__(/*! ./url */ "./resources/js/helpers/url.js");
+
+__webpack_require__(/*! ./domElements */ "./resources/js/helpers/domElements.js");
+
+/***/ }),
+
 /***/ "./resources/js/helpers/domElements.js":
 /*!*********************************************!*\
   !*** ./resources/js/helpers/domElements.js ***!
   \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "qSelect": () => (/* binding */ qSelect),
-/* harmony export */   "qSelectAll": () => (/* binding */ qSelectAll),
-/* harmony export */   "elContainClass": () => (/* binding */ elContainClass),
-/* harmony export */   "createHtmlElement": () => (/* binding */ createHtmlElement)
-/* harmony export */ });
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2134,16 +2147,24 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var qSelect = function qSelect(selector) {
+window.qSelect = function (selector) {
   return document.querySelector(selector);
 };
-var qSelectAll = function qSelectAll(selector) {
+
+window.qSelectAll = function (selector) {
   return document.querySelectorAll(selector);
 };
-var elContainClass = function elContainClass(e, className) {
+
+window.removeElementFromDom = function (elementSearch) {
+  var element = document.querySelector(elementSearch);
+  return element ? element.remove() : false;
+};
+
+window.elContainClass = function (e, className) {
   return e.classList.contains(className);
 };
-var createHtmlElement = function createHtmlElement(elToCreate) {
+
+window.createHtmlElement = function (elToCreate) {
   var el = document.createElement(elToCreate);
 
   for (var _len = arguments.length, attributes = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -2166,14 +2187,9 @@ var createHtmlElement = function createHtmlElement(elToCreate) {
 /*!*****************************************!*\
   !*** ./resources/js/helpers/strings.js ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "stringIncludes": () => (/* binding */ stringIncludes)
-/* harmony export */ });
-var stringIncludes = function stringIncludes(param, url) {
+window.stringIncludes = function (param, url) {
   return url.includes(param);
 };
 
@@ -2183,16 +2199,8 @@ var stringIncludes = function stringIncludes(param, url) {
 /*!*************************************!*\
   !*** ./resources/js/helpers/url.js ***!
   \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getUrl": () => (/* binding */ getUrl),
-/* harmony export */   "getQueryParams": () => (/* binding */ getQueryParams),
-/* harmony export */   "mountQueryString": () => (/* binding */ mountQueryString)
-/* harmony export */ });
-/* harmony import */ var _helpers_strings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/strings */ "./resources/js/helpers/strings.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2205,18 +2213,19 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-
-var getUrl = function getUrl() {
+window.getUrl = function () {
   return window.location.href;
 };
-var getQueryParams = function getQueryParams(params, url) {
+
+window.getQueryParams = function (params, url) {
   // this is an expression to get query strings
   var regexp = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
   var qString = regexp.exec(url);
   return qString ? qString[1] : null;
 };
-var mountQueryString = function mountQueryString(data) {
-  var isAlreadyQueryString = (0,_helpers_strings__WEBPACK_IMPORTED_MODULE_0__.stringIncludes)('?', getUrl());
+
+window.mountQueryString = function (data) {
+  var isAlreadyQueryString = stringIncludes('?', getUrl());
   var queryStringSymbol = isAlreadyQueryString ? '&' : '?';
   var stringUrl = Object.entries(data).reduce(function (acc, crr) {
     var _crr = _slicedToArray(crr, 2),
@@ -2240,41 +2249,32 @@ var mountQueryString = function mountQueryString(data) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _helpers_domElements__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/domElements */ "./resources/js/helpers/domElements.js");
-/* harmony import */ var _helpers_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/url */ "./resources/js/helpers/url.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-
-
-var UISelect = {
+window.UISelect = {
   baseUrl: function baseUrl() {
-    return (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('[data-base-url]').dataset.baseUrl;
+    return qSelect('[data-base-url]').dataset.baseUrl;
   },
   dataSellers: function dataSellers() {
-    return (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelectAll)('[data-page-seller-id]');
+    return qSelectAll('[data-page-seller-id]');
   },
   sellerSearchForm: function sellerSearchForm() {
-    return (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('[data-js="search-seller-form"]');
+    return qSelect('[data-js="search-seller-form"]');
   }
 };
 
-var removeElementFromDom = function removeElementFromDom(elementSearch) {
-  var element = document.querySelector(elementSearch);
-  return element ? element.remove() : false;
-};
-
-var getResults = function getResults() {
+window.getResults = function () {
   var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
   var data = arguments.length > 1 ? arguments[1] : undefined;
-  var queryString = data ? (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.mountQueryString)(data) : '';
+  var queryString = data ? mountQueryString(data) : '';
   return axios.get("".concat(UISelect.baseUrl()).concat(endpoint).concat(queryString));
 };
 
-var fetchResultDataFor = /*#__PURE__*/function () {
+window.fetchResultDataFor = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
     var endPoint,
         dataParams,
@@ -2301,18 +2301,26 @@ var fetchResultDataFor = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function fetchResultDataFor(_x) {
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 }();
 
+/***/ }),
+
+/***/ "./resources/js/pagination/sellers.js":
+/*!********************************************!*\
+  !*** ./resources/js/pagination/sellers.js ***!
+  \********************************************/
+/***/ (() => {
+
 var generateSellersResultData = function generateSellersResultData(results) {
   removeElementFromDom('[data-js="sellers-result"]');
-  var resultsSection = (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.createHtmlElement)('section', ['class', 'sellers-result'], ['data-js', 'sellers-result']);
-  resultsSection.innerHTML = results.map(function (_ref3) {
-    var id = _ref3.id,
-        name = _ref3.name,
-        trade_name = _ref3.trade_name;
+  var resultsSection = createHtmlElement('section', ['class', 'sellers-result'], ['data-js', 'sellers-result']);
+  resultsSection.innerHTML = results.map(function (_ref) {
+    var id = _ref.id,
+        name = _ref.name,
+        trade_name = _ref.trade_name;
     return "<div class='result-item' data-seller-id='".concat(id, "'><h3>").concat(name, "</h3><p>Nome Fantasia: ").concat(trade_name, "</p></div>");
   }).join('');
   return resultsSection;
@@ -2320,15 +2328,15 @@ var generateSellersResultData = function generateSellersResultData(results) {
 
 var generateSellersPagination = function generateSellersPagination(links) {
   removeElementFromDom('[data-js="sellers-pagination"]');
-  var div = (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.createHtmlElement)('div', ['class', 'pagination sellers-pagination'], ['data-js', 'sellers-pagination']);
-  var linksGenerated = links.map(function (_ref4) {
-    var url = _ref4.url,
-        active = _ref4.active,
-        label = _ref4.label;
+  var div = createHtmlElement('div', ['class', 'pagination sellers-pagination'], ['data-js', 'sellers-pagination']);
+  var linksGenerated = links.map(function (_ref2) {
+    var url = _ref2.url,
+        active = _ref2.active,
+        label = _ref2.label;
     var disable = url ? '' : "disable";
     var href = "href='".concat(url ? url : 'javascript: void(0)', "'");
     var activeEl = active ? 'active' : '';
-    var sellerId = (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.getQueryParams)('page', url);
+    var sellerId = getQueryParams('page', url);
     return "<a ".concat(href, " ").concat(disable, " class=\"seller-page-item ").concat(activeEl, " ").concat(disable, "\" data-page-seller-id='").concat(sellerId, "'>").concat(label, "</a>");
   }).join('');
   div.innerHTML = linksGenerated;
@@ -2338,13 +2346,13 @@ var generateSellersPagination = function generateSellersPagination(links) {
 var generateResultsForSellers = function generateResultsForSellers(resultsData, links) {
   var resultData = generateSellersResultData(resultsData);
   var pagination = generateSellersPagination(links);
-  (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('main').appendChild(resultData);
-  (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.qSelect)('main').appendChild(pagination);
+  qSelect('main').appendChild(resultData);
+  qSelect('main').appendChild(pagination);
   clickDataSellers();
 };
 
 var getSellersEndPoint = function getSellersEndPoint() {
-  var urlPageParam = (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.getQueryParams)('page', (0,_helpers_url__WEBPACK_IMPORTED_MODULE_2__.getUrl)());
+  var urlPageParam = getQueryParams('page', getUrl());
   return '/api/vendedores' + (urlPageParam ? "/?page=".concat(urlPageParam) : '');
 };
 
@@ -2362,7 +2370,7 @@ var clickDataSellers = function clickDataSellers() {
   sellers.forEach(function (item) {
     return item.onclick = function (e) {
       e.preventDefault();
-      var isBtnDisable = (0,_helpers_domElements__WEBPACK_IMPORTED_MODULE_1__.elContainClass)(e.target, 'disable');
+      var isBtnDisable = elContainClass(e.target, 'disable');
       if (isBtnDisable) return;
       var clickedPage = e.target.getAttribute('data-page-seller-id');
       history.pushState({

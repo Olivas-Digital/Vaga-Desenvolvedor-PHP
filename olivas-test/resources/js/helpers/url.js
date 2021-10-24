@@ -1,15 +1,13 @@
-import { stringIncludes } from '../helpers/strings';
+window.getUrl = () => window.location.href;
 
-export const getUrl = () => window.location.href;
-
-export const getQueryParams = (params, url) => {
+window.getQueryParams = (params, url) => {
   // this is an expression to get query strings
   let regexp = new RegExp('[?&]' + params + '=([^&#]*)', 'i');
   let qString = regexp.exec(url);
   return qString ? qString[1] : null;
 };
 
-export const mountQueryString = (data) => {
+window.mountQueryString = (data) => {
   let isAlreadyQueryString = stringIncludes('?', getUrl());
   let queryStringSymbol = isAlreadyQueryString ? '&' : '?';
 

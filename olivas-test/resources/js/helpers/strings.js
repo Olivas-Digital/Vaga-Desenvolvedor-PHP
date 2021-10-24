@@ -1,3 +1,3 @@
-export const stringIncludes = (param, url) => {
+window.stringIncludes = (param, url) => {
   return url.includes(param);
 }
