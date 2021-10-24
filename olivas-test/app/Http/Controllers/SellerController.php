@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Seller\SellerCreate;
+use App\Http\Requests\Seller\SellerSend;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +32,7 @@ class SellerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SellerCreate $request)
+    public function store(SellerSend $request)
     {
         // $request->all();
         $validated = $request->validated();
@@ -43,7 +43,7 @@ class SellerController extends Controller
         if ($tradeNameExists) {
             return response()->json([
                 'message' => 'Nome fantasia: "' . $trade_name . '" já existe',
-            ], Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_FORBIDDEN);
         }
 
         Seller::create($validated);
@@ -55,37 +55,32 @@ class SellerController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Seller  $seller
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Seller $seller)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Seller  $seller
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Seller $seller)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Seller $seller)
+    public function update(SellerSend $request, Seller $seller)
     {
-        //structure file
+        // $request->all();
+        $validated = $request->validated();
+        extract($validated);
+
+        $tradeNameExists = Seller::where('id', '!=', $seller, 'trade_name', '=', $trade_name)->exists();
+
+        if ($tradeNameExists) {
+            return response()->json([
+                'message' => 'Nome fantasia: "' . $trade_name . '" já existe',
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        Seller::create($validated);
+
+        return response()->json([
+            'message' => 'Vendedor atualizado!',
+            'data' => $validated
+        ], Response::HTTP_OK);
     }
 
     /**
