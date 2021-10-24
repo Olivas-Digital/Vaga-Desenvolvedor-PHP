@@ -1,3 +1,2 @@
-require('./getRequests');
-require('./postRequests');
-require('./putRequests');
+require('./axiosRequest');
+require('./fetchData');
