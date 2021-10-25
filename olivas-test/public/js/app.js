@@ -2803,11 +2803,12 @@ window.onpopstate = function (event) {
   sellersForm.addEventListener(listener, function (e) {
     e.preventDefault();
     var searchedValue = e.target.value;
+    var searchParamActive = searchedValue ? '&search=' + searchedValue : '';
     history.pushState({
       page: 1
-    }, "Vendedores - pág: " + 1, "?page=" + 1 + '&search=' + searchedValue);
+    }, "Vendedores - pág: " + 1, "?page=" + 1 + searchParamActive);
     return fetchSellersResult({
-      'search': searchedValue
+      'search': searchParamActive
     });
   });
 });

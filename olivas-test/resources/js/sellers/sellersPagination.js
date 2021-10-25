@@ -103,8 +103,11 @@ window.onpopstate = function (event) {
   sellersForm.addEventListener(listener, e => {
     e.preventDefault();
     let searchedValue = e.target.value;
-    history.pushState({ page: 1 }, "Vendedores - pág: " + 1, "?page=" + 1 + '&search=' + searchedValue);
-    return fetchSellersResult({ 'search': searchedValue });
+
+    let searchParamActive = searchedValue ? '&search=' + searchedValue : '';
+
+    history.pushState({ page: 1 }, "Vendedores - pág: " + 1, "?page=" + 1 + searchParamActive);
+    return fetchSellersResult({ 'search': searchParamActive });
   });
 }
 )
