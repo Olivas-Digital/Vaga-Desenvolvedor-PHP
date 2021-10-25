@@ -2071,16 +2071,35 @@ module.exports = {
   \*******************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./getRequests */ "./resources/js/apiRequest/getRequests.js");
+__webpack_require__(/*! ./axiosRequest */ "./resources/js/apiRequest/axiosRequest.js");
 
-__webpack_require__(/*! ./postRequests */ "./resources/js/apiRequest/postRequests.js");
+__webpack_require__(/*! ./fetchData */ "./resources/js/apiRequest/fetchData.js");
 
 /***/ }),
 
-/***/ "./resources/js/apiRequest/getRequests.js":
-/*!************************************************!*\
-  !*** ./resources/js/apiRequest/getRequests.js ***!
-  \************************************************/
+/***/ "./resources/js/apiRequest/axiosRequest.js":
+/*!*************************************************!*\
+  !*** ./resources/js/apiRequest/axiosRequest.js ***!
+  \*************************************************/
+/***/ (() => {
+
+window.axiosRequest = function () {
+  var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'get';
+  var endpoint = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '/';
+  var requestData = arguments.length > 2 ? arguments[2] : undefined;
+  return axios({
+    method: method,
+    url: UISelect.baseUrl() + endpoint,
+    data: requestData
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/apiRequest/fetchData.js":
+/*!**********************************************!*\
+  !*** ./resources/js/apiRequest/fetchData.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2093,13 +2112,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-window.getResults = function () {
-  var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
-  var data = arguments.length > 1 ? arguments[1] : undefined;
-  var queryString = data ? mountQueryString(data) : '';
-  return axios.get("".concat(UISelect.baseUrl()).concat(endpoint).concat(queryString));
-};
-
 window.fetchResultDataFor = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
     var endPoint,
@@ -2111,15 +2123,26 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
           case 0:
             endPoint = _args.length > 1 && _args[1] !== undefined ? _args[1] : '/';
             dataParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
-            return _context.abrupt("return", getResults(endPoint, dataParams) // .then(console.log)
-            .then(function (_ref2) {
+
+            if (!window.runQuery) {
+              _context.next = 4;
+              break;
+            }
+
+            return _context.abrupt("return");
+
+          case 4:
+            window.runQuery = true;
+            return _context.abrupt("return", axiosRequest('get', endPoint, dataParams).then(function (_ref2) {
               var data = _ref2.data;
               var links = data.data.links;
               var resultsData = data.data.data;
               return callBack(resultsData, links);
-            })["catch"](console.log));
+            })["catch"](console.log)["finally"](function () {
+              window.runQuery = false;
+            }));
 
-          case 3:
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -2131,20 +2154,6 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-
-/***/ }),
-
-/***/ "./resources/js/apiRequest/postRequests.js":
-/*!*************************************************!*\
-  !*** ./resources/js/apiRequest/postRequests.js ***!
-  \*************************************************/
-/***/ (() => {
-
-window.postRequest = function () {
-  var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/';
-  var postData = arguments.length > 1 ? arguments[1] : undefined;
-  return axios.post("".concat(UISelect.baseUrl()).concat(endpoint), postData);
-};
 
 /***/ }),
 
@@ -2214,6 +2223,25 @@ __webpack_require__(/*! ./uiSelect */ "./resources/js/helpers/uiSelect.js");
 
 /***/ }),
 
+/***/ "./resources/js/helpers/bootstrap.js":
+/*!*******************************************!*\
+  !*** ./resources/js/helpers/bootstrap.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "hideModalBootstrapModal": () => (/* binding */ hideModalBootstrapModal)
+/* harmony export */ });
+var hideModalBootstrapModal = function hideModalBootstrapModal(modalId) {
+  var selectedModal = qSelect(modalId);
+  var modal = bootstrap.Modal.getInstance(selectedModal);
+  return modal.hide();
+};
+
+/***/ }),
+
 /***/ "./resources/js/helpers/domElements.js":
 /*!*********************************************!*\
   !*** ./resources/js/helpers/domElements.js ***!
@@ -2266,6 +2294,20 @@ window.createHtmlElement = function (elToCreate) {
   return el;
 };
 
+window.addClassTo = function (el, className) {
+  return el ? el.classList.add(className) : false;
+};
+
+window.removeClassTo = function (el, className) {
+  return el ? el.classList.remove(className) : false;
+};
+
+window.removeClassFromElements = function (elements, className) {
+  return elements ? Array.from(elements).forEach(function (el) {
+    return removeClassTo(el, className);
+  }) : false;
+};
+
 /***/ }),
 
 /***/ "./resources/js/helpers/strings.js":
@@ -2305,6 +2347,33 @@ window.UISelect = {
   },
   sellerCreateForm: function sellerCreateForm() {
     return qSelect('[data-js="create-seller-form"]');
+  },
+  sellersControls: function sellersControls() {
+    return qSelectAll('[data-js="seller-controls"]');
+  },
+  sellerItem: function sellerItem(id) {
+    return qSelect("[data-seller-item-id=\"".concat(id, "\"]"));
+  },
+  sellerItems: function sellerItems() {
+    return qSelectAll("[data-seller-item-id]");
+  },
+  sellerItemActive: function sellerItemActive() {
+    return qSelect("[data-seller-item-id].active");
+  },
+  sellerName: function sellerName(id) {
+    return qSelect("[data-js=\"seller-name-".concat(id, "\"]"));
+  },
+  sellerTradeName: function sellerTradeName(id) {
+    return qSelect("[data-js=\"seller-trade-name-".concat(id, "\"]"));
+  },
+  sellerEditForm: function sellerEditForm() {
+    return qSelect('[data-js="seller-edit-form"]');
+  },
+  sellerFormName: function sellerFormName() {
+    return qSelect('#seller-name');
+  },
+  sellerFormTradeName: function sellerFormTradeName() {
+    return qSelect('#seller-trade-name');
   }
 };
 
@@ -2366,6 +2435,8 @@ window.mountQueryString = function (data) {
 
 __webpack_require__(/*! ./sellersCreate */ "./resources/js/sellers/sellersCreate.js");
 
+__webpack_require__(/*! ./sellersEdit */ "./resources/js/sellers/sellersEdit.js");
+
 __webpack_require__(/*! ./sellersPagination */ "./resources/js/sellers/sellersPagination.js");
 
 /***/ }),
@@ -2394,20 +2465,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var sellersCreate = function sellersCreate() {
+window.sellersCreate = function () {
   if (!UISelect.sellerCreateForm()) return;
   UISelect.sellerCreateForm().addEventListener('submit', function (e) {
     e.preventDefault();
 
-    var _e$target = _slicedToArray(e.target, 2),
-        name = _e$target[0],
-        tradeName = _e$target[1];
+    var _e$target = _slicedToArray(e.target, 3),
+        name = _e$target[1],
+        tradeName = _e$target[2];
 
-    postRequest('/api/vendedores', {
+    if (window.runQuery) return;
+    window.runQuery = true;
+    axiosRequest('post', '/api/vendedores', {
       name: name.value,
       trade_name: tradeName.value
-    }) // .then(console.log)
-    .then(function (res) {
+    }).then(function (res) {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
         title: 'Opá Deu Bom!',
         text: res.data.message,
@@ -2432,11 +2504,104 @@ var sellersCreate = function sellersCreate() {
       }
 
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
     });
   });
 };
 
 sellersCreate();
+
+/***/ }),
+
+/***/ "./resources/js/sellers/sellersEdit.js":
+/*!*********************************************!*\
+  !*** ./resources/js/sellers/sellersEdit.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _helpers_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/bootstrap */ "./resources/js/helpers/bootstrap.js");
+
+
+
+window.sellersEdit = function () {
+  if (!UISelect.sellersControls()) return;
+  UISelect.sellersControls().forEach(function (sellerControl) {
+    sellerControl.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isEditEl = e.target.hasAttribute('data-seller-edit');
+      if (!isEditEl) return;
+      var dataId = e.target.getAttribute('data-seller-edit');
+      var name = UISelect.sellerName(dataId).innerText;
+      var tradeName = UISelect.sellerTradeName(dataId).innerText; // Remove all active elements
+
+      removeClassFromElements(UISelect.sellerItems(), 'active'); // Add active to current seller item
+
+      addClassTo(UISelect.sellerItem(dataId), 'active');
+
+      if (UISelect.sellerEditForm()) {
+        showSellersEditForm(name, tradeName);
+      }
+    });
+  });
+};
+
+var showSellersEditForm = function showSellersEditForm(name, tradeName) {
+  UISelect.sellerEditForm().reset();
+  UISelect.sellerFormName().value = name;
+  UISelect.sellerFormTradeName().value = tradeName;
+  sendEditForm();
+};
+
+var sendEditForm = function sendEditForm() {
+  UISelect.sellerEditForm().addEventListener('submit', function (e) {
+    e.preventDefault();
+    (0,_helpers_bootstrap__WEBPACK_IMPORTED_MODULE_1__.hideModalBootstrapModal)('#seller-edit-modal');
+    var name = UISelect.sellerFormName().value;
+    var tradeName = UISelect.sellerFormTradeName().value;
+    var sellerId = UISelect.sellerItemActive().getAttribute('data-seller-item-id');
+    if (window.runQuery) return;
+    window.runQuery = true;
+    axiosRequest('put', "/api/vendedores/".concat(sellerId), {
+      name: name,
+      trade_name: tradeName
+    }) // .then(console.log)
+    .then(function (res) {
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+        title: 'Opá Deu Bom!',
+        text: res.data.message,
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        return fetchSellersResult();
+      });
+    })["catch"](function (_ref) {
+      var response = _ref.response;
+      var sweetObj = {
+        title: 'Opá Deu Ruim!',
+        text: response.data.message + '\n',
+        icon: "error",
+        button: "Ok"
+      };
+      var errors = response.data.errors;
+
+      if (errors) {
+        sweetObj.title = response.data.message;
+        sweetObj.text = convertObjToString(errors);
+      }
+
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
+    });
+  });
+};
+
+sellersEdit();
 
 /***/ }),
 
@@ -2449,11 +2614,13 @@ sellersCreate();
 var generateSellersResultData = function generateSellersResultData(results) {
   removeElementFromDom('[data-js="sellers-result"]');
   var resultsSection = createHtmlElement('section', ['class', 'sellers-result'], ['data-js', 'sellers-result']);
-  resultsSection.innerHTML = results.map(function (_ref) {
+  results.map(function (_ref) {
     var id = _ref.id,
         name = _ref.name,
         trade_name = _ref.trade_name;
-    return "<div class='result-item' data-seller-id='".concat(id, "'><h3>").concat(name, "</h3><p>Nome Fantasia: ").concat(trade_name, "</p></div>");
+    var buttons = "<div class='controls' data-js='seller-controls'><button type=\"button\" class=\"btn btn-warning\" data-seller-edit='".concat(id, "' data-bs-target=\"#seller-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-seller-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
+    var item = "<div class='result-item' data-seller-item-id='".concat(id, "'><div><h3 ><span data-js=\"seller-name-").concat(id, "\">").concat(name, "<span></h3><p>Nome Fantasia: <span data-js=\"seller-trade-name-").concat(id, "\">").concat(trade_name, "<span></p>").concat(buttons, "</div>");
+    return resultsSection.innerHTML += item;
   }).join('');
   return resultsSection;
 };
@@ -2495,14 +2662,18 @@ var generateResultsForSellers = function generateResultsForSellers(resultsData, 
   qSelect('main').appendChild(resultData);
   qSelect('main').appendChild(pagination);
   clickDataSellers();
+  sellersEdit();
 };
 
 var getSellersEndPoint = function getSellersEndPoint() {
   var urlPageParam = getQueryParams('page', getUrl());
-  return '/api/vendedores' + (urlPageParam ? "/?page=".concat(urlPageParam) : '');
+  var urlSearchParam = getQueryParams('search', getUrl());
+  var page = urlPageParam ? "?page=".concat(urlPageParam) : '';
+  var search = urlSearchParam ? "&search=".concat(urlSearchParam) : '';
+  return '/api/vendedores/' + page + search;
 };
 
-var fetchSellersResult = function fetchSellersResult() {
+window.fetchSellersResult = function () {
   var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
   var isInSellersPage = qSelect('[data-page="sellers-paginate"]');
   if (!isInSellersPage) return;
@@ -2542,9 +2713,8 @@ window.onpopstate = function (event) {
     e.preventDefault();
     var searchedValue = e.target.value;
     history.pushState({
-      page: 1,
-      search: searchedValue
-    }, "Vendedores - pág: " + 1, "?page=" + 1);
+      page: 1
+    }, "Vendedores - pág: " + 1, "?page=" + 1 + '&search=' + searchedValue);
     return fetchSellersResult({
       'search': searchedValue
     });

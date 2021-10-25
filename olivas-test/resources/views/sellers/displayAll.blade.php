@@ -2,10 +2,11 @@
 
 @section('content')
 
-<h1>Sellers</h1>
-<i class="bi-alarm"></i>
+<h1>Lista pública de Vendedores</h1>
 <form method="GET" action="{{route('seller.index')}}" class="search-form" data-js="search-seller-form">
   <input type="text" name="search" value="">
 </form>
+
+@include('sellers/imports/sellerEditModal')
 
 @endSection

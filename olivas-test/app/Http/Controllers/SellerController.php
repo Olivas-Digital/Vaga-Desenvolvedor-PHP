@@ -16,7 +16,7 @@ class SellerController extends Controller
      */
     public function index(Request $request)
     {
-        $inputSearch = $request->input('search');
+        $inputSearch = $request->get('search');
 
         $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Seller::orderBy('id', 'DESC')->paginate(5);
 
@@ -58,16 +58,17 @@ class SellerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(SellerSend $request, Seller $seller)
+    public function update(SellerSend $request, $id)
     {
         // $request->all();
         $validated = $request->validated();
         extract($validated);
 
-        $tradeNameExists = Seller::where('id', '!=', $seller, 'trade_name', '=', $trade_name)->exists();
+        $tradeNameExists = Seller::where('trade_name', '=', $trade_name)
+            ->where('id', '!=', $id)
+            ->exists();
 
         if ($tradeNameExists) {
             return response()->json([
@@ -75,7 +76,8 @@ class SellerController extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
-        Seller::create($validated);
+        Seller::where('id', '=', $id)
+            ->update($validated);
 
         return response()->json([
             'message' => 'Vendedor atualizado!',

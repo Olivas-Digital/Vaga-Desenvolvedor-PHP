@@ -22,8 +22,6 @@ Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class)
     'index' => 'seller.index',
     'create' => 'seller.create',
     'store' => 'seller.store',
-    'show' => 'seller.show',
-    'edit' => 'seller.edit',
     'update' => 'seller.update',
     'destroy' => 'seller.destroy',
 ]);

@@ -2,10 +2,14 @@ const generateSellersResultData = (results) => {
   removeElementFromDom('[data-js="sellers-result"]');
 
   let resultsSection = createHtmlElement('section', ['class', 'sellers-result'], ['data-js', 'sellers-result']);
-  resultsSection.innerHTML =
-    results.map(({ id, name, trade_name }) =>
-      `<div class='result-item' data-seller-id='${id}'><h3>${name}</h3><p>Nome Fantasia: ${trade_name}</p></div>`)
-      .join('');
+  results.map(({ id, name, trade_name }) => {
+    let buttons =
+      `<div class='controls' data-js='seller-controls'><button type="button" class="btn btn-warning" data-seller-edit='${id}' data-bs-target="#seller-edit-modal" data-bs-toggle="modal"><i class='bi bi-pencil-square'></i> Editar</button> <button type="button" class="btn btn-danger" data-seller-delete='${id}'><i class="bi bi-trash-fill"></i> Deletar</button></div>`;
+
+    let item = `<div class='result-item' data-seller-item-id='${id}'><div><h3 ><span data-js="seller-name-${id}">${name}<span></h3><p>Nome Fantasia: <span data-js="seller-trade-name-${id}">${trade_name}<span></p>${buttons}</div>`
+
+    return resultsSection.innerHTML += item;
+  }).join('');
   return resultsSection;
 }
 
@@ -19,7 +23,7 @@ const generateSellersPagination = (links, resultData) => {
     div.innerHTML = '<p>Sem resultado para a busca</p>';
     return div;
   }
-  
+
   let pageable = links.length !== 3;
   if (!pageable) {
     div.innerHTML = '';
@@ -44,15 +48,20 @@ const generateResultsForSellers = (resultsData, links) => {
   let pagination = generateSellersPagination(links, resultsData);
   qSelect('main').appendChild(resultData);
   qSelect('main').appendChild(pagination);
+
   clickDataSellers();
+  sellersEdit();
 }
 
 const getSellersEndPoint = () => {
   let urlPageParam = getQueryParams('page', getUrl());
-  return '/api/vendedores' + (urlPageParam ? `/?page=${urlPageParam}` : '');
+  let urlSearchParam = getQueryParams('search', getUrl());
+  let page = (urlPageParam ? `?page=${urlPageParam}` : '');
+  let search = (urlSearchParam ? `&search=${urlSearchParam}` : '');
+  return '/api/vendedores/' + page + search;
 }
 
-const fetchSellersResult = (data = false) => {
+window.fetchSellersResult = (data = false) => {
   const isInSellersPage = qSelect('[data-page="sellers-paginate"]');
 
   if (!isInSellersPage) return;
@@ -60,7 +69,6 @@ const fetchSellersResult = (data = false) => {
   let sellersEndPoint = getSellersEndPoint();
   return fetchResultDataFor(generateResultsForSellers, sellersEndPoint, data);
 }
-
 
 fetchSellersResult();
 
@@ -94,7 +102,7 @@ window.onpopstate = function (event) {
   sellersForm.addEventListener(listener, e => {
     e.preventDefault();
     let searchedValue = e.target.value;
-    history.pushState({ page: 1, search: searchedValue }, "Vendedores - pág: " + 1, "?page=" + 1)
+    history.pushState({ page: 1 }, "Vendedores - pág: " + 1, "?page=" + 1 + '&search=' + searchedValue);
     return fetchSellersResult({ 'search': searchedValue });
   });
 }

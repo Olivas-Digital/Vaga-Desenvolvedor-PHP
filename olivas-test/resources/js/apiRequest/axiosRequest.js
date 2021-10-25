@@ -1,7 +1,7 @@
-window.axiosRequest = (method = 'get', endpoint, requestData) => {
+window.axiosRequest = (method = 'get', endpoint = '/', requestData) => {
   return axios({
     method: method,
-    url: endpoint,
+    url: UISelect.baseUrl() + endpoint,
     data: requestData
   });
 }

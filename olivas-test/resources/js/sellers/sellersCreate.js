@@ -6,11 +6,12 @@ window.sellersCreate = () => {
     e.preventDefault();
     let [, name, tradeName] = e.target;
 
+    if (window.runQuery) return;
+    window.runQuery = true;
     axiosRequest('post', '/api/vendedores', {
       name: name.value,
       trade_name: tradeName.value
     })
-      // .then(console.log)
       .then((res) => {
         swal({
           title: 'Opá Deu Bom!',
@@ -34,6 +35,10 @@ window.sellersCreate = () => {
         }
         swal(sweetObj);
       })
+      .finally(() => {
+        window.runQuery = false;
+      })
+
   });
 }
 
