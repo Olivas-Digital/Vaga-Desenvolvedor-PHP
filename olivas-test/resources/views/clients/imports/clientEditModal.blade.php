@@ -12,12 +12,12 @@
           @csrf
           @method('PUT')
           <div class="mb-3">
-            <label for="seller-name" class="col-form-label">Nome:</label>
-            <input type="text" class="form-control" id="seller-name" value="">
+            <label for="client-name" class="col-form-label">Nome:</label>
+            <input type="text" class="form-control" id="client-name" value="">
           </div>
           <div class="mb-3">
-            <label for="seller-trade-name" class="col-form-label">Nome fantasia</label>
-            <input type="text" class="form-control" id="seller-trade-name" value="">
+            <label for="client-email" class="col-form-label">E-mail</label>
+            <input type="text" class="form-control" id="client-email" value="">
           </div>
           
           <div class="modal-footer">

@@ -23,7 +23,7 @@ class SellerController extends Controller
         return response()->json([
             'data' => $data,
             'response_text' => 'Success : ' . Response::HTTP_OK
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**

@@ -7,7 +7,7 @@
   @csrf
   <input type="text" name="name" value="">
   <input type="text" name="email" value="">
-  <input type="text" name="image" value="">
+  <!-- <input type="text" name="image" value=""> -->
   <input type="submit" value="Registrar">
 </form>
 

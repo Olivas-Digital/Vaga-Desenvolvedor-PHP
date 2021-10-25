@@ -59,7 +59,7 @@ const getSellersEndPoint = () => {
   let urlSearchParam = getQueryParams('search', getUrl());
   let page = (urlPageParam ? `?page=${urlPageParam}` : '');
   let search = (urlSearchParam ? `&search=${urlSearchParam}` : '');
-  return '/api/vendedores/' + page + search;
+  return apiSelect.sellersPath + page + search;
 }
 
 window.fetchSellersResult = (data = false) => {

@@ -37,3 +37,10 @@ Route::get('/clientes', function () {
         'dataPage' => 'clients-paginate'
     ]);
 });
+
+Route::get('/clientes/criar', function () {
+    return view('clients/create', [
+        'title' => 'Registrar um cliente',
+        'dataPage' => 'clients-create'
+    ]);
+});

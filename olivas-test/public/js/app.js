@@ -2071,9 +2071,24 @@ module.exports = {
   \*******************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
+__webpack_require__(/*! ./apiSelect */ "./resources/js/apiRequest/apiSelect.js");
+
 __webpack_require__(/*! ./axiosRequest */ "./resources/js/apiRequest/axiosRequest.js");
 
 __webpack_require__(/*! ./fetchData */ "./resources/js/apiRequest/fetchData.js");
+
+/***/ }),
+
+/***/ "./resources/js/apiRequest/apiSelect.js":
+/*!**********************************************!*\
+  !*** ./resources/js/apiRequest/apiSelect.js ***!
+  \**********************************************/
+/***/ (() => {
+
+window.apiSelect = {
+  sellersPath: '/api/vendedores/',
+  clientsPath: '/api/clientes/'
+};
 
 /***/ }),
 
@@ -2172,7 +2187,10 @@ __webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js");
 __webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Sellers
 
 
-__webpack_require__(/*! ./sellers/_index */ "./resources/js/sellers/_index.js");
+__webpack_require__(/*! ./sellers/_index */ "./resources/js/sellers/_index.js"); // Clients
+
+
+__webpack_require__(/*! ./clients/_index */ "./resources/js/clients/_index.js");
 
 /***/ }),
 
@@ -2207,6 +2225,394 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/clients/_index.js":
+/*!****************************************!*\
+  !*** ./resources/js/clients/_index.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./clientsCreate */ "./resources/js/clients/clientsCreate.js");
+
+__webpack_require__(/*! ./clientsEdit */ "./resources/js/clients/clientsEdit.js");
+
+__webpack_require__(/*! ./clientsDelete */ "./resources/js/clients/clientsDelete.js");
+
+__webpack_require__(/*! ./clientsPagination */ "./resources/js/clients/clientsPagination.js");
+
+/***/ }),
+
+/***/ "./resources/js/clients/clientsCreate.js":
+/*!***********************************************!*\
+  !*** ./resources/js/clients/clientsCreate.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+window.clientsCreate = function () {
+  if (!UISelect.clientCreateForm()) return;
+  UISelect.clientCreateForm().addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var _e$target = _slicedToArray(e.target, 3),
+        name = _e$target[1],
+        email = _e$target[2];
+
+    if (window.runQuery) return;
+    window.runQuery = true;
+    axiosRequest('post', apiSelect.clientsPath, {
+      name: name.value,
+      email: email.value
+    }).then(function (res) {
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+        title: 'Opá deu bom!',
+        text: res.data.message,
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        return redirectTo('/clientes');
+      });
+    })["catch"](function (_ref) {
+      var response = _ref.response;
+      var sweetObj = {
+        title: 'Opá deu ruim!',
+        text: response.data.message + '\n',
+        icon: "error",
+        button: "Ok"
+      };
+      var errors = response.data.errors;
+
+      if (errors) {
+        sweetObj.title = response.data.message;
+        sweetObj.text = convertObjToString(errors);
+      }
+
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
+    });
+  });
+};
+
+clientsCreate();
+
+/***/ }),
+
+/***/ "./resources/js/clients/clientsDelete.js":
+/*!***********************************************!*\
+  !*** ./resources/js/clients/clientsDelete.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
+
+
+window.clientsDelete = function () {
+  if (!UISelect.clientsControls()) return;
+  UISelect.clientsControls().forEach(function (clientControl) {
+    clientControl.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isRemoveEl = e.target.hasAttribute('data-client-delete');
+      if (!isRemoveEl) return;
+      var dataId = e.target.getAttribute('data-client-delete'); // Remove all active elements
+
+      removeClassFromElements(UISelect.clientItems(), 'active'); // Add active to current client item
+
+      addClassTo(UISelect.clientItem(dataId), 'active');
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Esta operação é irreversivel", {
+        icon: "warning",
+        title: "Quer mesmo deletar?",
+        dangerMode: true,
+        buttons: {
+          cancel: {
+            text: "Cancelar",
+            value: null,
+            visible: true,
+            className: "",
+            closeModal: true
+          },
+          confirm: {
+            text: "Sim!",
+            value: true,
+            visible: true,
+            className: "",
+            closeModal: true
+          }
+        }
+      }).then(function (answer) {
+        return answer ? clientsDeleteSend(dataId) : false;
+      });
+    });
+  });
+};
+
+var clientsDeleteSend = function clientsDeleteSend(id) {
+  if (window.runQuery) return;
+  window.runQuery = true;
+  axiosRequest('delete', "".concat(apiSelect.clientsPath).concat(id)) // .then(console.log)
+  .then(function (res) {
+    console.log(res);
+    sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+      title: 'Opá, deletado!',
+      text: res.data.message,
+      icon: "success",
+      button: "Ok"
+    }).then(function () {
+      return fetchClientsResult();
+    });
+  })["catch"](function (_ref) {
+    var response = _ref.response;
+    var sweetObj = {
+      title: 'Opá, deu ruim!',
+      text: response.data.message + '\n',
+      icon: "error",
+      button: "Ok"
+    };
+    var errors = response.data.errors;
+
+    if (errors) {
+      sweetObj.title = response.data.message;
+      sweetObj.text = convertObjToString(errors);
+    }
+
+    sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+  })["finally"](function () {
+    window.runQuery = false;
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/clients/clientsEdit.js":
+/*!*********************************************!*\
+  !*** ./resources/js/clients/clientsEdit.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _helpers_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/bootstrap */ "./resources/js/helpers/bootstrap.js");
+
+
+
+window.clientsEdit = function () {
+  if (!UISelect.clientsControls()) return;
+  UISelect.clientsControls().forEach(function (clientControl) {
+    clientControl.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isEditEl = e.target.hasAttribute('data-client-edit');
+      if (!isEditEl) return;
+      var dataId = e.target.getAttribute('data-client-edit');
+      var name = UISelect.clientName(dataId).innerText;
+      var email = UISelect.clientEmail(dataId).innerText; // Remove all active elements
+
+      removeClassFromElements(UISelect.clientItems(), 'active'); // Add active to current client item
+
+      addClassTo(UISelect.clientItem(dataId), 'active');
+
+      if (UISelect.clientEditForm()) {
+        showClientsEditForm(name, email);
+      }
+    });
+  });
+};
+
+var showClientsEditForm = function showClientsEditForm(name, email) {
+  UISelect.clientEditForm().reset();
+  UISelect.clientFormName().value = name;
+  UISelect.clientFormEmail().value = email;
+  sendEditForm();
+};
+
+var sendEditForm = function sendEditForm() {
+  UISelect.clientEditForm().addEventListener('submit', function (e) {
+    e.preventDefault();
+    (0,_helpers_bootstrap__WEBPACK_IMPORTED_MODULE_1__.hideModalBootstrapModal)('#client-edit-modal');
+    var name = UISelect.clientFormName().value;
+    var email = UISelect.clientFormEmail().value;
+    var clientId = UISelect.clientItemActive().getAttribute('data-client-item-id');
+    if (window.runQuery) return;
+    window.runQuery = true;
+    axiosRequest('put', "".concat(apiSelect.clientsPath).concat(clientId), {
+      name: name,
+      email: email
+    }) // .then(console.log)
+    .then(function (res) {
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+        title: 'Opá, deu bom!',
+        text: res.data.message,
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        return fetchClientsResult();
+      });
+    })["catch"](function (_ref) {
+      var response = _ref.response;
+      var sweetObj = {
+        title: 'Opá, deu ruim!',
+        text: response.data.message + '\n',
+        icon: "error",
+        button: "Ok"
+      };
+      var errors = response.data.errors;
+
+      if (errors) {
+        sweetObj.title = response.data.message;
+        sweetObj.text = convertObjToString(errors);
+      }
+
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
+    });
+  });
+};
+
+clientsEdit();
+
+/***/ }),
+
+/***/ "./resources/js/clients/clientsPagination.js":
+/*!***************************************************!*\
+  !*** ./resources/js/clients/clientsPagination.js ***!
+  \***************************************************/
+/***/ (() => {
+
+var generateClientsResultData = function generateClientsResultData(results) {
+  removeElementFromDom('[data-js="clients-result"]');
+  var resultsSection = createHtmlElement('section', ['class', 'clients-result'], ['data-js', 'clients-result']);
+  results.map(function (_ref) {
+    var id = _ref.id,
+        name = _ref.name,
+        email = _ref.email;
+    var buttons = "<div class='controls' data-js='client-controls'><button type=\"button\" class=\"btn btn-warning\" data-client-edit='".concat(id, "' data-bs-target=\"#client-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-client-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
+    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><div><h3 ><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
+    return resultsSection.innerHTML += item;
+  }).join('');
+  return resultsSection;
+};
+
+var generateClientsPagination = function generateClientsPagination(links, resultData) {
+  removeElementFromDom('[data-js="clients-pagination"]');
+  var div = createHtmlElement('div', ['class', 'pagination clients-pagination'], ['data-js', 'clients-pagination']);
+  var queryHasDataResults = resultData.length > 0;
+
+  if (!queryHasDataResults) {
+    div.innerHTML = '<p>Sem resultado para a busca</p>';
+    return div;
+  }
+
+  var pageable = links.length !== 3;
+
+  if (!pageable) {
+    div.innerHTML = '';
+    return div;
+  }
+
+  var linksGenerated = links.map(function (_ref2) {
+    var url = _ref2.url,
+        active = _ref2.active,
+        label = _ref2.label;
+    var disable = url ? '' : "disable";
+    var href = "href='".concat(url ? url : 'javascript: void(0)', "'");
+    var activeEl = active ? 'active' : '';
+    var clientId = getQueryParams('page', url);
+    return "<a ".concat(href, " ").concat(disable, " class=\"client-page-item ").concat(activeEl, " ").concat(disable, "\" data-page-client-id='").concat(clientId, "'>").concat(label, "</a>");
+  }).join('');
+  div.innerHTML = linksGenerated;
+  return div;
+};
+
+var generateResultsForClients = function generateResultsForClients(resultsData, links) {
+  var resultData = generateClientsResultData(resultsData);
+  var pagination = generateClientsPagination(links, resultsData);
+  qSelect('main').appendChild(resultData);
+  qSelect('main').appendChild(pagination);
+  clickDataClients();
+  clientsEdit();
+  clientsDelete();
+};
+
+var getClientsEndPoint = function getClientsEndPoint() {
+  var urlPageParam = getQueryParams('page', getUrl());
+  var urlSearchParam = getQueryParams('search', getUrl());
+  var page = urlPageParam ? "?page=".concat(urlPageParam) : '';
+  var search = urlSearchParam ? "&search=".concat(urlSearchParam) : '';
+  return apiSelect.clientsPath + page + search;
+};
+
+window.fetchClientsResult = function () {
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var isInClientsPage = qSelect('[data-page="clients-paginate"]');
+  if (!isInClientsPage) return;
+  var clientsEndPoint = getClientsEndPoint();
+  return fetchResultDataFor(generateResultsForClients, clientsEndPoint, data);
+};
+
+fetchClientsResult();
+
+var clickDataClients = function clickDataClients() {
+  // let clients = Array.from(UISelect.dataClients());
+  var clients = UISelect.dataClients();
+  clients.forEach(function (item) {
+    return item.onclick = function (e) {
+      e.preventDefault();
+      var isBtnDisable = elContainClass(e.target, 'disable');
+      if (isBtnDisable) return;
+      var clickedPage = e.target.getAttribute('data-page-client-id');
+      history.pushState({
+        page: clickedPage
+      }, "Clientes - pág: " + clickedPage, "?page=" + clickedPage);
+      fetchClientsResult();
+    };
+  });
+};
+
+window.onpopstate = function (event) {
+  fetchClientsResult();
+  var eventState = event.state.page;
+  document.title = eventState ? "Clientes - pág: " + eventState : 'Clientes';
+};
+
+['submit', 'keyup'].forEach(function (listener) {
+  var clientsForm = UISelect.clientSearchForm();
+  if (!clientsForm) return;
+  clientsForm.addEventListener(listener, function (e) {
+    e.preventDefault();
+    var searchedValue = e.target.value;
+    var searchParamActive = searchedValue ? '&search=' + searchedValue : '';
+    history.pushState({
+      page: 1
+    }, "Clientes - pág: " + 1, "?page=" + 1 + searchParamActive);
+    return fetchClientsResult({
+      'search': searchParamActive
+    });
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/js/helpers/_index.js":
 /*!****************************************!*\
   !*** ./resources/js/helpers/_index.js ***!
@@ -2218,6 +2624,8 @@ __webpack_require__(/*! ./strings */ "./resources/js/helpers/strings.js");
 __webpack_require__(/*! ./url */ "./resources/js/helpers/url.js");
 
 __webpack_require__(/*! ./domElements */ "./resources/js/helpers/domElements.js");
+
+__webpack_require__(/*! ../apiRequest/apiSelect */ "./resources/js/apiRequest/apiSelect.js");
 
 __webpack_require__(/*! ./uiSelect */ "./resources/js/helpers/uiSelect.js");
 
@@ -2339,6 +2747,7 @@ window.UISelect = {
   baseUrl: function baseUrl() {
     return qSelect('[data-base-url]').dataset.baseUrl;
   },
+  // Sellers
   dataSellers: function dataSellers() {
     return qSelectAll('[data-page-seller-id]');
   },
@@ -2374,6 +2783,43 @@ window.UISelect = {
   },
   sellerFormTradeName: function sellerFormTradeName() {
     return qSelect('#seller-trade-name');
+  },
+  // Clients
+  dataClients: function dataClients() {
+    return qSelectAll('[data-page-client-id]');
+  },
+  clientSearchForm: function clientSearchForm() {
+    return qSelect('[data-js="search-client-form"]');
+  },
+  clientCreateForm: function clientCreateForm() {
+    return qSelect('[data-js="create-client-form"]');
+  },
+  clientsControls: function clientsControls() {
+    return qSelectAll('[data-js="client-controls"]');
+  },
+  clientItem: function clientItem(id) {
+    return qSelect("[data-client-item-id=\"".concat(id, "\"]"));
+  },
+  clientItems: function clientItems() {
+    return qSelectAll("[data-client-item-id]");
+  },
+  clientItemActive: function clientItemActive() {
+    return qSelect("[data-client-item-id].active");
+  },
+  clientName: function clientName(id) {
+    return qSelect("[data-js=\"client-name-".concat(id, "\"]"));
+  },
+  clientEmail: function clientEmail(id) {
+    return qSelect("[data-js=\"client-email-".concat(id, "\"]"));
+  },
+  clientEditForm: function clientEditForm() {
+    return qSelect('[data-js="client-edit-form"]');
+  },
+  clientFormName: function clientFormName() {
+    return qSelect('#client-name');
+  },
+  clientFormEmail: function clientFormEmail() {
+    return qSelect('#client-email');
   }
 };
 
@@ -2761,7 +3207,7 @@ var getSellersEndPoint = function getSellersEndPoint() {
   var urlSearchParam = getQueryParams('search', getUrl());
   var page = urlPageParam ? "?page=".concat(urlPageParam) : '';
   var search = urlSearchParam ? "&search=".concat(urlSearchParam) : '';
-  return '/api/vendedores/' + page + search;
+  return apiSelect.sellersPath + page + search;
 };
 
 window.fetchSellersResult = function () {
