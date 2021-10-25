@@ -30,3 +30,10 @@ Route::get('/vendedores/criar', function () {
         'dataPage' => 'sellers-create'
     ]);
 });
+
+Route::get('/clientes', function () {
+    return view('clients/displayAll', [
+        'title' => 'Clientes',
+        'dataPage' => 'clients-paginate'
+    ]);
+});

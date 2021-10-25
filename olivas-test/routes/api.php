@@ -25,3 +25,11 @@ Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class)
     'update' => 'seller.update',
     'destroy' => 'seller.destroy',
 ]);
+
+Route::apiResource('/clientes', \App\Http\Controllers\ClientController::class)->names([
+    'index' => 'client.index',
+    'create' => 'client.create',
+    'store' => 'client.store',
+    'update' => 'client.update',
+    'destroy' => 'client.destroy',
+]);
