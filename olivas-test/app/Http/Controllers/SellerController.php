@@ -88,11 +88,25 @@ class SellerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Seller $seller)
+    public function destroy($id)
     {
-        //
+
+        $sellerExists =  Seller::where('id', '=', $id)->exists();
+        if (!$sellerExists) {
+            return response()->json([
+                'message' => 'Vendedor não existe!',
+                'data' => $id,
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        Seller::where('id', '=', $id)
+            ->delete();
+
+        return response()->json([
+            'message' => 'Vendedor deletado!',
+            'data' => $id,
+        ], Response::HTTP_OK);
     }
 }

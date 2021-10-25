@@ -51,6 +51,7 @@ const generateResultsForSellers = (resultsData, links) => {
 
   clickDataSellers();
   sellersEdit();
+  sellersDelete();
 }
 
 const getSellersEndPoint = () => {

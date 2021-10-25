@@ -14,7 +14,7 @@ window.sellersCreate = () => {
     })
       .then((res) => {
         swal({
-          title: 'Opá Deu Bom!',
+          title: 'Opá deu bom!',
           text: res.data.message,
           icon: "success",
           button: "Ok",
@@ -22,7 +22,7 @@ window.sellersCreate = () => {
       })
       .catch(({ response }) => {
         let sweetObj = {
-          title: 'Opá Deu Ruim!',
+          title: 'Opá deu ruim!',
           text: response.data.message + '\n',
           icon: "error",
           button: "Ok",

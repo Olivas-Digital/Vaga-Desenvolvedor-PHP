@@ -2437,6 +2437,8 @@ __webpack_require__(/*! ./sellersCreate */ "./resources/js/sellers/sellersCreate
 
 __webpack_require__(/*! ./sellersEdit */ "./resources/js/sellers/sellersEdit.js");
 
+__webpack_require__(/*! ./sellersDelete */ "./resources/js/sellers/sellersDelete.js");
+
 __webpack_require__(/*! ./sellersPagination */ "./resources/js/sellers/sellersPagination.js");
 
 /***/ }),
@@ -2481,7 +2483,7 @@ window.sellersCreate = function () {
       trade_name: tradeName.value
     }).then(function (res) {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-        title: 'Opá Deu Bom!',
+        title: 'Opá deu bom!',
         text: res.data.message,
         icon: "success",
         button: "Ok"
@@ -2491,7 +2493,7 @@ window.sellersCreate = function () {
     })["catch"](function (_ref) {
       var response = _ref.response;
       var sweetObj = {
-        title: 'Opá Deu Ruim!',
+        title: 'Opá deu ruim!',
         text: response.data.message + '\n',
         icon: "error",
         button: "Ok"
@@ -2511,6 +2513,94 @@ window.sellersCreate = function () {
 };
 
 sellersCreate();
+
+/***/ }),
+
+/***/ "./resources/js/sellers/sellersDelete.js":
+/*!***********************************************!*\
+  !*** ./resources/js/sellers/sellersDelete.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert */ "./node_modules/sweetalert/dist/sweetalert.min.js");
+/* harmony import */ var sweetalert__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert__WEBPACK_IMPORTED_MODULE_0__);
+
+
+window.sellersDelete = function () {
+  if (!UISelect.sellersControls()) return;
+  UISelect.sellersControls().forEach(function (sellerControl) {
+    sellerControl.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isRemoveEl = e.target.hasAttribute('data-seller-delete');
+      if (!isRemoveEl) return;
+      var dataId = e.target.getAttribute('data-seller-delete'); // Remove all active elements
+
+      removeClassFromElements(UISelect.sellerItems(), 'active'); // Add active to current seller item
+
+      addClassTo(UISelect.sellerItem(dataId), 'active');
+      sweetalert__WEBPACK_IMPORTED_MODULE_0___default()("Esta operação é irreversivel", {
+        icon: "warning",
+        title: "Quer mesmo deletar?",
+        dangerMode: true,
+        buttons: {
+          cancel: {
+            text: "Cancelar",
+            value: null,
+            visible: true,
+            className: "",
+            closeModal: true
+          },
+          confirm: {
+            text: "Sim!",
+            value: true,
+            visible: true,
+            className: "",
+            closeModal: true
+          }
+        }
+      }).then(function (answer) {
+        return answer ? sellersDeleteSend(dataId) : false;
+      });
+    });
+  });
+};
+
+var sellersDeleteSend = function sellersDeleteSend(id) {
+  if (window.runQuery) return;
+  window.runQuery = true;
+  axiosRequest('delete', "/api/vendedores/".concat(id)) // .then(console.log)
+  .then(function (res) {
+    console.log(res);
+    sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
+      title: 'Opá, deletado!',
+      text: res.data.message,
+      icon: "success",
+      button: "Ok"
+    }).then(function () {
+      return fetchSellersResult();
+    });
+  })["catch"](function (_ref) {
+    var response = _ref.response;
+    var sweetObj = {
+      title: 'Opá, deu ruim!',
+      text: response.data.message + '\n',
+      icon: "error",
+      button: "Ok"
+    };
+    var errors = response.data.errors;
+
+    if (errors) {
+      sweetObj.title = response.data.message;
+      sweetObj.text = convertObjToString(errors);
+    }
+
+    sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
+  })["finally"](function () {
+    window.runQuery = false;
+  });
+};
 
 /***/ }),
 
@@ -2572,7 +2662,7 @@ var sendEditForm = function sendEditForm() {
     }) // .then(console.log)
     .then(function (res) {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-        title: 'Opá Deu Bom!',
+        title: 'Opá, deu bom!',
         text: res.data.message,
         icon: "success",
         button: "Ok"
@@ -2582,7 +2672,7 @@ var sendEditForm = function sendEditForm() {
     })["catch"](function (_ref) {
       var response = _ref.response;
       var sweetObj = {
-        title: 'Opá Deu Ruim!',
+        title: 'Opá, deu ruim!',
         text: response.data.message + '\n',
         icon: "error",
         button: "Ok"
@@ -2663,6 +2753,7 @@ var generateResultsForSellers = function generateResultsForSellers(resultsData, 
   qSelect('main').appendChild(pagination);
   clickDataSellers();
   sellersEdit();
+  sellersDelete();
 };
 
 var getSellersEndPoint = function getSellersEndPoint() {
