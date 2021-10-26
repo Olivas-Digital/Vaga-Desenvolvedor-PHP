@@ -35,8 +35,16 @@ Route::apiResource('/clientes', \App\Http\Controllers\ClientController::class)->
 ]);
 
 Route::apiResource('/tiposCliente', \App\Http\Controllers\ClientTypeController::class)->names([
-    'index' => 'client.index',
-    'create' => 'client.create',
-    'store' => 'client.store',
-    'destroy' => 'client.destroy',
+    'index' => 'typesClient.index',
+    'create' => 'typesClient.create',
+    'store' => 'typesClient.store',
+    'destroy' => 'typesClient.destroy',
+]);
+
+Route::apiResource('/clientesTelefone', \App\Http\Controllers\ClientPhoneController::class)->names([
+    'index' => 'clientsPhone.index',
+    'create' => 'clientsPhone.create',
+    'store' => 'clientsPhone.store',
+    'update' => 'clientsPhone.update',
+    'destroy' => 'clientsPhone.destroy',
 ]);

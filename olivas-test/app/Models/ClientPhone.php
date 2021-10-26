@@ -9,7 +9,7 @@ class ClientPhone extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'phone_number'];
+    protected $fillable = ['client_id', 'phone_number'];
 
     public function client()
     {
