@@ -2307,6 +2307,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 window.clientsCreate = function () {
   if (!UISelect.clientCreateForm()) return;
   UISelect.clientCreateForm().addEventListener('submit', function (e) {
+    var _window$fileImgData;
+
     e.preventDefault();
 
     var _e$target = _slicedToArray(e.target, 3),
@@ -2315,22 +2317,31 @@ window.clientsCreate = function () {
 
     if (window.runQuery) return;
     window.runQuery = true;
-    axiosRequest('post', apiSelect.clientsPath, {
+    var objData = {
       name: name.value,
-      email: email.value
-    }).then(function (res) {
+      email: email.value,
+      image: (_window$fileImgData = window.fileImgData) !== null && _window$fileImgData !== void 0 ? _window$fileImgData : ''
+    };
+    var formData = createFormDataObj(objData);
+    axios.post("".concat(apiSelect.clientsPath), formData, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }) // .then(console.log)
+    .then(function (res) {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
-        title: 'Opá deu bom!',
+        title: 'Opá, deu bom!',
         text: res.data.message,
         icon: "success",
         button: "Ok"
       }).then(function () {
         return redirectTo('/clientes');
       });
-    })["catch"](function (_ref) {
+    }) // .catch(console.log)
+    ["catch"](function (_ref) {
       var response = _ref.response;
       var sweetObj = {
-        title: 'Opá deu ruim!',
+        title: 'Opá, deu ruim!',
         text: response.data.message + '\n',
         icon: "error",
         button: "Ok"
@@ -2345,6 +2356,8 @@ window.clientsCreate = function () {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
     })["finally"](function () {
       window.runQuery = false;
+      window.fileImgData = null;
+      qSelect('#gallery').innerHTML = '';
     });
   });
 };
@@ -2409,7 +2422,6 @@ var clientsDeleteSend = function clientsDeleteSend(id) {
   window.runQuery = true;
   axiosRequest('delete', "".concat(apiSelect.clientsPath).concat(id)) // .then(console.log)
   .then(function (res) {
-    console.log(res);
     sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
       title: 'Opá, deletado!',
       text: res.data.message,

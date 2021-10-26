@@ -36,7 +36,6 @@ const clientsDeleteSend = (id) => {
   axiosRequest('delete', `${apiSelect.clientsPath}${id}`)
     // .then(console.log)
     .then((res) => {
-      console.log(res)
       swal({
         title: 'Opá, deletado!',
         text: res.data.message,

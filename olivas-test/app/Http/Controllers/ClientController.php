@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\ClientSeller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,7 +40,6 @@ class ClientController extends Controller
     {
         // $request->all();
         $validated = $request->validated();
-        $validated['image_path'] = '';
         extract($validated);
 
         $clientExists = Client::where('email', '=', $email)->exists();
@@ -49,6 +49,12 @@ class ClientController extends Controller
                 'message' => 'Cliente com email: "' . $email . '" já existe',
             ], Response::HTTP_FORBIDDEN);
         }
+
+        $queryId = DB::table('clients')->latest('id')->first();
+        $nextId = $queryId->id + 1;
+
+        $validated['image_path'] = $this->imgClientHandle($request, $nextId);
+        unset($validated['image']);
 
         Client::create($validated);
 
@@ -91,28 +97,6 @@ class ClientController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function imgClientHandle($request, $id)
-    {
-        $imageName = 'client_' . $id . '_' . $request->image->getClientOriginalName();
-
-        $clientsImgPath = 'images/api/clients/';
-        $currentImgPath = $clientsImgPath . $imageName;
-        $clientStoredImgPath = Client::where('id', '=', $id)->first(['image_path'])->image_path;
-
-        $equalImgs = $clientStoredImgPath == $currentImgPath;
-
-        if (!$equalImgs) {
-            $fileExists = File::exists($clientStoredImgPath);
-            $fileExists ? File::delete($clientStoredImgPath) : false;
-        }
-
-        if (!File::exists($currentImgPath)) {
-            $request->image->move($clientsImgPath, $imageName);
-        }
-
-        return $currentImgPath;
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -128,6 +112,9 @@ class ClientController extends Controller
                 'data' => $id,
             ], Response::HTTP_NOT_FOUND);
         }
+        
+        $imgToDelete = Client::where('id', '=', $id)->first(['image_path'])->image_path;
+        File::delete($imgToDelete);
 
         Client::where('id', '=', $id)
             ->delete();
@@ -136,5 +123,34 @@ class ClientController extends Controller
             'message' => 'Cliente deletado!',
             'data' => $id,
         ], Response::HTTP_OK);
+    }
+
+    public function imgClientHandle($request, $id, $removeImg = false)
+    {
+        $imageName = 'client_' . $id . '_' . $request->image->getClientOriginalName();
+
+        $clientsImgPath = 'images/api/clients/';
+        $currentImgPath = $clientsImgPath . $imageName;
+        $queryPath = Client::where('id', '=', $id)->first(['image_path']);
+
+        if (!$queryPath) {
+            $request->image->move($clientsImgPath, $imageName);
+            return $currentImgPath;
+        }
+
+        $clientStoredImgPath = $queryPath->image_path;
+
+        $equalImgs = $clientStoredImgPath == $currentImgPath;
+
+        if (!$equalImgs) {
+            $fileExists = File::exists($clientStoredImgPath);
+            $fileExists ? File::delete($clientStoredImgPath) : false;
+        }
+
+        if (!File::exists($currentImgPath)) {
+            $request->image->move($clientsImgPath, $imageName);
+        }
+
+        return $currentImgPath;
     }
 }
