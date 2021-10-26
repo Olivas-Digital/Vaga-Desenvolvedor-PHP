@@ -10,4 +10,9 @@ class ClientSeller extends Model
     use HasFactory;
 
     protected $fillable = ['client_id', 'seller_id'];
+
+    public function client()
+    {
+        return $this->hasMany(Client::class);
+    }
 }

@@ -10,4 +10,9 @@ class DocumentType extends Model
     use HasFactory;
 
     protected $fillable = ['initials', 'description'];
+
+    public function document()
+    {
+        return $this->belongsTo(ClientType::class);
+    }
 }

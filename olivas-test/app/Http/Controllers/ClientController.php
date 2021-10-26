@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Client\ClientSend;
 use App\Models\Client;
-use App\Models\ClientSeller;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -26,7 +25,33 @@ class ClientController extends Controller
 
         return response()->json([
             'data' => $data,
-            'response_text' => 'Success : ' . Response::HTTP_OK
+            'response_text' => 'Success : ' . Response::HTTP_OK,
+        ], Response::HTTP_OK);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $client = Client::find($id);
+        $phones = $client->phones()->get();
+        $sellers = $client->sellers()->get();
+        $types = $client->types()->get();
+        $documentTypes = [];
+        foreach ($types as $type) {
+            $documentTypes[] = DocumentType::find($type->client_type);
+        }
+
+        $dataInfo = [
+            'client' => [
+                'info' => $client,
+                'types' => $documentTypes,
+                'phones' => $phones,
+                'sellers' => $sellers,
+            ]
+        ];
+
+        return response()->json([
+            'data' => $dataInfo,
+            'response_text' => 'Success : ' . Response::HTTP_OK,
         ], Response::HTTP_OK);
     }
 

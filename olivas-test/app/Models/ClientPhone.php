@@ -10,4 +10,9 @@ class ClientPhone extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'phone_number'];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }
