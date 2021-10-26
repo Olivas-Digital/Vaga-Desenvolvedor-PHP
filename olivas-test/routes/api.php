@@ -48,3 +48,11 @@ Route::apiResource('/clientesTelefone', \App\Http\Controllers\ClientPhoneControl
     'update' => 'clientsPhone.update',
     'destroy' => 'clientsPhone.destroy',
 ]);
+
+Route::apiResource('/clientesVendedores', \App\Http\Controllers\ClientSellerController::class)->names([
+    'index' => 'clientsSeller.index',
+    'create' => 'clientsSeller.create',
+    'store' => 'clientsSeller.store',
+    'update' => 'clientsSeller.update',
+    'destroy' => 'clientsSeller.destroy',
+]);
