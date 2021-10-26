@@ -2571,8 +2571,10 @@ var generateClientsResultData = function generateClientsResultData(results) {
         email = _ref.email,
         image_path = _ref.image_path;
     var buttons = "<div class='controls' data-js='client-controls'><button type=\"button\" class=\"btn btn-warning\" data-client-edit='".concat(id, "' data-bs-target=\"#client-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-client-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
-    var image = image_path != '' ? image_path : 'images/api/default/blackMagicianNo.gif';
-    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><figure data-js=\"client-figure-").concat(id, "\"><img src='").concat(UISelect.baseUrl(), "/").concat(image, "' alt=\"").concat(image_path, "\" title=\"").concat(name, "\" data-js=\"client-img-").concat(id, "\"></figure></figure><h3><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
+    var imgPathIsNotEmpty = image_path != '';
+    var image = imgPathIsNotEmpty ? image_path : 'images/api/default/blackMagicianNo.gif';
+    var imgSrc = !stringIncludes(image_path, 'images/api/default/') && imgPathIsNotEmpty ? image_path : UISelect.baseUrl() + '/' + image;
+    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><figure data-js=\"client-figure-").concat(id, "\"><img src='").concat(imgSrc, "' alt=\"").concat(image_path, "\" title=\"").concat(name, "\" data-js=\"client-img-").concat(id, "\"></figure></figure><h3><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
     return resultsSection.innerHTML += item;
   }).join('');
   return resultsSection;
@@ -2918,8 +2920,8 @@ function uploadFile(file) {
   \*****************************************/
 /***/ (() => {
 
-window.stringIncludes = function (param, url) {
-  return url.includes(param);
+window.stringIncludes = function (string, param) {
+  return string.includes(param);
 };
 
 window.convertObjToString = function (obj) {
@@ -3053,7 +3055,7 @@ window.getQueryParams = function (params, url) {
 };
 
 window.mountQueryString = function (data) {
-  var isAlreadyQueryString = stringIncludes('?', getUrl());
+  var isAlreadyQueryString = stringIncludes(getUrl(), '?');
   var queryStringSymbol = isAlreadyQueryString ? '&' : '?';
   var stringUrl = Object.entries(data).reduce(function (acc, crr) {
     var _crr = _slicedToArray(crr, 2),

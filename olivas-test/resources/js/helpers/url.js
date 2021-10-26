@@ -11,7 +11,7 @@ window.getQueryParams = (params, url) => {
 };
 
 window.mountQueryString = (data) => {
-  let isAlreadyQueryString = stringIncludes('?', getUrl());
+  let isAlreadyQueryString = stringIncludes(getUrl(), '?');
   let queryStringSymbol = isAlreadyQueryString ? '&' : '?';
 
   let stringUrl = Object.entries(data).reduce((acc, crr) => {

@@ -5,9 +5,13 @@ const generateClientsResultData = (results) => {
   results.map(({ id, name, email, image_path }) => {
     let buttons =
       `<div class='controls' data-js='client-controls'><button type="button" class="btn btn-warning" data-client-edit='${id}' data-bs-target="#client-edit-modal" data-bs-toggle="modal"><i class='bi bi-pencil-square'></i> Editar</button> <button type="button" class="btn btn-danger" data-client-delete='${id}'><i class="bi bi-trash-fill"></i> Deletar</button></div>`;
-    let image = image_path != '' ? image_path : 'images/api/default/blackMagicianNo.gif';
 
-    let item = `<div class='result-item' data-client-item-id='${id}'><figure data-js="client-figure-${id}"><img src='${UISelect.baseUrl()}/${image}' alt="${image_path}" title="${name}" data-js="client-img-${id}"></figure></figure><h3><span data-js="client-name-${id}">${name}<span></h3><p><span data-js="client-email-${id}">${email}<span></p>${buttons}</div>`
+    let imgPathIsNotEmpty = image_path != '';
+    let image = imgPathIsNotEmpty ? image_path : 'images/api/default/blackMagicianNo.gif';
+
+    let imgSrc = !stringIncludes(image_path, 'images/api/default/') && imgPathIsNotEmpty ? image_path : UISelect.baseUrl() + '/' + image;
+
+    let item = `<div class='result-item' data-client-item-id='${id}'><figure data-js="client-figure-${id}"><img src='${imgSrc}' alt="${image_path}" title="${name}" data-js="client-img-${id}"></figure></figure><h3><span data-js="client-name-${id}">${name}<span></h3><p><span data-js="client-email-${id}">${email}<span></p>${buttons}</div>`
 
     return resultsSection.innerHTML += item;
   }).join('');

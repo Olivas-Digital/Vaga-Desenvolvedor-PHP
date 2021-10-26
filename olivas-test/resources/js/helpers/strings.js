@@ -1,5 +1,5 @@
-window.stringIncludes = (param, url) => {
-  return url.includes(param);
+window.stringIncludes = (string, param) => {
+  return string.includes(param);
 }
 
 window.convertObjToString = (obj, separator = '\n') => {

@@ -112,7 +112,7 @@ class ClientController extends Controller
                 'data' => $id,
             ], Response::HTTP_NOT_FOUND);
         }
-        
+
         $imgToDelete = Client::where('id', '=', $id)->first(['image_path'])->image_path;
         File::delete($imgToDelete);
 
@@ -125,8 +125,11 @@ class ClientController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function imgClientHandle($request, $id, $removeImg = false)
+    public function imgClientHandle($request, $id)
     {
+        $isImgRequestAString = is_string($request->image);
+        if ($isImgRequestAString) return $request->image;
+
         $imageName = 'client_' . $id . '_' . $request->image->getClientOriginalName();
 
         $clientsImgPath = 'images/api/clients/';
