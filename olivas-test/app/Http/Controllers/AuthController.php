@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Validator;
 
 
@@ -28,17 +29,32 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $messages = [
+            'email.required' => 'O E-mail é obrigatório',
+            'password.required' => 'A senha é obrigatoria',
+        ];
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            // return response()->json($validator->errors(), 422);
+            throw new HttpResponseException(response()->json([
+                'success'   => false,
+                'message'   => 'Erros de validação',
+                'errors'      => $validator->errors(),
+            ], 422));
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            // return response()->json(['error' => 'Unauthorized'], 401);
+            throw new HttpResponseException(response()->json([
+                'success'   => false,
+                'message'   => 'Erros de validação',
+                'errors'      => $validator->errors(),
+            ], 401));
         }
 
         return $this->createNewToken($token);
@@ -51,14 +67,29 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        $messages = [
+            'name.required' => 'Nome é obrigatório',
+            'name.between' => 'Nome precisa ter entre 2 a 100 caracteres',
+            'email.required' => 'O E-mail é obrigatório',
+            'email.email' => 'E-mail não é válido',
+            'email.unique' => 'E-mail já cadastrado',
+            'password.required' => 'A senha é obrigatoria',
+            'password.confirm' => 'As senhas não conferem',
+            'password.min' => 'A senha precisa ter 6 ou mais caracteres',
+        ];
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            throw new HttpResponseException(response()->json([
+                'success'   => false,
+                'message'   => 'Erros de validação',
+                'errors'      => $validator->errors(),
+            ], 400));
         }
 
         $user = User::create(array_merge(
@@ -68,7 +99,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Usuário registrado!',
-            'user' => $user
+            'data' => $user
         ], 201);
     }
 
