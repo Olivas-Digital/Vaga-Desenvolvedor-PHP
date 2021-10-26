@@ -28,11 +28,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
 
     Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class, [
-        'only' => ['create', 'update', 'delete']
+        'only' => ['create', 'update', 'destroy', 'store']
     ])->names([
         'create' => 'seller.create',
-        'store' => 'seller.store',
         'update' => 'seller.update',
+        'store' => 'seller.store',
         'destroy' => 'seller.destroy',
     ]);
 
