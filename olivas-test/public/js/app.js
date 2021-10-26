@@ -2824,93 +2824,99 @@ function preventDefaults(e) {
   e.stopPropagation();
 }
 
-var dropArea = qSelect('#drop-area');
-['dragenter', 'dragover'].forEach(function (eventName) {
-  dropArea.addEventListener(eventName, highlight, false);
-});
-['dragleave', 'drop'].forEach(function (eventName) {
-  dropArea.addEventListener(eventName, unhighlight, false);
-});
+var activeDropEvents = function activeDropEvents() {
+  var dropArea = qSelect('#drop-area');
+  if (!dropArea) return;
+  ['dragenter', 'dragover'].forEach(function (eventName) {
+    dropArea.addEventListener(eventName, highlight, false);
+  });
+  ['dragleave', 'drop'].forEach(function (eventName) {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
 
-var highlight = function highlight(e) {
-  preventDefaults(e);
-  dropArea.classList.add('highlight');
-};
-
-var unhighlight = function unhighlight(e) {
-  preventDefaults(e);
-  dropArea.classList.remove('highlight');
-}; // Handle drop
-
-
-dropArea.addEventListener('drop', handleDrop, false);
-
-var handleDrop = function handleDrop(e) {
-  var dt = e.dataTransfer;
-  var files = dt.files;
-  handleFiles(files);
-}; // Convert FileList to array
-
-
-window.handleFiles = function (files) {
-  var moreThanOneFile = files.length > 1;
-  if (moreThanOneFile) return; // console.log(files);
-
-  var isArray = Array.isArray(files);
-  var newFiles = isArray ? files : Array.from(files);
-  filesArray = newFiles;
-  qSelect('#gallery').innerHTML = ''; // initializeProgress(filesArray.length);
-
-  filesArray.forEach(previewFile);
-  filesArray.forEach(uploadFile);
-};
-
-var previewFile = function previewFile(file) {
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-
-  reader.onloadend = function () {
-    var img = document.createElement('img');
-    var imgName = file.name;
-    img.setAttribute('data-img-name', imgName);
-    img.src = reader.result;
-    qSelect('#gallery').appendChild(img);
+  var highlight = function highlight(e) {
+    preventDefaults(e);
+    dropArea.classList.add('highlight');
   };
+
+  var unhighlight = function unhighlight(e) {
+    preventDefaults(e);
+    dropArea.classList.remove('highlight');
+  }; // Handle drop
+
+
+  dropArea.addEventListener('drop', handleDrop, false);
+
+  var handleDrop = function handleDrop(e) {
+    var dt = e.dataTransfer;
+    var files = dt.files;
+    handleFiles(files);
+  }; // Convert FileList to array
+
+
+  window.handleFiles = function (files) {
+    var moreThanOneFile = files.length > 1;
+    if (moreThanOneFile) return; // console.log(files);
+
+    var isArray = Array.isArray(files);
+    var newFiles = isArray ? files : Array.from(files);
+    filesArray = newFiles;
+    qSelect('#gallery').innerHTML = ''; // initializeProgress(filesArray.length);
+
+    filesArray.forEach(previewFile);
+    filesArray.forEach(uploadFile);
+  };
+
+  var previewFile = function previewFile(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = function () {
+      var img = document.createElement('img');
+      var imgName = file.name;
+      img.setAttribute('data-img-name', imgName);
+      img.src = reader.result;
+      qSelect('#gallery').appendChild(img);
+    };
+  };
+
+  qSelect('#gallery').addEventListener('click', function (e) {
+    e.preventDefault();
+    var targetElement = e.target;
+    var isClickedImg = targetElement.hasAttribute('data-img-name');
+    if (!isClickedImg) return;
+    var clickedImgName = targetElement.getAttribute('data-img-name');
+    var newFilesArray = filesArray.filter(function (file) {
+      return file.name != clickedImgName;
+    }); // console.log(newFilesArray);
+
+    filesArray = newFilesArray;
+    targetElement.remove(); // console.log(filesArray);
+    // handleFiles(newFilesArray)
+  }); // File upload observers
+
+  var initializeProgress = function initializeProgress(numFiles) {
+    progressBar.value = 0;
+    filesDone = 0;
+    filesToDo = numFiles;
+  };
+
+  var progressDone = function progressDone() {
+    filesDone++;
+    var progressPercentage = filesDone / filesToDo * 100;
+    progressBar.value = progressPercentage;
+  };
+
+  function uploadFile(file) {
+    // formData = new FormData();
+    // formData.append('file', file);
+    // console.log(formData.file);
+    window.fileImgData = file;
+  } // setInterval(() => console.log(formData), 10000);
+
 };
 
-qSelect('#gallery').addEventListener('click', function (e) {
-  e.preventDefault();
-  var targetElement = e.target;
-  var isClickedImg = targetElement.hasAttribute('data-img-name');
-  if (!isClickedImg) return;
-  var clickedImgName = targetElement.getAttribute('data-img-name');
-  var newFilesArray = filesArray.filter(function (file) {
-    return file.name != clickedImgName;
-  }); // console.log(newFilesArray);
-
-  filesArray = newFilesArray;
-  targetElement.remove(); // console.log(filesArray);
-  // handleFiles(newFilesArray)
-}); // File upload observers
-
-var initializeProgress = function initializeProgress(numFiles) {
-  progressBar.value = 0;
-  filesDone = 0;
-  filesToDo = numFiles;
-};
-
-var progressDone = function progressDone() {
-  filesDone++;
-  var progressPercentage = filesDone / filesToDo * 100;
-  progressBar.value = progressPercentage;
-};
-
-function uploadFile(file) {
-  // formData = new FormData();
-  // formData.append('file', file);
-  // console.log(formData.file);
-  window.fileImgData = file;
-} // setInterval(() => console.log(formData), 10000);
+activeDropEvents();
 
 /***/ }),
 
