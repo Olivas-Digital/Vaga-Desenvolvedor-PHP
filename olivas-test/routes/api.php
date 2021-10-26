@@ -33,3 +33,10 @@ Route::apiResource('/clientes', \App\Http\Controllers\ClientController::class)->
     'update' => 'client.update',
     'destroy' => 'client.destroy',
 ]);
+
+Route::apiResource('/tiposCliente', \App\Http\Controllers\ClientTypeController::class)->names([
+    'index' => 'client.index',
+    'create' => 'client.create',
+    'store' => 'client.store',
+    'destroy' => 'client.destroy',
+]);
