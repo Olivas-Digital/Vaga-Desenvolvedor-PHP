@@ -46,6 +46,14 @@ class ClientPhoneController extends Controller
         $validated = $request->validated();
         extract($validated);
 
+        $clientExists = Client::where('id', '=', $client_id)->exists();
+
+        if (!$clientExists) {
+            return response()->json([
+                'message' => "Cliente con id: $client_id não existe!",
+            ], Response::HTTP_FORBIDDEN);
+        }
+
         $clientSamePhoneNumber = ClientPhone::find($client_id)
             ->where('phone_number', '=', $phone_number)
             ->exists();
