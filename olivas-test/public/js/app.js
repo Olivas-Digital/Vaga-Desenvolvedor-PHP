@@ -2073,6 +2073,8 @@ module.exports = {
 
 __webpack_require__(/*! ./apiSelect */ "./resources/js/apiRequest/apiSelect.js");
 
+__webpack_require__(/*! ./formData */ "./resources/js/apiRequest/formData.js");
+
 __webpack_require__(/*! ./axiosRequest */ "./resources/js/apiRequest/axiosRequest.js");
 
 __webpack_require__(/*! ./fetchData */ "./resources/js/apiRequest/fetchData.js");
@@ -2102,8 +2104,12 @@ window.axiosRequest = function () {
   var method = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'get';
   var endpoint = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '/';
   var requestData = arguments.length > 2 ? arguments[2] : undefined;
+  var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
+    'content-type': 'application/json'
+  };
   return axios({
     method: method,
+    headers: headers,
     url: UISelect.baseUrl() + endpoint,
     data: requestData
   });
@@ -2148,7 +2154,8 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
 
           case 4:
             window.runQuery = true;
-            return _context.abrupt("return", axiosRequest('get', endPoint, dataParams).then(function (_ref2) {
+            return _context.abrupt("return", axiosRequest('get', endPoint, dataParams) // .then(console.log)
+            .then(function (_ref2) {
               var data = _ref2.data;
               var links = data.data.links;
               var resultsData = data.data.data;
@@ -2169,6 +2176,38 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
+
+/***/ }),
+
+/***/ "./resources/js/apiRequest/formData.js":
+/*!*********************************************!*\
+  !*** ./resources/js/apiRequest/formData.js ***!
+  \*********************************************/
+/***/ (() => {
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+window.createFormDataObj = function (obj) {
+  var formData = new FormData();
+  Object.entries(obj).forEach(function (item) {
+    var _item = _slicedToArray(item, 2),
+        key = _item[0],
+        value = _item[1];
+
+    return formData.append(key, value);
+  });
+  return formData;
+};
 
 /***/ }),
 
@@ -2439,6 +2478,7 @@ window.clientsEdit = function () {
 };
 
 var showClientsEditForm = function showClientsEditForm(name, email) {
+  qSelect('#gallery').innerHTML = '';
   UISelect.clientEditForm().reset();
   UISelect.clientFormName().value = name;
   UISelect.clientFormEmail().value = email;
@@ -2447,6 +2487,8 @@ var showClientsEditForm = function showClientsEditForm(name, email) {
 
 var sendEditForm = function sendEditForm() {
   UISelect.clientEditForm().addEventListener('submit', function (e) {
+    var _window$fileImgData;
+
     e.preventDefault();
     (0,_helpers_bootstrap__WEBPACK_IMPORTED_MODULE_1__.hideModalBootstrapModal)('#client-edit-modal');
     var name = UISelect.clientFormName().value;
@@ -2454,9 +2496,17 @@ var sendEditForm = function sendEditForm() {
     var clientId = UISelect.clientItemActive().getAttribute('data-client-item-id');
     if (window.runQuery) return;
     window.runQuery = true;
-    axiosRequest('put', "".concat(apiSelect.clientsPath).concat(clientId), {
+    var objData = {
+      _method: 'put',
       name: name,
-      email: email
+      email: email,
+      image: (_window$fileImgData = window.fileImgData) !== null && _window$fileImgData !== void 0 ? _window$fileImgData : ''
+    };
+    var formData = createFormDataObj(objData);
+    axios.post("".concat(apiSelect.clientsPath).concat(clientId), formData, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
     }) // .then(console.log)
     .then(function (res) {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -2485,6 +2535,7 @@ var sendEditForm = function sendEditForm() {
       sweetalert__WEBPACK_IMPORTED_MODULE_0___default()(sweetObj);
     })["finally"](function () {
       window.runQuery = false;
+      window.fileImgData = null;
     });
   });
 };
@@ -2505,9 +2556,11 @@ var generateClientsResultData = function generateClientsResultData(results) {
   results.map(function (_ref) {
     var id = _ref.id,
         name = _ref.name,
-        email = _ref.email;
+        email = _ref.email,
+        image_path = _ref.image_path;
     var buttons = "<div class='controls' data-js='client-controls'><button type=\"button\" class=\"btn btn-warning\" data-client-edit='".concat(id, "' data-bs-target=\"#client-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-client-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
-    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><div><h3 ><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
+    var image = image_path != '' ? image_path : 'images/api/default/blackMagicianNo.gif';
+    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><figure data-js=\"client-figure-").concat(id, "\"><img src='").concat(UISelect.baseUrl(), "/").concat(image, "' alt=\"").concat(image_path, "\" title=\"").concat(name, "\" data-js=\"client-img-").concat(id, "\"></figure></figure><h3><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
     return resultsSection.innerHTML += item;
   }).join('');
   return resultsSection;
@@ -2629,6 +2682,8 @@ __webpack_require__(/*! ../apiRequest/apiSelect */ "./resources/js/apiRequest/ap
 
 __webpack_require__(/*! ./uiSelect */ "./resources/js/helpers/uiSelect.js");
 
+__webpack_require__(/*! ./dropFiles */ "./resources/js/helpers/dropFiles.js");
+
 /***/ }),
 
 /***/ "./resources/js/helpers/bootstrap.js":
@@ -2715,6 +2770,133 @@ window.removeClassFromElements = function (elements, className) {
     return removeClassTo(el, className);
   }) : false;
 };
+
+window.removeAddClassForElement = function (element) {
+  var classToRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var classToAdd = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var addStyle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  if (!element) return;
+  if (classToRemove != '') removeClassTo(element, classToRemove);
+  if (classToAdd != '') addClassTo(element, classToAdd);
+  if (addStyle != null) element.style = addStyle;
+};
+
+window.removeAddClassForElements = function (elements) {
+  var classToRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var classToAdd = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var addStyle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  elements.forEach(function (element) {
+    return removeAddClassForElement(element, classToRemove, classToAdd, addStyle);
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/helpers/dropFiles.js":
+/*!*******************************************!*\
+  !*** ./resources/js/helpers/dropFiles.js ***!
+  \*******************************************/
+/***/ (() => {
+
+// File upload observers variables
+var filesDone = 0;
+var filesToDo = 0;
+var progressBar = qSelect('#progress-bar');
+var filesArray = [];
+window.fileImgData = null;
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+var dropArea = qSelect('#drop-area');
+['dragenter', 'dragover'].forEach(function (eventName) {
+  dropArea.addEventListener(eventName, highlight, false);
+});
+['dragleave', 'drop'].forEach(function (eventName) {
+  dropArea.addEventListener(eventName, unhighlight, false);
+});
+
+var highlight = function highlight(e) {
+  preventDefaults(e);
+  dropArea.classList.add('highlight');
+};
+
+var unhighlight = function unhighlight(e) {
+  preventDefaults(e);
+  dropArea.classList.remove('highlight');
+}; // Handle drop
+
+
+dropArea.addEventListener('drop', handleDrop, false);
+
+var handleDrop = function handleDrop(e) {
+  var dt = e.dataTransfer;
+  var files = dt.files;
+  handleFiles(files);
+}; // Convert FileList to array
+
+
+window.handleFiles = function (files) {
+  var moreThanOneFile = files.length > 1;
+  if (moreThanOneFile) return; // console.log(files);
+
+  var isArray = Array.isArray(files);
+  var newFiles = isArray ? files : Array.from(files);
+  filesArray = newFiles;
+  qSelect('#gallery').innerHTML = ''; // initializeProgress(filesArray.length);
+
+  filesArray.forEach(previewFile);
+  filesArray.forEach(uploadFile);
+};
+
+var previewFile = function previewFile(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onloadend = function () {
+    var img = document.createElement('img');
+    var imgName = file.name;
+    img.setAttribute('data-img-name', imgName);
+    img.src = reader.result;
+    qSelect('#gallery').appendChild(img);
+  };
+};
+
+qSelect('#gallery').addEventListener('click', function (e) {
+  e.preventDefault();
+  var targetElement = e.target;
+  var isClickedImg = targetElement.hasAttribute('data-img-name');
+  if (!isClickedImg) return;
+  var clickedImgName = targetElement.getAttribute('data-img-name');
+  var newFilesArray = filesArray.filter(function (file) {
+    return file.name != clickedImgName;
+  }); // console.log(newFilesArray);
+
+  filesArray = newFilesArray;
+  targetElement.remove(); // console.log(filesArray);
+  // handleFiles(newFilesArray)
+}); // File upload observers
+
+var initializeProgress = function initializeProgress(numFiles) {
+  progressBar.value = 0;
+  filesDone = 0;
+  filesToDo = numFiles;
+};
+
+var progressDone = function progressDone() {
+  filesDone++;
+  var progressPercentage = filesDone / filesToDo * 100;
+  progressBar.value = progressPercentage;
+};
+
+function uploadFile(file) {
+  // formData = new FormData();
+  // formData.append('file', file);
+  // console.log(formData.file);
+  window.fileImgData = file;
+} // setInterval(() => console.log(formData), 10000);
 
 /***/ }),
 

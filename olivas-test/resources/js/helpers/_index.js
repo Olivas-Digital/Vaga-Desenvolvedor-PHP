@@ -3,3 +3,4 @@ require('./url');
 require('./domElements');
 require('../apiRequest/apiSelect');
 require('./uiSelect');
+require('./dropFiles');

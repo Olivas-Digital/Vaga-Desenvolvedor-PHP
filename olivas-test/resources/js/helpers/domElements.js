@@ -23,3 +23,15 @@ window.removeClassTo = (el, className) =>
 window.removeClassFromElements = (elements, className) =>
   elements ? Array.from(elements).forEach(el => removeClassTo(el, className)) : false;
 
+window.removeAddClassForElement = (element, classToRemove = '', classToAdd = '', addStyle = null) => {
+  if (!element) return;
+  if (classToRemove != '') removeClassTo(element, classToRemove);
+  if (classToAdd != '') addClassTo(element, classToAdd);
+  if (addStyle != null) element.style = addStyle;
+}
+
+window.removeAddClassForElements = function (elements, classToRemove = '', classToAdd = '', addStyle = null) {
+  elements.forEach((element) =>
+    removeAddClassForElement(element, classToRemove, classToAdd, addStyle)
+  );
+}

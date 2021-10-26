@@ -8,7 +8,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="post" data-js="client-edit-form" action="/">
+
+        <form method="post" data-js="client-edit-form" action="/" enctype="multipart/form-data">
           @csrf
           @method('PUT')
           <div class="mb-3">
@@ -19,13 +20,25 @@
             <label for="client-email" class="col-form-label">E-mail</label>
             <input type="text" class="form-control" id="client-email" value="">
           </div>
-          
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="submit" class="btn btn-primary">Atualizar</button>
+
+          <div id="drop-area" class="drop-area d-flex justify-content-center flex-column">
+            <div class="my-form">
+              <label for="fileInput-budget" class="d-block m-auto">
+                <p class="m-0 text-center">Clique ou arraste um arquivo para a área de upload.</p>
+              </label>
+            </div>
+            <input type="file" id="fileElem" class="fileInput form-control" style="margin: auto;opacity:0;" accept="image/*" onchange="handleFiles(this.files)">
+            <div id="gallery"></div>
           </div>
-        </form>
       </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+      </div>
+      </form>
     </div>
   </div>
+</div>
 </div>

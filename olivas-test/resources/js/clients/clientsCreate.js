@@ -8,6 +8,7 @@ window.clientsCreate = () => {
 
     if (window.runQuery) return;
     window.runQuery = true;
+    
     axiosRequest('post', apiSelect.clientsPath, {
       name: name.value,
       email: email.value

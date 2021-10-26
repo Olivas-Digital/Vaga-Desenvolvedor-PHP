@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Client\ClientSend;
 use App\Models\Client;
+use App\Models\ClientSeller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -58,14 +61,12 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(ClientSend $request, $id)
     {
-        // $request->all();
+        $request->all();
         $validated = $request->validated();
-        $validated['image_path'] = '';
         extract($validated);
 
         $clientExists = Client::where('email', '=', $email)
@@ -78,13 +79,38 @@ class ClientController extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
+        $validated['image_path'] = $this->imgClientHandle($request, $id);
+        unset($validated['image']);
+
         Client::where('id', '=', $id)
             ->update($validated);
 
         return response()->json([
             'message' => 'Cliente atualizado!',
-            'data' => $validated
+            'data' => $validated,
         ], Response::HTTP_OK);
+    }
+
+    public function imgClientHandle($request, $id)
+    {
+        $imageName = 'client_' . $id . '_' . $request->image->getClientOriginalName();
+
+        $clientsImgPath = 'images/api/clients/';
+        $currentImgPath = $clientsImgPath . $imageName;
+        $clientStoredImgPath = Client::where('id', '=', $id)->first(['image_path'])->image_path;
+
+        $equalImgs = $clientStoredImgPath == $currentImgPath;
+
+        if (!$equalImgs) {
+            $fileExists = File::exists($clientStoredImgPath);
+            $fileExists ? File::delete($clientStoredImgPath) : false;
+        }
+
+        if (!File::exists($currentImgPath)) {
+            $request->image->move($clientsImgPath, $imageName);
+        }
+
+        return $currentImgPath;
     }
 
     /**

@@ -29,19 +29,11 @@ window.clientsEdit = () => {
 }
 
 const showClientsEditForm = (name, email) => {
+  qSelect('#gallery').innerHTML = '';
   UISelect.clientEditForm().reset();
   UISelect.clientFormName().value = name;
   UISelect.clientFormEmail().value = email;
   sendEditForm();
-}
-
-const createFormData = obj => {
-  let formData = new FormData();
-  return Object.entries(obj).forEach(item => {
-    let [key, value] = item;
-    console.log(key)
-    return formData.append(key, value);
-  });
 }
 
 const sendEditForm = () => {
@@ -59,16 +51,10 @@ const sendEditForm = () => {
       _method: 'put',
       name: name,
       email: email,
-      image: window.fileImgData,
+      image: window.fileImgData ?? '',
     };
 
-    //let formData = createFormData(objData);
-
-    // let formData = new FormData();
-    // formData.append('_method', 'put');
-    // formData.append('name', name);
-    // formData.append('email', email);
-    // formData.append('image', window.fileImgData);
+    let formData = createFormDataObj(objData);
 
     axios.post(`${apiSelect.clientsPath}${clientId}`, formData, { headers: { 'content-type': 'multipart/form-data' } })
       // .then(console.log)
@@ -91,6 +77,7 @@ const sendEditForm = () => {
       })
       .finally(() => {
         window.runQuery = false;
+        window.fileImgData = null;
       })
 
   });

@@ -29,6 +29,7 @@ class ClientSend extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email',
+            'image' => 'required'
         ];
     }
 
@@ -38,6 +39,7 @@ class ClientSend extends FormRequest
             'name.required' => 'Nome do cliente é obrigatório',
             'email.required' => 'E-mail é obrigatório',
             'email.email' => 'O endereço de e-mail é inválido',
+            'image.required' => 'A imagem é obrigatória',
         ];
     }
 
@@ -46,7 +48,7 @@ class ClientSend extends FormRequest
         throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'Erros de validação',
-            'errors'      => $validator->errors()
+            'errors'      => $validator->errors(),
         ], Response::HTTP_NOT_ACCEPTABLE));
     }
 }

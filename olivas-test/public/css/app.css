@@ -1426,6 +1426,13 @@ url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff?67475f65d9d8a1fe03a250129
 .bi-webcam::before { content: "\f67d"; }
 .bi-yin-yang::before { content: "\f67e"; }
 
+.result-item figure {
+  max-width: 300px;
+}
+.result-item figure img {
+  width: 100%;
+}
+
 .pagination {
   display: inline-block;
 }
@@ -1453,4 +1460,53 @@ url(/fonts/vendor/bootstrap-icons/bootstrap-icons.woff?67475f65d9d8a1fe03a250129
   width: 100%;
   pointer-events: none;
   cursor: none;
+}
+
+.drop-area {
+  position: relative;
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 100%;
+  font-family: sans-serif;
+  height: 100%;
+  min-height: 140px;
+  padding: 2.2rem 4rem 1.9rem;
+}
+.drop-area img {
+  max-width: 100%;
+  margin: 1rem 0;
+}
+
+.attach-container p {
+  color: unset !important;
+}
+@media (max-width: 760px) {
+  .attach-container p {
+    font-size: 0.77rem;
+  }
+}
+
+.drop-area .valid-feedback,
+.drop-area .invalid-feedback {
+  text-align: center;
+}
+
+.drop-area.highlight {
+  border-color: #8bc34a;
+}
+
+.fileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.btn-send {
+  max-width: 213px;
+  margin-top: 1.5rem;
+  margin: 2rem auto;
+  background-color: #8dd50b !important;
+  color: #fff !important;
 }
