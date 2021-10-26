@@ -3,3 +3,4 @@
 - Bibliotecas
  - SweetAlert
  - Bootstrap Icons
+ - tymon/jwt-auth

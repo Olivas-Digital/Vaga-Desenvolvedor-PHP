@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,45 +15,56 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('auth/registrar', [AuthController::class, 'register']);
+
+// Sellers GET route
+Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class, ['only' => ['index']])->names(['index' => 'seller.index']);
+
+Route::group(['middleware' => ['auth:api']], function () {
+    // Route::post('auth/login', [AuthController::class, 'login']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
+    Route::post('auth/refresh', [AuthController::class, 'refresh']);
+
+    Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class, [
+        'only' => ['create', 'update', 'delete']
+    ])->names([
+        'create' => 'seller.create',
+        'store' => 'seller.store',
+        'update' => 'seller.update',
+        'destroy' => 'seller.destroy',
+    ]);
+
+    // Client Routes
+    Route::apiResource('/clientes', \App\Http\Controllers\ClientController::class)->names([
+        'index' => 'client.index',
+        'create' => 'client.create',
+        'store' => 'client.store',
+        'update' => 'client.update',
+        'destroy' => 'client.destroy',
+    ]);
+
+    Route::apiResource('/tiposCliente', \App\Http\Controllers\ClientTypeController::class)->names([
+        'index' => 'typesClient.index',
+        'create' => 'typesClient.create',
+        'store' => 'typesClient.store',
+        'destroy' => 'typesClient.destroy',
+    ]);
+
+    Route::apiResource('/clientesTelefone', \App\Http\Controllers\ClientPhoneController::class)->names([
+        'index' => 'clientsPhone.index',
+        'create' => 'clientsPhone.create',
+        'store' => 'clientsPhone.store',
+        'update' => 'clientsPhone.update',
+        'destroy' => 'clientsPhone.destroy',
+    ]);
+
+    Route::apiResource('/clientesVendedores', \App\Http\Controllers\ClientSellerController::class)->names([
+        'index' => 'clientsSeller.index',
+        'create' => 'clientsSeller.create',
+        'store' => 'clientsSeller.store',
+        'update' => 'clientsSeller.update',
+        'destroy' => 'clientsSeller.destroy',
+    ]);
 });
-
-Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class)->names([
-    'index' => 'seller.index',
-    'create' => 'seller.create',
-    'store' => 'seller.store',
-    'update' => 'seller.update',
-    'destroy' => 'seller.destroy',
-]);
-
-Route::apiResource('/clientes', \App\Http\Controllers\ClientController::class)->names([
-    'index' => 'client.index',
-    'create' => 'client.create',
-    'store' => 'client.store',
-    'update' => 'client.update',
-    'destroy' => 'client.destroy',
-]);
-
-Route::apiResource('/tiposCliente', \App\Http\Controllers\ClientTypeController::class)->names([
-    'index' => 'typesClient.index',
-    'create' => 'typesClient.create',
-    'store' => 'typesClient.store',
-    'destroy' => 'typesClient.destroy',
-]);
-
-Route::apiResource('/clientesTelefone', \App\Http\Controllers\ClientPhoneController::class)->names([
-    'index' => 'clientsPhone.index',
-    'create' => 'clientsPhone.create',
-    'store' => 'clientsPhone.store',
-    'update' => 'clientsPhone.update',
-    'destroy' => 'clientsPhone.destroy',
-]);
-
-Route::apiResource('/clientesVendedores', \App\Http\Controllers\ClientSellerController::class)->names([
-    'index' => 'clientsSeller.index',
-    'create' => 'clientsSeller.create',
-    'store' => 'clientsSeller.store',
-    'update' => 'clientsSeller.update',
-    'destroy' => 'clientsSeller.destroy',
-]);
