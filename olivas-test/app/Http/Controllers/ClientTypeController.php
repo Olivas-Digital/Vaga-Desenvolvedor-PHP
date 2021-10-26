@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Client\ClientTypeSend;
 use App\Models\Client;
 use App\Models\ClientType;
+use App\Models\DocumentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +49,22 @@ class ClientTypeController extends Controller
         $validated = $request->validated();
         extract($validated);
 
+        $clientExists = Client::where('id', '=', $client_id)->exists();
+        
+        if (!$clientExists) {
+            return response()->json([
+                'message' => "Cliente con id: $client_id não existe!",
+            ], Response::HTTP_FORBIDDEN);
+        }
+        
+        $typeExist = DocumentType::where('id', '=', $client_type)->exists();
+        
+        if (!$typeExist) {
+            return response()->json([
+                'message' => "O tipo de documento para clientes com id: $client_type, não existe!",
+            ], Response::HTTP_FORBIDDEN);
+        }
+        
         $clientAlreadyHaveType = ClientType::where('client_id', '=', $client_id)
             ->where('client_type', '=', $client_type)
             ->exists();
