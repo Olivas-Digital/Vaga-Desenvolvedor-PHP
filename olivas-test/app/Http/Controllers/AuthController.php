@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 use Validator;
 
 
@@ -32,6 +33,7 @@ class AuthController extends Controller
         $messages = [
             'email.required' => 'O E-mail é obrigatório',
             'password.required' => 'A senha é obrigatoria',
+            'password.min' => 'A senha precisa ter 6 ou mais caracteres',
         ];
 
         $validator = Validator::make($request->all(), [
@@ -52,9 +54,9 @@ class AuthController extends Controller
             // return response()->json(['error' => 'Unauthorized'], 401);
             throw new HttpResponseException(response()->json([
                 'success'   => false,
-                'message'   => 'Erros de validação',
-                'errors'      => $validator->errors(),
-            ], 401));
+                'message'   => 'Erro de validação',
+                'errors'      => ['E-mail ou senha inválidos!'],
+            ], Response::HTTP_UNAUTHORIZED));
         }
 
         return $this->createNewToken($token);
@@ -88,7 +90,7 @@ class AuthController extends Controller
             throw new HttpResponseException(response()->json([
                 'success'   => false,
                 'message'   => 'Erros de validação',
-                'errors'      => $validator->errors(),
+                'errors'    => $validator->errors(),
             ], 400));
         }
 
@@ -100,7 +102,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Usuário registrado!',
             'data' => $user
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
 
@@ -113,7 +115,9 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Usuário saiu!']);
+        return response()->json([
+            'message' => 'Usuário saiu!',
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -150,6 +154,6 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
-        ]);
+        ], Response::HTTP_OK);
     }
 }

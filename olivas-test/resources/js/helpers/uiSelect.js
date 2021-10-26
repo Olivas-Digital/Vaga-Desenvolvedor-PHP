@@ -1,5 +1,9 @@
 window.UISelect = {
+  // Base
   baseUrl: () => qSelect('[data-base-url]').dataset.baseUrl,
+  // Users
+  userFormCreate: () => qSelect('[data-js="user-form-create"]'),
+  userFormLogin: () => qSelect('[data-js="user-form-login"]'),
   // Sellers
   dataSellers: () => qSelectAll('[data-page-seller-id]'),
   sellerSearchForm: () => qSelect('[data-js="search-seller-form"]'),
@@ -9,7 +13,7 @@ window.UISelect = {
   sellerItems: () => qSelectAll(`[data-seller-item-id]`),
   sellerItemActive: () => qSelect(`[data-seller-item-id].active`),
   sellerName: (id) => qSelect(`[data-js="seller-name-${id}"]`),
-  sellerTradeName: (id) => 
+  sellerTradeName: (id) =>
     qSelect(`[data-js="seller-trade-name-${id}"]`),
   sellerEditForm: () => qSelect('[data-js="seller-edit-form"]'),
   sellerFormName: () => qSelect('#seller-name'),
@@ -23,7 +27,7 @@ window.UISelect = {
   clientItems: () => qSelectAll(`[data-client-item-id]`),
   clientItemActive: () => qSelect(`[data-client-item-id].active`),
   clientName: (id) => qSelect(`[data-js="client-name-${id}"]`),
-  clientEmail: (id) => 
+  clientEmail: (id) =>
     qSelect(`[data-js="client-email-${id}"]`),
   clientEditForm: () => qSelect('[data-js="client-edit-form"]'),
   clientFormName: () => qSelect('#client-name'),

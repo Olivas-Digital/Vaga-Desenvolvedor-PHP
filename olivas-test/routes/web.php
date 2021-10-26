@@ -17,6 +17,22 @@ Route::get('/', function () {
     return view('index');
 });
 
+// Users
+Route::get('/usuario/criar', function () {
+    return view('users/create', [
+        'title' => 'Criar Usuário',
+        'dataPage' => 'create-user-page'
+    ]);
+});
+
+Route::get('/login', function () {
+    return view('users/login', [
+        'title' => 'Login Usuário',
+        'dataPage' => 'login-user-page'
+    ]);
+});
+
+// Sellers
 Route::get('/vendedores', function () {
     return view('sellers/displayAll', [
         'title' => 'Vendedores',
@@ -31,6 +47,7 @@ Route::get('/vendedores/criar', function () {
     ]);
 });
 
+// Clients
 Route::get('/clientes', function () {
     return view('clients/displayAll', [
         'title' => 'Clientes',

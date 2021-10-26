@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('auth/login', [AuthController::class, 'login']);
-Route::post('auth/registrar', [AuthController::class, 'register']);
+Route::post('auth/login', [AuthController::class, 'login'])->name('user.login');
+Route::post('auth/registrar', [AuthController::class, 'register'])->name('user.register');
 
 // Sellers GET route
 Route::apiResource('/vendedores', \App\Http\Controllers\SellerController::class, ['only' => ['index']])->names(['index' => 'seller.index']);

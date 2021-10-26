@@ -2088,6 +2088,8 @@ __webpack_require__(/*! ./fetchData */ "./resources/js/apiRequest/fetchData.js")
 /***/ (() => {
 
 window.apiSelect = {
+  usersCreatePath: '/api/auth/registrar/',
+  usersLoginPath: '/api/auth/login/',
   sellersPath: '/api/vendedores/',
   clientsPath: '/api/clientes/'
 };
@@ -2223,7 +2225,10 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Helper
 __webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js"); // Axios
 
 
-__webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Sellers
+__webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Users
+
+
+__webpack_require__(/*! ./users/_index */ "./resources/js/users/_index.js"); // Sellers
 
 
 __webpack_require__(/*! ./sellers/_index */ "./resources/js/sellers/_index.js"); // Clients
@@ -2802,6 +2807,16 @@ window.removeAddClassForElements = function (elements) {
   elements.forEach(function (element) {
     return removeAddClassForElement(element, classToRemove, classToAdd, addStyle);
   });
+}; // LocalStorage functions
+
+
+window.getFromLocalStorage = function (item) {
+  var localItem = localStorage.getItem(item);
+  return localItem ? JSON.parse(localItem) : [];
+};
+
+window.saveToLocalStorage = function (itemName, obj) {
+  return localStorage.setItem(itemName, JSON.stringify(obj));
 };
 
 /***/ }),
@@ -2946,8 +2961,16 @@ window.convertObjToString = function (obj) {
 /***/ (() => {
 
 window.UISelect = {
+  // Base
   baseUrl: function baseUrl() {
     return qSelect('[data-base-url]').dataset.baseUrl;
+  },
+  // Users
+  userFormCreate: function userFormCreate() {
+    return qSelect('[data-js="user-form-create"]');
+  },
+  userFormLogin: function userFormLogin() {
+    return qSelect('[data-js="user-form-login"]');
   },
   // Sellers
   dataSellers: function dataSellers() {
@@ -3460,6 +3483,175 @@ window.onpopstate = function (event) {
     });
   });
 });
+
+/***/ }),
+
+/***/ "./resources/js/users/_index.js":
+/*!**************************************!*\
+  !*** ./resources/js/users/_index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./usersFomLogin */ "./resources/js/users/usersFomLogin.js");
+
+__webpack_require__(/*! ./usersFomCreate */ "./resources/js/users/usersFomCreate.js");
+
+/***/ }),
+
+/***/ "./resources/js/users/usersFomCreate.js":
+/*!**********************************************!*\
+  !*** ./resources/js/users/usersFomCreate.js ***!
+  \**********************************************/
+/***/ (() => {
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var activeUserForm = function activeUserForm() {
+  if (!UISelect.userFormCreate()) return;
+  UISelect.userFormCreate().addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var _e$target = _slicedToArray(e.target, 5),
+        name = _e$target[1],
+        email = _e$target[2],
+        password = _e$target[3],
+        password_confirmation = _e$target[4];
+
+    if (window.runQuery) return;
+    window.runQuery = true;
+    var objData = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: password_confirmation.value
+    };
+    var formData = createFormDataObj(objData);
+    axios.post("".concat(apiSelect.usersCreatePath), formData, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    }) // .then(console.log)
+    .then(function (res) {
+      swal({
+        title: 'Opá, deu bom!',
+        text: res.data.message,
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        return redirectTo('/clientes');
+      });
+    }) // .catch(console.log)
+    ["catch"](function (_ref) {
+      var response = _ref.response;
+      var sweetObj = {
+        title: 'Opá, deu ruim!',
+        text: response.data.message + '\n',
+        icon: "error",
+        button: "Ok"
+      };
+      var errors = response.data.errors;
+
+      if (errors) {
+        sweetObj.title = response.data.message;
+        sweetObj.text = convertObjToString(errors);
+      }
+
+      swal(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
+    });
+  });
+};
+
+activeUserForm();
+
+/***/ }),
+
+/***/ "./resources/js/users/usersFomLogin.js":
+/*!*********************************************!*\
+  !*** ./resources/js/users/usersFomLogin.js ***!
+  \*********************************************/
+/***/ (() => {
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var activeUserForm = function activeUserForm() {
+  if (!UISelect.userFormLogin()) return;
+  UISelect.userFormLogin().addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var _e$target = _slicedToArray(e.target, 3),
+        email = _e$target[1],
+        password = _e$target[2];
+
+    if (window.runQuery) return;
+    window.runQuery = true;
+    var objData = {
+      email: email.value,
+      password: password.value
+    };
+    var formData = createFormDataObj(objData);
+    axios.post("".concat(apiSelect.usersLoginPath), formData, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    }) // .then(console.log)
+    .then(function (res) {
+      var tokenType = res.data.token_type;
+      var accessToken = res.data.access_token; // Save auth token to localStorage
+
+      saveToLocalStorage('auth_token', "".concat(tokenType, " ").concat(accessToken));
+      swal({
+        title: 'Opá, deu bom!',
+        text: 'Usuário foi logado!',
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        return redirectTo('/clientes');
+      });
+    })["catch"](function (_ref) {
+      var response = _ref.response;
+      var sweetObj = {
+        title: 'Opá, deu ruim!',
+        text: response.data.message + '\n',
+        icon: "error",
+        button: "Ok"
+      };
+      var errors = response.data.errors;
+
+      if (errors) {
+        sweetObj.title = response.data.message;
+        sweetObj.text = convertObjToString(errors);
+      }
+
+      swal(sweetObj);
+    })["finally"](function () {
+      window.runQuery = false;
+    });
+  });
+};
+
+activeUserForm();
 
 /***/ }),
 

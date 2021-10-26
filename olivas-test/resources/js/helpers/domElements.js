@@ -35,3 +35,13 @@ window.removeAddClassForElements = function (elements, classToRemove = '', class
     removeAddClassForElement(element, classToRemove, classToAdd, addStyle)
   );
 }
+
+// LocalStorage functions
+window.getFromLocalStorage = item => {
+  let localItem = localStorage.getItem(item);
+  return localItem ? JSON.parse(localItem) : [];
+}
+
+window.saveToLocalStorage = (itemName, obj) => {
+  return localStorage.setItem(itemName, JSON.stringify(obj));
+}
