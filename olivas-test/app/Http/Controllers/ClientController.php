@@ -21,7 +21,7 @@ class ClientController extends Controller
     {
         $inputSearch = $request->get('search');
 
-        $data = $inputSearch ? Client::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Client::orderBy('id', 'DESC')->paginate(5);
+        $data = $inputSearch ? Client::where('name', 'like',  '%' . $inputSearch . '%')->paginate(8) : Client::orderBy('id', 'DESC')->paginate(8);
 
         return response()->json([
             'data' => $data,
@@ -96,7 +96,7 @@ class ClientController extends Controller
         // .env variable to simulate client email
         $clientMail = $_ENV['CLIENT_EMAIL'];
         $details = [
-            'title' => "$name seja bem vinde! ",
+            'title' => "$name seja bem vindo! ",
             'body' => "Seus dados foram cadastrados com sucesso!"
         ];
         $mailInstace = new \App\Mail\ClientMail($details);

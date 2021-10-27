@@ -18,7 +18,7 @@ class SellerController extends Controller
     {
         $inputSearch = $request->get('search');
 
-        $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(5) : Seller::orderBy('id', 'DESC')->paginate(5);
+        $data = $inputSearch ? Seller::where('name', 'like',  '%' . $inputSearch . '%')->paginate(8) : Seller::orderBy('id', 'DESC')->paginate(8);
 
         return response()->json([
             'data' => $data,
