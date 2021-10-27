@@ -83,10 +83,24 @@ class ClientController extends Controller
 
         Client::create($validated);
 
+        $this->sendEmailToClient($name);
+
         return response()->json([
             'message' => 'Cliente cadastrado!',
             'data' => $validated
         ], Response::HTTP_OK);
+    }
+
+    public function sendEmailToClient($name)
+    {
+        // .env variable to simulate client email
+        $clientMail = $_ENV['CLIENT_EMAIL'];
+        $details = [
+            'title' => "$name seja bem vinde! ",
+            'body' => "Seus dados foram cadastrados com sucesso!"
+        ];
+        $mailInstace = new \App\Mail\ClientMail($details);
+        \Mail::to($clientMail)->send($mailInstace);
     }
 
     /**
