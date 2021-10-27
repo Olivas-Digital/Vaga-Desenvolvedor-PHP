@@ -1,0 +1,18 @@
+.result-item {
+  figure {
+    max-width: 219px;
+    max-height: 219px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.result-item-title {
+  // overflow: hidden;
+  // white-space: nowrap;
+  // text-overflow: ellipsis;
+  // max-width: 200px;
+}

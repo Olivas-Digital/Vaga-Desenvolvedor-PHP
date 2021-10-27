@@ -1,0 +1,37 @@
+.result-item {
+  margin: 1rem 1rem 2rem;
+    figure {
+        max-width: 219px;
+        max-height: 219px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+main[data-page="clients-paginate"] {
+    .result-item-title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+}
+
+main[data-page="sellers-paginate"] {
+  min-height: 500px;
+
+  .result-item {
+      width: 100%;
+
+      @media (min-width:700px) {
+          width: 46%;
+      }
+
+      background-color: #f9f9f996;
+      padding: 1rem;
+  }
+}

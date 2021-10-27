@@ -1,4 +1,5 @@
 require('./bootstrap');
+require('./smoothScrollCompress');
 // Helpers
 require('./helpers/_index');
 // Axios

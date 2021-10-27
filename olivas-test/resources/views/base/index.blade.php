@@ -19,6 +19,8 @@
   <main class="main-container" data-page="{{$dataPage ?? ''}}">
     @yield('content')
   </main>
+
+  <div class="pagination-area"></div>
   
   @include('base/footer')
 </body>

@@ -1,7 +1,7 @@
 const generateClientsResultData = (results) => {
   removeElementFromDom('[data-js="clients-result"]');
 
-  let resultsSection = createHtmlElement('section', ['class', 'clients-result'], ['data-js', 'clients-result']);
+  let resultsSection = createHtmlElement('section', ['class', 'pagination-results clients-result'], ['data-js', 'clients-result']);
 
   results.map(({ id, name, email, image_path }) => {
     let buttons =
@@ -14,7 +14,7 @@ const generateClientsResultData = (results) => {
 
     let imgSrc = !stringIncludes(image_path, 'images/api/default/') && imgPathIsNotEmpty ? image_path : UISelect.baseUrl() + '/' + image;
 
-    let item = `<div class='result-item' data-client-item-id='${id}'><figure data-js="client-figure-${id}"><img src='${imgSrc}' alt="${image_path}" title="${name}" data-js="client-img-${id}"></figure></figure><h3><span data-js="client-name-${id}">${name}<span></h3><p><span data-js="client-email-${id}">${email}<span></p>${itemControls}</div>`
+    let item = `<div class='result-item' data-client-item-id='${id}'><figure data-js="client-figure-${id}"><img src='${imgSrc}' alt="${image_path}" title="${name}" data-js="client-img-${id}"></figure></figure><h3 class='result-item-title'><span data-js="client-name-${id}">${name}<span></h3><p><span data-js="client-email-${id}">${email}<span></p>${itemControls}</div>`
 
     return resultsSection.innerHTML += item;
   }).join('');
@@ -55,7 +55,7 @@ const generateResultsForClients = (resultsData, links) => {
   let resultData = generateClientsResultData(resultsData);
   let pagination = generateClientsPagination(links, resultsData);
   qSelect('main').appendChild(resultData);
-  qSelect('main').appendChild(pagination);
+  qSelect('.pagination-area').appendChild(pagination);
 
   clickDataClients();
   clientsEdit();

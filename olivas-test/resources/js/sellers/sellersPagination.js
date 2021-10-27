@@ -1,14 +1,14 @@
 const generateSellersResultData = (results) => {
   removeElementFromDom('[data-js="sellers-result"]');
 
-  let resultsSection = createHtmlElement('section', ['class', 'sellers-result'], ['data-js', 'sellers-result']);
+  let resultsSection = createHtmlElement('section', ['class', 'pagination-results sellers-result'], ['data-js', 'sellers-result']);
   results.map(({ id, name, trade_name }) => {
     let buttons =
       `<div class='controls' data-js='seller-controls'><button type="button" class="btn btn-warning" data-seller-edit='${id}' data-bs-target="#seller-edit-modal" data-bs-toggle="modal"><i class='bi bi-pencil-square'></i> Editar</button> <button type="button" class="btn btn-danger" data-seller-delete='${id}'><i class="bi bi-trash-fill"></i> Deletar</button></div>`;
 
     let itemControls = userAuthToken() ? buttons : '';
 
-    let item = `<div class='result-item' data-seller-item-id='${id}'><div><h3 ><span data-js="seller-name-${id}">${name}<span></h3><p>Nome Fantasia: <span data-js="seller-trade-name-${id}">${trade_name}<span></p>${itemControls}</div>`
+    let item = `<div class='result-item' data-seller-item-id='${id}'><div><h3 class='result-item-title'><span data-js="seller-name-${id}">${name}<span></h3><p>Nome Fantasia: <span data-js="seller-trade-name-${id}">${trade_name}<span></p>${itemControls}</div>`
 
     return resultsSection.innerHTML += item;
   }).join('');
@@ -49,7 +49,7 @@ const generateResultsForSellers = (resultsData, links) => {
   let resultData = generateSellersResultData(resultsData);
   let pagination = generateSellersPagination(links, resultsData);
   qSelect('main').appendChild(resultData);
-  qSelect('main').appendChild(pagination);
+  qSelect('.pagination-area').appendChild(pagination);
 
   clickDataSellers();
   sellersEdit();
