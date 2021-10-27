@@ -2554,7 +2554,7 @@ var sendEditForm = function sendEditForm() {
     var formData = createFormDataObj(objData);
     axios.post("".concat(apiSelect.clientsPath).concat(clientId), formData, {
       headers: {
-        'Authorization': authToken,
+        'Authorization': userAuthToken(),
         'content-type': 'multipart/form-data'
       }
     }) // .then(console.log)

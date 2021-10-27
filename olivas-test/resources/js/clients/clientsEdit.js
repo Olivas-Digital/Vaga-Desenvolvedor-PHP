@@ -60,7 +60,7 @@ const sendEditForm = () => {
 
     axios.post(`${apiSelect.clientsPath}${clientId}`, formData, {
       headers: {
-        'Authorization': authToken,
+        'Authorization': userAuthToken(),
         'content-type': 'multipart/form-data'
       }
     })
