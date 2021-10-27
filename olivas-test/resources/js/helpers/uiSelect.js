@@ -4,6 +4,8 @@ window.UISelect = {
   // Users
   userFormCreate: () => qSelect('[data-js="user-form-create"]'),
   userFormLogin: () => qSelect('[data-js="user-form-login"]'),
+  userNavbarOptions: () => qSelect('[data-js="nav-bar-options"]'),
+  userLogoutItem: () => qSelect('[data-js="user-logout-item"]'),
   // Sellers
   dataSellers: () => qSelectAll('[data-page-seller-id]'),
   sellerSearchForm: () => qSelect('[data-js="search-seller-form"]'),

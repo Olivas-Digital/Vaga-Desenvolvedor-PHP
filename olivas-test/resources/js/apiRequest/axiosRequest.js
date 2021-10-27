@@ -1,4 +1,6 @@
-window.axiosRequest = (method = 'get', endpoint = '/', requestData, headers = { 'content-type': 'application/json' }) => {
+window.axiosRequest = (method = 'get', endpoint = '/', requestData, headers = {
+  'Authorization': userAuthToken(),
+}) => {
   return axios({
     method: method,
     headers: headers,

@@ -23,7 +23,7 @@ Route::get('/usuario/criar', function () {
         'title' => 'Criar Usuário',
         'dataPage' => 'create-user-page'
     ]);
-});
+})->name('users.create');
 
 Route::get('/login', function () {
     return view('users/login', [
@@ -38,14 +38,14 @@ Route::get('/vendedores', function () {
         'title' => 'Vendedores',
         'dataPage' => 'sellers-paginate'
     ]);
-});
+})->name('vendedores.show');
 
 Route::get('/vendedores/criar', function () {
     return view('sellers/create', [
         'title' => 'Registrar um vendedor',
         'dataPage' => 'sellers-create'
     ]);
-});
+})->name('vendedores.create');
 
 // Clients
 Route::get('/clientes', function () {
@@ -53,11 +53,11 @@ Route::get('/clientes', function () {
         'title' => 'Clientes',
         'dataPage' => 'clients-paginate'
     ]);
-});
+})->name('clientes.show');
 
 Route::get('/clientes/criar', function () {
     return view('clients/create', [
         'title' => 'Registrar um cliente',
         'dataPage' => 'clients-create'
     ]);
-});
+})->name('clientes.create');

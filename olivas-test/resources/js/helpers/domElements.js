@@ -14,6 +14,8 @@ window.createHtmlElement = (elToCreate, ...attributes) => {
   return el;
 }
 
+// Class manipulation
+
 window.addClassTo = (el, className) =>
   el ? el.classList.add(className) : false;
 
@@ -31,7 +33,7 @@ window.removeAddClassForElement = (element, classToRemove = '', classToAdd = '',
 }
 
 window.removeAddClassForElements = function (elements, classToRemove = '', classToAdd = '', addStyle = null) {
-  elements.forEach((element) =>
+  return Array.from(elements).forEach((element) =>
     removeAddClassForElement(element, classToRemove, classToAdd, addStyle)
   );
 }
@@ -39,9 +41,14 @@ window.removeAddClassForElements = function (elements, classToRemove = '', class
 // LocalStorage functions
 window.getFromLocalStorage = item => {
   let localItem = localStorage.getItem(item);
-  return localItem ? JSON.parse(localItem) : [];
+  return localItem ? JSON.parse(localItem) : false;
 }
 
 window.saveToLocalStorage = (itemName, obj) => {
   return localStorage.setItem(itemName, JSON.stringify(obj));
+}
+
+window.removeFromLocalStorage = (item) => {
+  let isInLocalStorage = getFromLocalStorage(item);
+  return isInLocalStorage ? localStorage.removeItem(item) : false;
 }

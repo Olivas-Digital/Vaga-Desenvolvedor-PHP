@@ -37,6 +37,8 @@ const showClientsEditForm = (name, email) => {
 }
 
 const sendEditForm = () => {
+  ifMoAuthTokenRedirectToLogin();
+
   UISelect.clientEditForm().addEventListener('submit', (e) => {
     e.preventDefault()
     hideModalBootstrapModal('#client-edit-modal');
@@ -56,7 +58,12 @@ const sendEditForm = () => {
 
     let formData = createFormDataObj(objData);
 
-    axios.post(`${apiSelect.clientsPath}${clientId}`, formData, { headers: { 'content-type': 'multipart/form-data' } })
+    axios.post(`${apiSelect.clientsPath}${clientId}`, formData, {
+      headers: {
+        'Authorization': authToken,
+        'content-type': 'multipart/form-data'
+      }
+    })
       // .then(console.log)
       .then((res) => {
         swal({

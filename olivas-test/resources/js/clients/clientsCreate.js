@@ -2,6 +2,9 @@ import swal from 'sweetalert';
 
 window.clientsCreate = () => {
   if (!UISelect.clientCreateForm()) return;
+
+  ifMoAuthTokenRedirectToLogin();
+
   UISelect.clientCreateForm().addEventListener('submit', (e) => {
     e.preventDefault();
     let [, name, email] = e.target;
@@ -17,7 +20,12 @@ window.clientsCreate = () => {
 
     let formData = createFormDataObj(objData);
 
-    axios.post(`${apiSelect.clientsPath}`, formData, { headers: { 'content-type': 'multipart/form-data' } })
+    axios.post(`${apiSelect.clientsPath}`, formData, {
+      headers: {
+        'Authorization': userAuthToken(),
+        'content-type': 'multipart/form-data'
+      }
+    })
       // .then(console.log)
       .then((res) => {
         swal({

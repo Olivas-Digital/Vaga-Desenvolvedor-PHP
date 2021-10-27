@@ -1,7 +1,11 @@
-window.fetchResultDataFor = async (callBack, endPoint = '/', dataParams = false) => {
+window.fetchResultDataFor = async (callBack, endPoint = '/', dataParams = false, headers) => {
   if (window.runQuery) return;
   window.runQuery = true;
-  return axiosRequest('get', endPoint, dataParams)
+  return axiosRequest('get', endPoint, dataParams, {
+      'Authorization': userAuthToken(),
+      'content-type': 'multipart/form-data'
+    }
+  )
     // .then(console.log)
     .then(({ data }) => {
       let { links } = data.data;

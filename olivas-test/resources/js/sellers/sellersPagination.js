@@ -6,7 +6,9 @@ const generateSellersResultData = (results) => {
     let buttons =
       `<div class='controls' data-js='seller-controls'><button type="button" class="btn btn-warning" data-seller-edit='${id}' data-bs-target="#seller-edit-modal" data-bs-toggle="modal"><i class='bi bi-pencil-square'></i> Editar</button> <button type="button" class="btn btn-danger" data-seller-delete='${id}'><i class="bi bi-trash-fill"></i> Deletar</button></div>`;
 
-    let item = `<div class='result-item' data-seller-item-id='${id}'><div><h3 ><span data-js="seller-name-${id}">${name}<span></h3><p>Nome Fantasia: <span data-js="seller-trade-name-${id}">${trade_name}<span></p>${buttons}</div>`
+    let itemControls = userAuthToken() ? buttons : '';
+
+    let item = `<div class='result-item' data-seller-item-id='${id}'><div><h3 ><span data-js="seller-name-${id}">${name}<span></h3><p>Nome Fantasia: <span data-js="seller-trade-name-${id}">${trade_name}<span></p>${itemControls}</div>`
 
     return resultsSection.innerHTML += item;
   }).join('');

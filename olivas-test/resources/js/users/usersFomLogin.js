@@ -19,17 +19,22 @@ const activeUserForm = () => {
     axios.post(`${apiSelect.usersLoginPath}`, formData, { headers: { 'content-type': 'application/json' } })
       // .then(console.log)
       .then((res) => {
+        const loggedUserName = res.data.user.name;
         const tokenType = res.data.token_type;
         const accessToken = res.data.access_token;
         // Save auth token to localStorage
         saveToLocalStorage('auth_token', `${tokenType} ${accessToken}`)
+        saveToLocalStorage('loggedUsername', loggedUserName)
         
         swal({
           title: 'Opá, deu bom!', 
           text: 'Usuário foi logado!',
           icon: "success",
           button: "Ok",
-        }).then(() => redirectTo('/clientes'));
+        }).then(() =>  {
+          refreshControls();
+          redirectTo('/clientes')
+        });
       })
       .catch(({ response }) => {
         let sweetObj = { title: 'Opá, deu ruim!', text: response.data.message + '\n', icon: "error", button: "Ok", };

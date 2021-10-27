@@ -36,7 +36,6 @@ const sellersDeleteSend = (id) => {
   axiosRequest('delete', `/api/vendedores/${id}`)
     // .then(console.log)
     .then((res) => {
-      console.log(res)
       swal({
         title: 'Opá, deletado!',
         text: res.data.message,

@@ -32,6 +32,8 @@ window.clientsDelete = () => {
 
 const clientsDeleteSend = (id) => {
   if (window.runQuery) return;
+
+
   window.runQuery = true;
   axiosRequest('delete', `${apiSelect.clientsPath}${id}`)
     // .then(console.log)

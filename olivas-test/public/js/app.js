@@ -2073,6 +2073,8 @@ module.exports = {
 
 __webpack_require__(/*! ./apiSelect */ "./resources/js/apiRequest/apiSelect.js");
 
+__webpack_require__(/*! ./authToken */ "./resources/js/apiRequest/authToken.js");
+
 __webpack_require__(/*! ./formData */ "./resources/js/apiRequest/formData.js");
 
 __webpack_require__(/*! ./axiosRequest */ "./resources/js/apiRequest/axiosRequest.js");
@@ -2090,8 +2092,27 @@ __webpack_require__(/*! ./fetchData */ "./resources/js/apiRequest/fetchData.js")
 window.apiSelect = {
   usersCreatePath: '/api/auth/registrar/',
   usersLoginPath: '/api/auth/login/',
+  usersLogout: '/api/auth/logout/',
   sellersPath: '/api/vendedores/',
   clientsPath: '/api/clientes/'
+};
+
+/***/ }),
+
+/***/ "./resources/js/apiRequest/authToken.js":
+/*!**********************************************!*\
+  !*** ./resources/js/apiRequest/authToken.js ***!
+  \**********************************************/
+/***/ (() => {
+
+window.userAuthToken = function () {
+  var authToken = getFromLocalStorage('auth_token');
+  return authToken != false || authToken != '' ? authToken : false;
+};
+
+window.ifMoAuthTokenRedirectToLogin = function () {
+  var authToken = userAuthToken();
+  if (!authToken) redirectTo('/login');
 };
 
 /***/ }),
@@ -2107,7 +2128,7 @@ window.axiosRequest = function () {
   var endpoint = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '/';
   var requestData = arguments.length > 2 ? arguments[2] : undefined;
   var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
-    'content-type': 'application/json'
+    'Authorization': userAuthToken()
   };
   return axios({
     method: method,
@@ -2139,6 +2160,7 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(callBack) {
     var endPoint,
         dataParams,
+        headers,
         _args = arguments;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
       while (1) {
@@ -2146,17 +2168,21 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
           case 0:
             endPoint = _args.length > 1 && _args[1] !== undefined ? _args[1] : '/';
             dataParams = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
+            headers = _args.length > 3 ? _args[3] : undefined;
 
             if (!window.runQuery) {
-              _context.next = 4;
+              _context.next = 5;
               break;
             }
 
             return _context.abrupt("return");
 
-          case 4:
+          case 5:
             window.runQuery = true;
-            return _context.abrupt("return", axiosRequest('get', endPoint, dataParams) // .then(console.log)
+            return _context.abrupt("return", axiosRequest('get', endPoint, dataParams, {
+              'Authorization': userAuthToken(),
+              'content-type': 'multipart/form-data'
+            }) // .then(console.log)
             .then(function (_ref2) {
               var data = _ref2.data;
               var links = data.data.links;
@@ -2166,7 +2192,7 @@ window.fetchResultDataFor = /*#__PURE__*/function () {
               window.runQuery = false;
             }));
 
-          case 6:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -2225,7 +2251,10 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Helper
 __webpack_require__(/*! ./helpers/_index */ "./resources/js/helpers/_index.js"); // Axios
 
 
-__webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Users
+__webpack_require__(/*! ./apiRequest/_index */ "./resources/js/apiRequest/_index.js"); // Page controls
+
+
+__webpack_require__(/*! ./page/_index */ "./resources/js/page/_index.js"); // Users
 
 
 __webpack_require__(/*! ./users/_index */ "./resources/js/users/_index.js"); // Sellers
@@ -2311,6 +2340,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 window.clientsCreate = function () {
   if (!UISelect.clientCreateForm()) return;
+  ifMoAuthTokenRedirectToLogin();
   UISelect.clientCreateForm().addEventListener('submit', function (e) {
     var _window$fileImgData;
 
@@ -2330,6 +2360,7 @@ window.clientsCreate = function () {
     var formData = createFormDataObj(objData);
     axios.post("".concat(apiSelect.clientsPath), formData, {
       headers: {
+        'Authorization': userAuthToken(),
         'content-type': 'multipart/form-data'
       }
     }) // .then(console.log)
@@ -2503,6 +2534,7 @@ var showClientsEditForm = function showClientsEditForm(name, email) {
 };
 
 var sendEditForm = function sendEditForm() {
+  ifMoAuthTokenRedirectToLogin();
   UISelect.clientEditForm().addEventListener('submit', function (e) {
     var _window$fileImgData;
 
@@ -2522,6 +2554,7 @@ var sendEditForm = function sendEditForm() {
     var formData = createFormDataObj(objData);
     axios.post("".concat(apiSelect.clientsPath).concat(clientId), formData, {
       headers: {
+        'Authorization': authToken,
         'content-type': 'multipart/form-data'
       }
     }) // .then(console.log)
@@ -2576,10 +2609,11 @@ var generateClientsResultData = function generateClientsResultData(results) {
         email = _ref.email,
         image_path = _ref.image_path;
     var buttons = "<div class='controls' data-js='client-controls'><button type=\"button\" class=\"btn btn-warning\" data-client-edit='".concat(id, "' data-bs-target=\"#client-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-client-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
+    var itemControls = userAuthToken() ? buttons : '';
     var imgPathIsNotEmpty = image_path != '';
     var image = imgPathIsNotEmpty ? image_path : 'images/api/default/blackMagicianNo.gif';
     var imgSrc = !stringIncludes(image_path, 'images/api/default/') && imgPathIsNotEmpty ? image_path : UISelect.baseUrl() + '/' + image;
-    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><figure data-js=\"client-figure-").concat(id, "\"><img src='").concat(imgSrc, "' alt=\"").concat(image_path, "\" title=\"").concat(name, "\" data-js=\"client-img-").concat(id, "\"></figure></figure><h3><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(buttons, "</div>");
+    var item = "<div class='result-item' data-client-item-id='".concat(id, "'><figure data-js=\"client-figure-").concat(id, "\"><img src='").concat(imgSrc, "' alt=\"").concat(image_path, "\" title=\"").concat(name, "\" data-js=\"client-img-").concat(id, "\"></figure></figure><h3><span data-js=\"client-name-").concat(id, "\">").concat(name, "<span></h3><p><span data-js=\"client-email-").concat(id, "\">").concat(email, "<span></p>").concat(itemControls, "</div>");
     return resultsSection.innerHTML += item;
   }).join('');
   return resultsSection;
@@ -2638,6 +2672,7 @@ window.fetchClientsResult = function () {
   var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
   var isInClientsPage = qSelect('[data-page="clients-paginate"]');
   if (!isInClientsPage) return;
+  ifMoAuthTokenRedirectToLogin();
   var clientsEndPoint = getClientsEndPoint();
   return fetchResultDataFor(generateResultsForClients, clientsEndPoint, data);
 };
@@ -2774,7 +2809,8 @@ window.createHtmlElement = function (elToCreate) {
     return el.setAttribute(key, value);
   });
   return el;
-};
+}; // Class manipulation
+
 
 window.addClassTo = function (el, className) {
   return el ? el.classList.add(className) : false;
@@ -2804,7 +2840,7 @@ window.removeAddClassForElements = function (elements) {
   var classToRemove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   var classToAdd = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
   var addStyle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  elements.forEach(function (element) {
+  return Array.from(elements).forEach(function (element) {
     return removeAddClassForElement(element, classToRemove, classToAdd, addStyle);
   });
 }; // LocalStorage functions
@@ -2812,11 +2848,16 @@ window.removeAddClassForElements = function (elements) {
 
 window.getFromLocalStorage = function (item) {
   var localItem = localStorage.getItem(item);
-  return localItem ? JSON.parse(localItem) : [];
+  return localItem ? JSON.parse(localItem) : false;
 };
 
 window.saveToLocalStorage = function (itemName, obj) {
   return localStorage.setItem(itemName, JSON.stringify(obj));
+};
+
+window.removeFromLocalStorage = function (item) {
+  var isInLocalStorage = getFromLocalStorage(item);
+  return isInLocalStorage ? localStorage.removeItem(item) : false;
 };
 
 /***/ }),
@@ -2972,6 +3013,12 @@ window.UISelect = {
   userFormLogin: function userFormLogin() {
     return qSelect('[data-js="user-form-login"]');
   },
+  userNavbarOptions: function userNavbarOptions() {
+    return qSelect('[data-js="nav-bar-options"]');
+  },
+  userLogoutItem: function userLogoutItem() {
+    return qSelect('[data-js="user-logout-item"]');
+  },
   // Sellers
   dataSellers: function dataSellers() {
     return qSelectAll('[data-page-seller-id]');
@@ -3095,6 +3142,48 @@ window.mountQueryString = function (data) {
   }, '');
   return queryStringSymbol + stringUrl;
 };
+
+/***/ }),
+
+/***/ "./resources/js/page/_index.js":
+/*!*************************************!*\
+  !*** ./resources/js/page/_index.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+__webpack_require__(/*! ./loginControls */ "./resources/js/page/loginControls.js");
+
+/***/ }),
+
+/***/ "./resources/js/page/loginControls.js":
+/*!********************************************!*\
+  !*** ./resources/js/page/loginControls.js ***!
+  \********************************************/
+/***/ (() => {
+
+window.refreshControls = function () {
+  var authToken = userAuthToken();
+  var userNameLogged = getFromLocalStorage('loggedUsername');
+  var headerName = authToken && userNameLogged ? userNameLogged.split(' ')[0] : 'Logar';
+  var loggedControls = qSelectAll('.logged-control');
+  var userCreateLink = qSelect('.user-create-link');
+  authToken ? removeAddClassForElements(loggedControls, 'd-none', 'active') : removeAddClassForElements(loggedControls, 'active', 'd-none');
+  authToken ? addClassTo(userCreateLink, 'd-none') : removeClassTo(userCreateLink, 'd-none');
+  appendUserDropDownToHeader(headerName, authToken);
+};
+
+var appendUserDropDownToHeader = function appendUserDropDownToHeader(headerName, authUser) {
+  removeElementFromDom('[data-js="user-drop-down"]');
+  var dropDown = createHtmlElement('li', ['class', 'drop-down-control nav-item dropdown'], ['data-js', "user-drop-down"]);
+  var exit = "<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"userDropDown\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">".concat(headerName, "</a><ul class=\"dropdown-menu\" aria-labelledby=\"userDropDown\"><li><a class=\"dropdown-item\" href=\"").concat(UISelect.baseUrl(), "/api/logout\" data-js=\"user-logout-item\">Sair</a></li></ul>");
+  var login = "<a class=\"nav-link\" href=\"".concat(UISelect.baseUrl(), "/login\" id=\"userLogin\">Login</a>");
+  dropDown.innerHTML = authUser ? exit : login;
+  var navBarOptions = UISelect.userNavbarOptions();
+  if (navBarOptions) navBarOptions.appendChild(dropDown);
+  return dropDown;
+};
+
+refreshControls();
 
 /***/ }),
 
@@ -3243,7 +3332,6 @@ var sellersDeleteSend = function sellersDeleteSend(id) {
   window.runQuery = true;
   axiosRequest('delete', "/api/vendedores/".concat(id)) // .then(console.log)
   .then(function (res) {
-    console.log(res);
     sweetalert__WEBPACK_IMPORTED_MODULE_0___default()({
       title: 'Opá, deletado!',
       text: res.data.message,
@@ -3380,7 +3468,8 @@ var generateSellersResultData = function generateSellersResultData(results) {
         name = _ref.name,
         trade_name = _ref.trade_name;
     var buttons = "<div class='controls' data-js='seller-controls'><button type=\"button\" class=\"btn btn-warning\" data-seller-edit='".concat(id, "' data-bs-target=\"#seller-edit-modal\" data-bs-toggle=\"modal\"><i class='bi bi-pencil-square'></i> Editar</button> <button type=\"button\" class=\"btn btn-danger\" data-seller-delete='").concat(id, "'><i class=\"bi bi-trash-fill\"></i> Deletar</button></div>");
-    var item = "<div class='result-item' data-seller-item-id='".concat(id, "'><div><h3 ><span data-js=\"seller-name-").concat(id, "\">").concat(name, "<span></h3><p>Nome Fantasia: <span data-js=\"seller-trade-name-").concat(id, "\">").concat(trade_name, "<span></p>").concat(buttons, "</div>");
+    var itemControls = userAuthToken() ? buttons : '';
+    var item = "<div class='result-item' data-seller-item-id='".concat(id, "'><div><h3 ><span data-js=\"seller-name-").concat(id, "\">").concat(name, "<span></h3><p>Nome Fantasia: <span data-js=\"seller-trade-name-").concat(id, "\">").concat(trade_name, "<span></p>").concat(itemControls, "</div>");
     return resultsSection.innerHTML += item;
   }).join('');
   return resultsSection;
@@ -3495,6 +3584,8 @@ window.onpopstate = function (event) {
 __webpack_require__(/*! ./usersFomLogin */ "./resources/js/users/usersFomLogin.js");
 
 __webpack_require__(/*! ./usersFomCreate */ "./resources/js/users/usersFomCreate.js");
+
+__webpack_require__(/*! ./usersLogout */ "./resources/js/users/usersLogout.js");
 
 /***/ }),
 
@@ -3617,17 +3708,20 @@ var activeUserForm = function activeUserForm() {
       }
     }) // .then(console.log)
     .then(function (res) {
+      var loggedUserName = res.data.user.name;
       var tokenType = res.data.token_type;
       var accessToken = res.data.access_token; // Save auth token to localStorage
 
       saveToLocalStorage('auth_token', "".concat(tokenType, " ").concat(accessToken));
+      saveToLocalStorage('loggedUsername', loggedUserName);
       swal({
         title: 'Opá, deu bom!',
         text: 'Usuário foi logado!',
         icon: "success",
         button: "Ok"
       }).then(function () {
-        return redirectTo('/clientes');
+        refreshControls();
+        redirectTo('/clientes');
       });
     })["catch"](function (_ref) {
       var response = _ref.response;
@@ -3652,6 +3746,46 @@ var activeUserForm = function activeUserForm() {
 };
 
 activeUserForm();
+
+/***/ }),
+
+/***/ "./resources/js/users/usersLogout.js":
+/*!*******************************************!*\
+  !*** ./resources/js/users/usersLogout.js ***!
+  \*******************************************/
+/***/ (() => {
+
+window.activeLogout = function () {
+  if (!UISelect.userLogoutItem()) return;
+  UISelect.userLogoutItem().addEventListener('click', function (e) {
+    e.preventDefault();
+    if (window.runQuery) return;
+    window.runQuery = true;
+    console.log(userAuthToken());
+    axios.post("".concat(apiSelect.usersLogout), {}, {
+      headers: {
+        'Authorization': userAuthToken(),
+        'content-type': 'application/json'
+      }
+    }) // .then(console.log)
+    .then(function (res) {})["finally"](function () {
+      swal({
+        title: 'Opá, deu bom!',
+        text: 'Usuário saiu!',
+        icon: "success",
+        button: "Ok"
+      }).then(function () {
+        removeFromLocalStorage('auth_token');
+        removeFromLocalStorage('loggedUsername');
+        refreshControls();
+        redirectTo('/login');
+        window.runQuery = false;
+      });
+    });
+  });
+};
+
+activeLogout();
 
 /***/ }),
 
