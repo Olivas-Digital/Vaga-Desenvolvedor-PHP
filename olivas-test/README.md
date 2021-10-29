@@ -20,7 +20,7 @@
 
 ## <p id='install'>🔥 Como instalar</p>
 
-- Copie ".env.exemple" e coloque suas variáveis de ambiente.
+- Copie ".env.example" e coloque suas variáveis de ambiente.
 
 
 ## Crie um banco de dados no MySql
