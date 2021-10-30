@@ -121,6 +121,6 @@ Método: DELETE
 
 ```json  
   {
-    "message": "O tipo de documento para clientes com id: 3000, não existe!"
+    "message": "O tipo de documento para clientes com id: 100000000, não existe!"
   }
 ``` 
