@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\controllers\SellerController;
+use App\Http\controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::middleware('auth')->prefix('app')->group(function() {
     // Sellers
     Route::get('/vendedores', [SellerController::class, 'page']);
     // Customers
+    Route::get('/clientes', [CustomerController::class, 'page']);
 });
 
 Auth::routes();

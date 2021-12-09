@@ -82,7 +82,7 @@
         </modal-component>
 
         <!-- Modal Soft Delete Seller -->
-        <modal-component title="Desativar Vendedor" id="destroy">
+        <modal-component title="Remover Vendedor" id="destroy">
             <template v-slot:body>
                 <form>
                     <div class="form-group">
@@ -93,7 +93,7 @@
             </template>
             <template v-slot:footer>
                 <button type="button" class="btn btn-danger">
-                    Desativar
+                    Remover
                 </button>
             </template>
         </modal-component>
@@ -101,7 +101,7 @@
         <!-- Modal Show Seller  -->
         <modal-component title="Vendedor" id="show">
             <template v-slot:body>
-                <profile-component :data="[{title: 'Total de Clientes', value: 100}]"></profile-component>
+                <profile-component :data="[{title: 'Total de Clientes', value: 100}]" name="Cleber" type="Vendedor"></profile-component>
             </template>
         </modal-component>
     </div>

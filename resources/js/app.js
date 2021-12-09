@@ -40,6 +40,7 @@ Vue.component('card-component', require('./components/Card.vue').default);
 Vue.component('table-component', require('./components/Table.vue').default);
 Vue.component('profile-component', require('./components/Profile.vue').default);
 Vue.component('sellers-component', require('./components/Sellers.vue').default);
+Vue.component('customers-component', require('./components/Customers.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

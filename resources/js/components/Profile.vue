@@ -7,23 +7,21 @@
                 </div><!-- profile-user-img -->
             </div><!-- text-center -->
 
-            <h3 class="profile-username text-center">João da Silva</h3>
+            <h3 class="profile-username text-center">{{ name }}</h3>
 
-            <p class="text-muted text-center">Vendedor</p>
+            <p class="text-muted text-center">{{ type }}</p>
 
             <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item" v-for="d, key in data" :key="key">
                     <b>{{ d.title }}</b> <span class="float-right text-primary">{{ d.value }}</span>
                 </li><!-- list-group-item -->
             </ul><!-- list-group -->
-
-            <button class="btn btn-primary btn-block"><b>Editar</b></button>
         </div> <!-- card-body -->
     </div><!-- card -->
 </template>
 
 <script>
     export default {
-        props: ['data']
+        props: ['data', 'type', 'name']
     }
 </script>
