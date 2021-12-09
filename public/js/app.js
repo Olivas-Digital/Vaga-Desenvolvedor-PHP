@@ -6720,7 +6720,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['data']
+});
 
 /***/ }),
 
@@ -30289,54 +30291,63 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card card-primary card-outline" }, [
+    _c("div", { staticClass: "card-body box-profile" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("h3", { staticClass: "profile-username text-center" }, [
+        _vm._v("João da Silva"),
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-muted text-center" }, [_vm._v("Vendedor")]),
+      _vm._v(" "),
+      _c(
+        "ul",
+        { staticClass: "list-group list-group-unbordered mb-3" },
+        _vm._l(_vm.data, function (d, key) {
+          return _c("li", { key: key, staticClass: "list-group-item" }, [
+            _c("b", [_vm._v(_vm._s(d.title))]),
+            _vm._v(" "),
+            _c("span", { staticClass: "float-right text-primary" }, [
+              _vm._v(_vm._s(d.value)),
+            ]),
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm._m(1),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-primary card-outline" }, [
-      _c("div", { staticClass: "card-body box-profile" }, [
-        _c("div", { staticClass: "text-center" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "profile-user-img img-circle d-flex align-items-center justify-content-center",
-              staticStyle: { height: "100px" },
-            },
-            [
-              _c("i", {
-                staticClass: "fas fa-user",
-                staticStyle: { "font-size": "60px", color: "#ccc" },
-              }),
-            ]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("h3", { staticClass: "profile-username text-center" }, [
-          _vm._v("João da Silva"),
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-muted text-center" }, [
-          _vm._v("Vendedor"),
-        ]),
-        _vm._v(" "),
-        _c("ul", { staticClass: "list-group list-group-unbordered mb-3" }, [
-          _c("li", { staticClass: "list-group-item" }, [
-            _c("b", [_vm._v("Clientes")]),
-            _vm._v(" "),
-            _c("span", { staticClass: "float-right text-primary" }, [
-              _vm._v("100"),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-primary btn-block" }, [
-          _c("b", [_vm._v("Editar")]),
-        ]),
-      ]),
+    return _c("div", { staticClass: "text-center" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "profile-user-img img-circle d-flex align-items-center justify-content-center",
+          staticStyle: { height: "100px" },
+        },
+        [
+          _c("i", {
+            staticClass: "fas fa-user",
+            staticStyle: { "font-size": "60px", color: "#ccc" },
+          }),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-primary btn-block" }, [
+      _c("b", [_vm._v("Editar")]),
     ])
   },
 ]
@@ -30600,7 +30611,11 @@ var render = function () {
           {
             key: "body",
             fn: function () {
-              return [_c("profile-component")]
+              return [
+                _c("profile-component", {
+                  attrs: { data: [{ title: "Total de Clientes", value: 100 }] },
+                }),
+              ]
             },
             proxy: true,
           },

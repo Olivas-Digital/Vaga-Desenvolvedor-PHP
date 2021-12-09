@@ -245,11 +245,6 @@ return [
             'url'  => 'app/vendedores',
             'icon' => 'fas fa-user-tie',
         ],
-        [
-            'text' => 'Pagamentos',
-            'url'  => '#',
-            'icon' => 'fas fa-wallet',
-        ],
     ],
 
     /*

@@ -101,7 +101,7 @@
         <!-- Modal Show Seller  -->
         <modal-component title="Vendedor" id="show">
             <template v-slot:body>
-                <profile-component></profile-component>
+                <profile-component :data="[{title: 'Total de Clientes', value: 100}]"></profile-component>
             </template>
         </modal-component>
     </div>
