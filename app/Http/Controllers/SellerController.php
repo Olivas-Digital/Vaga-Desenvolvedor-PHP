@@ -11,17 +11,17 @@ class SellerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function page()
     {
-        //
+        return view('app.sellers');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Return a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function index()
     {
         //
     }
@@ -38,23 +38,12 @@ class SellerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Return the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
@@ -72,7 +61,7 @@ class SellerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove or disable the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

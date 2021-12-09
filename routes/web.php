@@ -23,12 +23,11 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->prefix('app')->group(function() {
+    // Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
-
-    Route::prefix('vendedores')->group(function() {
-        Route::get('/', [SellerController::class, 'index']);
-        Route::get('/{seller}', [SellerController::class, 'show']);
-    });
+    // Sellers
+    Route::get('/vendedores', [SellerController::class, 'page']);
+    // Customers
 });
 
 Auth::routes();
