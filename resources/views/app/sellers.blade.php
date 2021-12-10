@@ -7,6 +7,6 @@
 @stop
 
 @section('content')
-    <sellers-component></sellers-component>
+    <sellers-component url="{{ config('app.url') }}"></sellers-component>
 @stop
 

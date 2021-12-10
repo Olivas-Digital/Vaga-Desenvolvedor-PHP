@@ -13,6 +13,7 @@ class SellerController extends Controller
     {
         $this->seller = $seller;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,8 +60,13 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->seller->create($request->all());
-        return response()->json(['message' => 'Vendedor cadastrado com sucesso'], 201);
+        $request->validate([
+            'name' => 'required',
+        ], [
+            'name.required' => 'O campo nome precisa ser informado!'
+        ]);
+        $seller = $this->seller->create($request->all());
+        return response()->json(['message' => "ID do vendedor: $seller->id"], 201);
     }
 
     /**
@@ -74,7 +80,7 @@ class SellerController extends Controller
         $seller = $this->seller->find($id);
 
         if ($seller === null) {
-            return  response()->json(['error' => 'Nenhum vendedor correspondente a pesquisa foi encontrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
         }
 
         return response()->json($seller, 200);
@@ -92,8 +98,14 @@ class SellerController extends Controller
         $seller = $this->seller->find($id);
 
         if ($seller == null){
-            return  response()->json(['error' => 'Nenhum vendedor correspondente a pesquisa foi encontrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
         }
+
+        $request->validate([
+            'name' => 'required',
+        ], [
+            'name.required' => 'O campo nome não pode estar vazio!'
+        ]);
 
         $seller->update($request->all());
         return response()->json(['message' => 'Os dados do vendedor foram atualizadas com sucesso!'], 200);
@@ -110,7 +122,7 @@ class SellerController extends Controller
         $seller = $this->seller->find($id);
 
         if ($seller == null){
-            return  response()->json(['error' => 'Nenhum vendedor correspondente a pesquisa foi encontrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
         }
 
         $seller->delete();
