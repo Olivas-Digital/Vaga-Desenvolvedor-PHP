@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Customer;
+use App\Models\CustomerPhone;
 
 class CustomerController extends Controller
 {
@@ -19,11 +21,12 @@ class CustomerController extends Controller
     /**
      * Return a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -34,7 +37,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

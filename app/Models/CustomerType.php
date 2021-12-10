@@ -11,4 +11,12 @@ class CustomerType extends Model
 
     // Disable timestamps columns
     public $timestamps = false;
+
+    /**
+     * Get the customers for the customer type.
+     */
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }

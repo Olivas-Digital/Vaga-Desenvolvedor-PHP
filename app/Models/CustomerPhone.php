@@ -11,4 +11,12 @@ class CustomerPhone extends Model
 
     // Disable timestamps columns
     public $timestamps = false;
+
+    /**
+     * Get the customer that owns the phone.
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

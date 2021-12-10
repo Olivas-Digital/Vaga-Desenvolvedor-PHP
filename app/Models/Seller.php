@@ -10,4 +10,12 @@ class Seller extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    /**
+     * The customers that belong to the seller.
+     */
+    public function customers()
+    {
+        return $this->belongsToMany(Customer::class);
+    }
 }
