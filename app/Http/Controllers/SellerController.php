@@ -80,7 +80,7 @@ class SellerController extends Controller
         $seller = $this->seller->find($id);
 
         if ($seller === null) {
-            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não está cadastrado!'], 404);
         }
 
         return response()->json($seller, 200);
@@ -122,7 +122,7 @@ class SellerController extends Controller
         $seller = $this->seller->find($id);
 
         if ($seller == null){
-            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não está cadastrado!'], 404);
         }
 
         $seller->delete();

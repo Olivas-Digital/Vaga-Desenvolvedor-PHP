@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,4 +25,5 @@ Route::middleware('api')->group(function () {
         Route::post('me', [AuthController::class, 'me']);
     });
     Route::apiResource('sellers', SellerController::class);
+    Route::apiResource('customers', CustomerController::class);
 });
