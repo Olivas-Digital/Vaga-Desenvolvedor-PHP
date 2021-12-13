@@ -90,13 +90,13 @@ Substitua <token> pelo seu token de autorização, e realize a requisição, voc
     
 ### Buscas com API
     
-    Para realizar buscas utilizando a api iremos adicionar um parametro na url, o 'filters'. Inserir valores a pesquisa funciona da mesma forma que o método where do laravel onde passamor nos parametros: (<chave>, <operador>, <valor_da_pesquisa>), então supondo que iremos buscar os clientes com nome 'Erick", a url de busca ficaria:
+Para realizar buscas utilizando a api iremos adicionar um parametro na url, o 'filters'. Inserir valores a pesquisa funciona da mesma forma que o método where do laravel onde passamor nos parametros: (<chave>, <operador>, <valor_da_pesquisa>), então supondo que iremos buscar os clientes com nome 'Erick", a url de busca ficaria:
 
 ```sh
 http://127.0.0.1:8000/api/customers?filters=name,like,erick;email,like,%erick%
 ```
     
-    Assim como no SQL temos o operador like e podemos colocar o valor da pesquisa entre '%'. Outros parametros de bucsa que temos são email, id, customer_type_id(sendo 1 para  Pessoa Jurídica e 2 para Pessoa Física). Para fazer multiplas pesquisas urilizamos ';' entre os parametros. Supondo que fossemos buscar os clientes do tipo pessoa fisica com nome erick, nossa url de busca seria a seguinte:
+Assim como no SQL temos o operador like e podemos colocar o valor da pesquisa entre '%'. Outros parametros de bucsa que temos são email, id, customer_type_id(sendo 1 para  Pessoa Jurídica e 2 para Pessoa Física). Para fazer multiplas pesquisas urilizamos ';' entre os parametros. Supondo que fossemos buscar os clientes do tipo pessoa fisica com nome erick, nossa url de busca seria a seguinte:
 
 ```sh
 http://127.0.0.1:8000/api/customers?filters=name,like,erick;email,like,%erick%;customer_type_id,=,2;
