@@ -18,10 +18,7 @@ use App\Mail\WelcomeMail;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
 
 Route::middleware('auth')->prefix('app')->group(function() {
     // Home
@@ -32,5 +29,8 @@ Route::middleware('auth')->prefix('app')->group(function() {
     Route::get('/clientes', [CustomerController::class, 'page']);
 });
 
-Auth::routes();
+Route::fallback(function() {
+    return redirect()->route('home');
+});
+
 

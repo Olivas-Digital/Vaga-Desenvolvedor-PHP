@@ -234,7 +234,11 @@ return [
         //     'text' => 'search',
         // ],
         ['header' => 'DASHBOARD'],
-        
+        [
+            'text' => 'Home',
+            'url'  => 'app',
+            'icon' => 'fas fa-home',
+        ],
         [
             'text' => 'Clientes',
             'url'  => 'app/clientes',
