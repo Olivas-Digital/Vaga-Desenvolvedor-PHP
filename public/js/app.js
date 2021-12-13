@@ -6968,6 +6968,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
       this.customer = JSON.parse(JSON.stringify(customer));
       this.customer.phones = phones;
+      this.customer.customer_type = customer.customer_type.name;
       this.resetAlert();
     },
     // CRUD Customers
@@ -7137,8 +7138,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['status']
+  props: ['status', 'token']
 });
 
 /***/ }),
@@ -32003,7 +32007,7 @@ var render = function () {
                               { title: "E-mail", value: _vm.customer.email },
                               {
                                 title: "Tipo de Cliente",
-                                value: _vm.customer.customer_type.name,
+                                value: _vm.customer.customer_type,
                               },
                               {
                                 title: "Vendedores Relacionados",
@@ -32122,7 +32126,7 @@ var render = function () {
                       { title: "E-mail", value: _vm.customer.email },
                       {
                         title: "Tipo de Cliente",
-                        value: _vm.customer.customer_type.name,
+                        value: _vm.customer.customer_type,
                       },
                       {
                         title: "Vendedores Relacionados",
@@ -32238,13 +32242,26 @@ var render = function () {
             _c("h1", { staticClass: "mb-0 text-center" }, [
               _vm._v("Bem Vindo!"),
             ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.token))]),
           ]),
         ]),
       ]),
     ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [_c("strong", [_vm._v("Seu token de autorização:")])])
+  },
+]
 render._withStripped = true
 
 

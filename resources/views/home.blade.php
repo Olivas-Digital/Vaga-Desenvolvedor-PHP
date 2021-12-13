@@ -7,6 +7,6 @@
 @stop
 
 @section('content')
-<home-component status="{{ session('status') }}"></home-component>
+<home-component status="{{ session('status') }}" token="{{ $token }}"></home-component>
 @stop
 

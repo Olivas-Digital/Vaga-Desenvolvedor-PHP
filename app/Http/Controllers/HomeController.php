@@ -13,6 +13,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $token = $_COOKIE['token'];
+        return view('home', ['token' => $token]);
     }
 }

@@ -247,7 +247,7 @@
                     :image="url + '/storage/' + customer.image"
                     :data="[
                         {title: 'E-mail', value: customer.email},
-                        {title: 'Tipo de Cliente', value: customer.customer_type.name},
+                        {title: 'Tipo de Cliente', value: customer.customer_type},
                         {title: 'Vendedores Relacionados', value: customer.sellers.length},
                     ]"></profile-component>
                     {{ customer.customer_type }}
@@ -287,7 +287,7 @@
                 :image="url + '/storage/' + customer.image"
                 :data="[
                     {title: 'E-mail', value: customer.email},
-                    {title: 'Tipo de Cliente', value: customer.customer_type.name},
+                    {title: 'Tipo de Cliente', value: customer.customer_type},
                     {title: 'Vendedores Relacionados', value: customer.sellers.length},
                 ]"></profile-component>
 
@@ -403,6 +403,7 @@
                 })
                 this.customer = JSON.parse(JSON.stringify(customer))
                 this.customer.phones = phones
+                this.customer.customer_type = customer.customer_type.name
                 this.resetAlert()
             },
             // CRUD Customers

@@ -8,6 +8,9 @@
                             {{ status }}
                         </div>
                         <h1 class="mb-0 text-center">Bem Vindo!</h1>
+                        <hr>
+                        <p><strong>Seu token de autorização:</strong></p>
+                        <p>{{ token }}</p>
                     </div>
                 </div>
             </div>
@@ -17,6 +20,6 @@
 
 <script>
     export default {
-        props: ['status'],
+        props: ['status','token'],
     }
 </script>
