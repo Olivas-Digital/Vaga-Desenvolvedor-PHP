@@ -76,16 +76,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //Send welcome mail
-        Mail::to($data['email'])->send(new WelcomeMail($data['name']));
-        
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        
+        // Send welcome mail
+        Mail::to($data['email'])->send(new WelcomeMail($data['name']));
+        // Get and store JWT token
+        $token = auth('api')->attempt(['email' => $data['email'], 'password' => $data['password']]);
+        setcookie('token', $token, 0, '/');
 
-        
-        
+        return $user;
     }
 }
