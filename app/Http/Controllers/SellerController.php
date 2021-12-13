@@ -44,9 +44,9 @@ class SellerController extends Controller
         } 
         
         if ($request->has('page')) {
-            $sellers = $this->seller->paginate(10);
+            $sellers = $this->seller->with('customers')->paginate(10);
         } else {
-            $sellers = $this->seller->get();
+            $sellers = $this->seller->with('customers')->get();
         }
 
         return response()->json($sellers, 200);

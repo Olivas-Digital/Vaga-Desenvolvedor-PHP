@@ -250,7 +250,7 @@
                         {title: 'Tipo de Cliente', value: customer.customer_type.name},
                         {title: 'Vendedores Relacionados', value: customer.sellers.length},
                     ]"></profile-component>
-
+                    {{ customer.customer_type }}
                     <p><strong>Telefones:</strong></p>
                     <ul class="list-group">
                         <li class="list-group-item" v-for="phone, key in customer.phones" :key="key">{{ phone.phone }}</li>

@@ -7440,6 +7440,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['url'],
   data: function data() {
@@ -31999,7 +32012,11 @@ var render = function () {
                             ],
                           },
                         }),
-                        _vm._v(" "),
+                        _vm._v(
+                          "\n                   " +
+                            _vm._s(_vm.customer.customer_type) +
+                            "\n                   "
+                        ),
                         _c("p", [_c("strong", [_vm._v("Telefones:")])]),
                         _vm._v(" "),
                         _c(
@@ -33025,10 +33042,49 @@ var render = function () {
               return [
                 _c("profile-component", {
                   attrs: {
-                    data: [{ title: "Total de Clientes", value: 100 }],
+                    data: [
+                      {
+                        title: "Total de Clientes",
+                        value: _vm.seller.customers.length,
+                      },
+                    ],
                     name: _vm.seller.name,
                     type: "Vendedor",
                   },
+                }),
+                _vm._v(" "),
+                _c("p", [_c("strong", [_vm._v("Clientes do Vendedor")])]),
+                _vm._v(" "),
+                _c("table-component", {
+                  scopedSlots: _vm._u([
+                    {
+                      key: "thead",
+                      fn: function () {
+                        return [
+                          _c("th", [_vm._v("ID")]),
+                          _vm._v(" "),
+                          _c("th", [_vm._v("Nome")]),
+                        ]
+                      },
+                      proxy: true,
+                    },
+                    {
+                      key: "tbody",
+                      fn: function () {
+                        return _vm._l(
+                          _vm.seller.customers,
+                          function (customer, key) {
+                            return _c("tr", { key: key }, [
+                              _c("td", [_vm._v(_vm._s(customer.id))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(customer.name))]),
+                            ])
+                          }
+                        )
+                      },
+                      proxy: true,
+                    },
+                  ]),
                 }),
               ]
             },

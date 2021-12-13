@@ -113,7 +113,20 @@
         <!-- Modal Show Seller  -->
         <modal-component title="Vendedor" id="show">
             <template v-slot:body>
-                <profile-component :data="[{title: 'Total de Clientes', value: 100}]" :name="seller.name" type="Vendedor"></profile-component>
+                <profile-component :data="[{title: 'Total de Clientes', value: seller.customers.length}]" :name="seller.name" type="Vendedor"></profile-component>
+                 <p><strong>Clientes do Vendedor</strong></p>
+                <table-component>
+                    <template v-slot:thead>
+                        <th>ID</th>
+                        <th>Nome</th>
+                    </template>
+                    <template v-slot:tbody>
+                        <tr v-for="customer, key in seller.customers" :key="key">
+                            <td>{{ customer.id }}</td>
+                            <td>{{ customer.name }}</td>
+                        </tr>
+                    </template>
+                </table-component>
             </template>
         </modal-component>
     </div>

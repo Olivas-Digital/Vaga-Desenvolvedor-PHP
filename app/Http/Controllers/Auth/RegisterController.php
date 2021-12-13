@@ -83,7 +83,8 @@ class RegisterController extends Controller
         ]);
         
         // Send welcome mail
-        Mail::to($data['email'])->send(new WelcomeMail($data['name']));
+        //Mail::to($data['email'])->send(new WelcomeMail($data['name']));
+        $user->welcomeNotification();
         // Get and store JWT token
         $token = auth('api')->attempt(['email' => $data['email'], 'password' => $data['password']]);
         setcookie('token', $token, 0, '/');

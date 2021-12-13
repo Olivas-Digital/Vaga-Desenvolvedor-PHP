@@ -40,7 +40,7 @@ class CustomerController extends Controller
             foreach ($filters as $filter) {
                 if ($filter == null) {
                     break;
-                }
+                } // url?filter=name,like,joao
                 $where = explode(',', $filter);
                 $this->customer = $this->customer->where($where[0], $where[1], $where[2]);
             }
