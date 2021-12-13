@@ -253,7 +253,7 @@
                     {{ customer.customer_type }}
                     <p><strong>Telefones:</strong></p>
                     <ul class="list-group">
-                        <li class="list-group-item" v-for="phone, key in customer.phones" :key="key">{{ phone.phone }}</li>
+                        <li class="list-group-item" v-for="phone, key in customer.phones" :key="key">{{ phone }}</li>
                     </ul>
 
                     <p><strong>Vendedores Relacionados</strong></p>
