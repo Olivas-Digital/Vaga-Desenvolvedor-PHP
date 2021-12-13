@@ -104,7 +104,7 @@
                 </form>
             </template>
             <template v-slot:footer>
-                <button type="button" class="btn btn-danger" @click="destroySeller()">
+                <button type="button" class="btn btn-danger" @click="destroySeller()" v-if="alert.status == ''">
                     Remover
                 </button>
             </template>

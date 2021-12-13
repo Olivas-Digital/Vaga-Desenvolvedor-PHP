@@ -2,9 +2,10 @@
     <div class="card card-primary card-outline">
         <div class="card-body box-profile">
             <div class="text-center">
-                <div class="profile-user-img img-circle d-flex align-items-center justify-content-center" style="height: 100px;">
+                <div v-if="image == null" class="profile-user-img img-circle d-flex align-items-center justify-content-center" style="height: 100px;">
                     <i class="fas fa-user" style="font-size: 60px; color: #ccc;"></i>
                 </div><!-- profile-user-img -->
+                <img v-if="image != null" class="profile-user-img img-fluid img-circle" :src="image" alt="User profile picture">
             </div><!-- text-center -->
 
             <h3 class="profile-username text-center">{{ name }}</h3>
@@ -22,6 +23,6 @@
 
 <script>
     export default {
-        props: ['data', 'type', 'name']
+        props: ['data', 'type', 'name', 'image']
     }
 </script>

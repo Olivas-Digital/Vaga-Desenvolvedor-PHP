@@ -60,13 +60,15 @@ class Customer extends Model
     {
         return [
             'name.required' => 'O campo nome precisa ser preenchido!',
-            'image.mimes' => 'No campo imagem deve ser passado um arquivo de imagem',
+            'image.file' => 'No campo imagem deve ser passado um arquivo de imagem',
             'image.mimes' => 'A imagem precisa estar no formato: png, jpg ou jpeg',
             'email.required' => 'O campo email precisa ser preenchido!',
             'email.email' => 'Insira um email válido!',
+            'email.unique' => 'Este email ja está em uso por outro cliente!!',
             'customer_type_id.required' => 'Informe o tipo de cliente!',
             'customer_type_id.exists' => 'O tipo de cliente informado é inválido!',
-            'phones.required' => 'Informe ao menos um numero de telefone'
+            'phones.required' => 'Informe ao menos um numero de telefone',
+            'sellers.required' => 'Informe ao menos um vendedor',
         ];
     }
 }

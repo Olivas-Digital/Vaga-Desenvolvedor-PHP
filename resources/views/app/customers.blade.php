@@ -7,5 +7,5 @@
 @stop
 
 @section('content')
-    <customers-component></customers-component>
+    <customers-component url="{{ config('app.url') }}" :customer-types="{{ $customerTypes }}"></customers-component>
 @stop

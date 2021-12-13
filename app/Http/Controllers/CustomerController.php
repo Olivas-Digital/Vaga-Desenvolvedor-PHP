@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Customer;
 use App\Models\CustomerPhone;
+use App\Models\CustomerType;
 
 class CustomerController extends Controller
 {
@@ -22,7 +23,8 @@ class CustomerController extends Controller
      */
     public function page()
     {
-        return view('app.customers');
+        $customerTypes = CustomerType::all();
+        return view('app.customers', ['customerTypes' => $customerTypes]);
     }
 
     /**
@@ -45,9 +47,9 @@ class CustomerController extends Controller
         } 
         
         if ($request->has('page')) {
-            $customer = $this->customer->paginate(10);
+            $customer = $this->customer->with(['sellers', 'phones', 'customerType'])->paginate(10);
         } else {
-            $customer = $this->customer->get();
+            $customer = $this->customer->with(['sellers', 'phones', 'customerType'])->get();
         }
 
         return response()->json($customer, 200);
@@ -108,7 +110,7 @@ class CustomerController extends Controller
         $customer = $this->customer->find($id);
 
         if ($customer == null){
-            return  response()->json(['error' => 'Este vendedor não esta cadastrado!'], 404);
+            return  response()->json(['error' => 'Este vendedor não está cadastrado!'], 404);
         }
         
         $data = $request->all();
@@ -161,7 +163,7 @@ class CustomerController extends Controller
         $customer = $this->customer->find($id);
 
         if ($customer == null){
-            return  response()->json(['error' => 'Este cliente não esta cadastrado!'], 404);
+            return  response()->json(['error' => 'Este cliente não está cadastrado!'], 404);
         }
 
         Storage::disk('public')->delete($customer->image);
