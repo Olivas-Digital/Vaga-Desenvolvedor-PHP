@@ -3,82 +3,101 @@
 
 Vaga Desenvolvedor PHP
 ===============	
-Nós da Olivas Digital buscamos um(a) desenvolvedor(a) para transformar ideias em códigos que estará envolvido em vários aspectos, desde o conceito até o produto final, incluindo UX, criação e codificação utilizando PHP.
+## Instalação
+
+Primeiramente, clone este repositório:
+
+```sh
+git clone https://github.com/MatheusBespalec/Vaga-Desenvolvedor-PHP.git
+```
+
+Agora com os aquivos do projeto renomeie  o arquivo ".env.example" para ".env", em seguida iremos configurar este arquivo, mas antes, no diretório principal do projeto digite o comando
+
+```sh
+composer install
+```
+E logo em seguida 
 
 
-# Sobre a vaga
-##### Responsabilidades:
-- Desenvolvimento de plataformas, sites, e-commerce e aplicativos
-- Manutenção e evolução de sistemas legados
-- Apoio aos desenvolvedores Junior
-- Identificar problemas e propor melhorias
+```sh
+php artisan key:generate
+```
 
-##### Pré-requisitos:
-- Ao menos 3 anos de experiência como desenvolvedor
-- Experiência com PHP utilizando ao menos um dos frameworks Laravel, Magento ou Zend
-- Conhecimento sobre APIs
-- Noções de HTML/CSS utilizando (Webpack, Grunt ou Gulp)
-- Boa comunicação e saber trabalhar em equipe
-- Compreensão de necessidades para propor soluções frente aos problemas
-- Bom entendimento de Design de Interface (UI) e Experiência do Usuário (UX)
-- Curso técnico ou tecnólogo em Ciências da Computação, Análise e Desenvolvimento de Sistemas, Engenharia da Computação, Sistemas de Informação, Programação ou matérias correlatas e Curso Superior em andamento (mínimo 3°ano) nas áreas de Tecnologia da Informação ou Gestão da Tecnologia da Informação 
+Agora, já no arquivo ".env" defina a url do projeto, por padrão no laravel: http://127.0.0.1:8000
 
-##### Serão Considerados como Diferenciais:
-- Conhecimento em IONIC, React ou Angular
-- Experiência com métodos ágeis/scrum
-- Inglês intermediário e avançado
-- Experiência com Node
+```sh
+APP_URL=http://127.0.0.1:8000
+```
 
-##### Benefícios
-- Contrato PJ com 30 dias de férias ao ano
-- Vale-Refeição
-- Bônus trimestral
-- Participação nos Lucros (PLR)
+Enseguida defina os seguintes atributos referentes ao envio de emails e conexão com o banco de dados
 
-##### Local e trabalho
-- 100% remoto ou presencialmente em Barueri-SP
+```sh
+MAIL_MAILER=
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=
+MAIL_FROM_ADDRESS=
+MAIL_FROM_NAME="${APP_NAME}"
 
-___
+DB_CONNECTION=
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+```
 
-# Desafio para vaga (PARTICIPE!) 
-### Como participar
-- Forkar esse desafio e criar o seu projeto (ou workspace) usando a sua versão desse repositório, após terminar o desafio, submeta um pull request.
-- Caso você tenha algum motivo para não submeter um pull request, crie um repositório privado no Github, faça todo desafio na branch master. Assim que terminar seu desenvolvimento, adicione como colaborador o usuário sistema@olivasdigital.com.br no seu repositório e o deixe disponível por pelo menos 30 dias.
+De volta ao terminal, exculte os comandos
 
-### Escopo do projeto
+```sh
+php artisan jwt:secret
+```
 
-1) **Criar um CRUD** de Vendedor com os campos
-    - Nome*
- 
-Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
+```sh
+php artisan migrate --seed
+```
+
+```sh
+php artisan storage:link
+```
+Por fim em um terminal separado sirva a aplicação
+
+```sh
+php artisan serve
+```
+E em outro, para o processamento das queues, deixe também em execução o comando
+
+```sh
+php artisan queue:work --tries=3
+```
+
+Tudo pronto, agora basta abrir o projeto em seu navegador e realizar o cadastro de seu usuario para usar a aplicação.
+
+## API
+
+Logo ao fazer login na aplicação você vera uma tela de boas vindas e seu token de autorização, que expira dentro do periodo de 1h após o login. Após esse tempo é nescessario realizar login novamente para receber um novo token.
+
+Agora, para utilizar a API,com o token em mãos, você pode enviar uma requisição GET para <url_da_aplicação>/api/customers,  assumindo a url como http://127.0.0.1:8000/, teriamos http://127.0.0.1:8000/api/customers, mas antes nos headers da requisição adicione:
+
+| key | Value |
+|-------|--------|
+| Accept | application/json | 
+| Authorization | Bearer token | 
     
-2) **Criar um CRUD** de Clientes com os campos
-    - Nome*
-    - Email*
-    - Imagem*
-    - Telefones <em>(Relacionamento 1 pra N, com obrigatoriedade de ao menos 1 telefone)</em>
-    - Tipo de cliente* <em>(Relacionamento 1 pra N)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
-    - Vendedores <em>(Relacionamento N pra N)</em>. Pode estar vinculado a um ou vários vendedores.
+Substitua 'token' pelo seu token de autorização, e realize a requisição, você recebera uma relação dos clientes cadastrados, com suas informações e de seus relacionamentos em formato JSON.
+    
+### Buscas com API
+    
+Para realizar buscas utilizando a api iremos adicionar um parametro na url, o 'filters'. Inserir valores a pesquisa funciona da mesma forma que o método where do laravel onde passamor nos parametros: (chave, operador, valor_da_pesquisa), então supondo que iremos buscar os clientes com nome 'Erick", a url de busca ficaria:
 
-    ***Campos obrigatórios**
-3) **Disparar um e-mail** de “Boas vindas” para o cliente
-4) Utilizar **migrations** para a criação das tabelas
-5) Utilizar o **[Eloquent](https://laravel.com/docs/8.x/eloquent)** para os relacionamentos
-6) Disponilizar os dados de clientes via **API com autenticação JWT** permitindo busca por nome
-___
-### Critério de avaliação
-- Organização do código: Separação de módulos, view, model e controller
-- Clareza: O README explica de forma resumida como rodar a aplicação?
-- Segurança: Existe alguma vulnerabilidade clara?
-- Histórico de commits (estrutura e qualidade)
-- UX: A interface é de fácil uso e auto-explicativa? A API é intuitiva?
-- API: Códigos de Resposta/Verbos HTTP corretos
+```sh
+http://127.0.0.1:8000/api/customers?filters=name,like,%erick%;
+```
+    
+Assim como no SQL temos o operador like e podemos colocar o valor da pesquisa entre '%'. Outros parametros de bucsa que temos são email, id, customer_type_id(sendo 1 para  Pessoa Jurídica e 2 para Pessoa Física). Para fazer multiplas pesquisas urilizamos ';' entre os parametros. Supondo que fossemos buscar os clientes do tipo pessoa fisica com nome erick, nossa url de busca seria a seguinte:
 
-### Diferenciais:
-- Testes automatizados
-- Utilização de Cache
-- Uso de Logs
-- Documentação da API
-- [LaravelMix](https://laravel-mix.com/)
-- [Eloquent API Resources](https://laravel.com/docs/8.x/eloquent-resources)
-- Disparo de e-mail utilizando filas [(Queues)](https://laravel.com/docs/8.x/queues)
+```sh
+http://127.0.0.1:8000/api/customers?filters=name,like,%erick%;customer_type_id,=,2;
+```
