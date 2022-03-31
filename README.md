@@ -49,6 +49,7 @@ ___
 
 1) **Criar um CRUD** de Vendedor com os campos
     - Nome*
+    - Email*
  
 Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
     
@@ -57,7 +58,7 @@ Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários cli
     - Email*
     - Imagem*
     - Telefones <em>(Relacionamento 1 pra N, com obrigatoriedade de ao menos 1 telefone)</em>
-    - Tipo de cliente* <em>(Relacionamento 1 pra N)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
+    - Tipo de cliente* <em>(Relacionamento 1 pra 1)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
     - Vendedores <em>(Relacionamento N pra N)</em>. Pode estar vinculado a um ou vários vendedores.
 
     ***Campos obrigatórios**
