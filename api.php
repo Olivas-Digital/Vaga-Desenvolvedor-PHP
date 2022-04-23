@@ -1,6 +1,6 @@
 <?php
 
-//FAZER O CRUD NO OUTRO PHP
+////FAZER O CRUD NO OUTRO PHP
 //if($_SERVER['REQUEST_METHOD'] == 'PUT') { echo "put"; }
 //if($_SERVER['REQUEST_METHOD'] == 'DELETE') { echo "delete"; }
 
