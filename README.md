@@ -1,3 +1,44 @@
+Boa noite,
+
+Esse final de semana, tive que terminar um projeto que estava em andamento, então acabei focando na obrigatoriedade afim de cumprir as metas.
+Vou fazer o teste essa semana, inclusive ja tenho o CRUD feito no PHP puro, pois ja utilizei varias vezes nos projetos, mas vou precisar ajustar para o Laravel afim de atender os requisitos do teste.
+
+Abaixo, estou enviando os comandos para criação das duas tabelas com o migration
+
+php artisan make:migration Vendedor --create=vendedor
+php artisan make:migration Clientes --create=clientes
+php artisan migrate
+
+E os respectivos campos solicitados:
+
+public function up()
+    {
+        Schema::create('vendedor', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome');
+            $table->string('email');
+        });
+    }
+
+
+public function up()
+    {
+        Schema::create('clientes', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome');
+            $table->string('email');
+            $table->string('imagem');
+            $table->string('telefone');
+            $table->string('tipocliente');
+            $table->bigInteger('vendedores');
+        });
+    }
+
+
+
+
+
+
 <a href="https://www.olivas.digital" target="_blank" style="background-color: #fff"><img src="https://www.olivas.digital/wp-content/themes/olivasdigital/dist/img/logotipo.svg" style="background: white" width="320" align="center" /></a>
 
 
