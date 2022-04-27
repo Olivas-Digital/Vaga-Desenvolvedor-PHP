@@ -1,85 +1,59 @@
-<a href="https://www.olivas.digital" target="_blank" style="background-color: #fff"><img src="https://www.olivas.digital/wp-content/themes/olivasdigital/dist/img/logotipo.svg" style="background: white" width="320" align="center" /></a>
+# Olivas CRUD 💻
 
+### Requerimentos 🤔
+- [PHP >= 7.3](https://www.php.net/downloads)
+- [MySQL >= 5.7](https://dev.mysql.com/downloads/mysql/)
+- [Composer](https://getcomposer.org/download/)
+- Descomente as linhas abaixo no arquivo `[diretorio_php]/php.ini`:
+    - extension=fileinfo
+    - extension=mbstring
+    - extension=openssl
+    - extension=pdo_mysql
+    - extension=pdo_sqlite
 
-Vaga Desenvolvedor PHP
-===============	
-Nós da Olivas Digital buscamos um(a) desenvolvedor(a) para transformar ideias em códigos que estará envolvido em vários aspectos, desde o conceito até o produto final, incluindo UX, criação e codificação utilizando PHP.
+---
 
+### Instalação 🥱
 
-# Sobre a vaga
-##### Responsabilidades:
-- Desenvolvimento de plataformas, sites, e-commerce e aplicativos
-- Manutenção e evolução de sistemas legados
-- Apoio aos desenvolvedores Junior
-- Identificar problemas e propor melhorias
+Utilize o comando abaixo para baixar o repositório do projeto e executar o script de instalação.
 
-##### Pré-requisitos:
-- Ao menos 3 anos de experiência como desenvolvedor
-- Experiência com PHP utilizando ao menos um dos frameworks Laravel, Magento ou Zend
-- Conhecimento sobre APIs
-- Noções de HTML/CSS utilizando (Webpack, Grunt ou Gulp)
-- Boa comunicação e saber trabalhar em equipe
-- Compreensão de necessidades para propor soluções frente aos problemas
-- Bom entendimento de Design de Interface (UI) e Experiência do Usuário (UX)
-- Curso técnico ou tecnólogo em Ciências da Computação, Análise e Desenvolvimento de Sistemas, Engenharia da Computação, Sistemas de Informação, Programação ou matérias correlatas e Curso Superior em andamento (mínimo 3°ano) nas áreas de Tecnologia da Informação ou Gestão da Tecnologia da Informação 
+Git Bash ou similares:
+```bash
+git clone https://github.com/kvn-alcantara/Vaga-Desenvolvedor-PHP && cd Vaga-Desenvolvedor-PHP && sh ./scripts/install.sh
+```
+Powershell:
+```bash
+git clone https://github.com/kvn-alcantara/Vaga-Desenvolvedor-PHP; cd Vaga-Desenvolvedor-PHP; ./scripts/install.sh
+```
 
-##### Serão Considerados como Diferenciais:
-- Conhecimento em IONIC, React ou Angular
-- Experiência com métodos ágeis/scrum
-- Inglês intermediário e avançado
-- Experiência com Node
+Crie um schema chamado `olivas_crud` e altere as variáveis no arquivo `.env` para corresponder ao seu ambiente local e execute o comando abaixo para criar as tabelas e popular o banco de dados.
+```bash
+php artisan migrate:fresh --seed
+```
 
-##### Benefícios
-- Contrato PJ com 30 dias de férias ao ano
-- Vale-Refeição
-- Bônus trimestral
-- Participação nos Lucros (PLR)
+Gerar documentação da API:
+```bash
+php artisan scribe:generate
+```
 
-##### Local e trabalho
-- 100% remoto ou presencialmente em Barueri-SP
+Verifique se está tudo ok, rode os testes:
+```bash
+php artisan test
+```
 
-___
+Subir servidor local:
+```bash
+php artisan serve
+```
 
-# Desafio para vaga (PARTICIPE!) 
-### Como participar
-- Forkar esse desafio e criar o seu projeto (ou workspace) usando a sua versão desse repositório, após terminar o desafio, submeta um pull request.
-- Caso você tenha algum motivo para não submeter um pull request, crie um repositório privado no Github, faça todo desafio na branch master. Assim que terminar seu desenvolvimento, adicione como colaborador o usuário sistema@olivasdigital.com.br no seu repositório e o deixe disponível por pelo menos 30 dias.
+Para conseguir enviar emails você vai precisar criar uma conta grátis no [Mailtrap](https://mailtrap.io/) e alterar as variáveis no arquivo `.env` para corresponder as suas credenciais.
 
-### Escopo do projeto
+---
 
-1) **Criar um CRUD** de Vendedor com os campos
-    - Nome*
-    - Email*
- 
-Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
-    
-2) **Criar um CRUD** de Clientes com os campos
-    - Nome*
-    - Email*
-    - Imagem*
-    - Telefones <em>(Relacionamento 1 pra N, com obrigatoriedade de ao menos 1 telefone)</em>
-    - Tipo de cliente* <em>(Relacionamento 1 pra 1)</em>. Sendo que os tipos podem ser “Pessoa Física” e “Pessoa Jurídica”
-    - Vendedores <em>(Relacionamento N pra N)</em>. Pode estar vinculado a um ou vários vendedores.
+### Tudo pronto! 😎
 
-    ***Campos obrigatórios**
-3) **Disparar um e-mail** de “Boas vindas” para o cliente
-4) Utilizar **migrations** para a criação das tabelas
-5) Utilizar o **[Eloquent](https://laravel.com/docs/8.x/eloquent)** para os relacionamentos
-6) Disponilizar os dados de clientes via **API com autenticação JWT** permitindo busca por nome
-___
-### Critério de avaliação
-- Organização do código: Separação de módulos, view, model e controller
-- Clareza: O README explica de forma resumida como rodar a aplicação?
-- Segurança: Existe alguma vulnerabilidade clara?
-- Histórico de commits (estrutura e qualidade)
-- UX: A interface é de fácil uso e auto-explicativa? A API é intuitiva?
-- API: Códigos de Resposta/Verbos HTTP corretos
+Visualize a documentação da API em: http://localhost:8000/docs
 
-### Diferenciais:
-- Testes automatizados
-- Utilização de Cache
-- Uso de Logs
-- Documentação da API
-- [LaravelMix](https://laravel-mix.com/)
-- [Eloquent API Resources](https://laravel.com/docs/8.x/eloquent-resources)
-- Disparo de e-mail utilizando filas [(Queues)](https://laravel.com/docs/8.x/queues)
+Você encontra na raiz do projeto o arquivo `olivas-crud.postman_collection.json` para importar a collection no [Postman](https://www.postman.com/downloads/).
+
+> Caso precise fazer alterações diretamente no banco ou gerar as seeders novamente, use `php artisan cache:clear` para limpar o cache e ver as mudanças.
