@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create([
-            'email' => 'kevin@gmail.com'
+            'email' => 'kevinalcantara37@gmail.com'
         ]);
 
         $sellers = Seller::factory()->count(10)->create();

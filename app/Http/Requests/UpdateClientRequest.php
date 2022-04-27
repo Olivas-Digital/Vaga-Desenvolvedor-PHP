@@ -28,7 +28,7 @@ class UpdateClientRequest extends FormRequest
             'email' => 'sometimes|required|string|email|unique:clients,email',
             'client_type_id' => 'sometimes|required|integer|exists:client_types,id',
             'phones' => 'sometimes|required|array|min:1',
-            'phones.*.number' => 'required|string',
+            'phones.*.number' => 'required|string|unique:phones,number',
             'sellers' => 'sometimes|required|array',
             'sellers.*.id' => 'required|integer|exists:sellers,id',
         ];

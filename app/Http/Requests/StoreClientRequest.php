@@ -28,7 +28,7 @@ class StoreClientRequest extends FormRequest
             'email' => 'required|string|email|unique:clients,email',
             'client_type_id' => 'required|integer|exists:client_types,id',
             'phones' => 'required|array|min:1',
-            'phones.*.number' => 'required|string',
+            'phones.*.number' => 'required|string|unique:phones,number',
             'sellers' => 'sometimes|required|array',
             'sellers.*.id' => 'required|integer|exists:sellers,id',
         ];
