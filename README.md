@@ -1,5 +1,32 @@
 Boa noite,
 
+Estou enviando o que deu para fazer entre ontem e hoje. Peço desculpas pela demora, mas a semana foi corrida.
+
+Fiz os CRUDS vendedor e clientes, com seus respectivos controladores e models.
+Coloquei uma API da sendgrid para envio de Email, mas poderia ter sido usado o phpmailer ou a funcao mail do laravel
+Fiz uma autenticacao basica com JWT, eu mesmo fiz o processo de geracao do JWT e decodificacao, poderia ter sido usado a library Firebase JWT Library ou do laravel, mas acabei fazendo o token do zero reinventando a roda haha.
+
+Faltou fazer os relacionamentos das tabelas usando Eloquent
+Faltou fazer a pesquisa por nome
+
+Nao fiz a checkagem completa dos campos, fiz de forma generica se o nome ou email tiver o char_count menor que 4, nome invalido e email invalido, como isso é apenas um teste não entrei a fundo mas poderia fazer as regex de email e tudo mais juntamente com as verificações de segurança, nos campos para evitar qualquer possivel vulnerabilidade como xxs, csrf, sql injec, embora o laravel ja disponha de um bom framework com protocolos de segurança, é bom fazer as verificações e sanitizar as variaveis.
+
+
+
+
+
+
+
+
+
+
+
+------------------
+
+
+
+Boa noite,
+
 Esse final de semana, tive que terminar um projeto que estava em andamento, então acabei focando na obrigatoriedade afim de cumprir as metas.
 Vou fazer o teste essa semana, inclusive ja tenho o CRUD feito no PHP puro, pois ja utilizei varias vezes nos projetos, mas vou precisar ajustar para o Laravel afim de atender os requisitos do teste.
 
