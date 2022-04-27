@@ -1,4 +1,4 @@
-# Oligas CRUD 💻
+# Olivas CRUD 💻
 
 ### Requerimentos 🤔
 - [PHP >= 7.3](https://www.php.net/downloads)
@@ -24,6 +24,13 @@ git clone https://github.com/kvn-alcantara/Vaga-Desenvolvedor-PHP && cd Vaga-Des
 
 ## Tudo pronto! 😎
 
-Visualize os endpoins em: http://localhost:8000/docs
+Para verificar se está tudo ok, rode os testes:
+```bash
+php artisan test
+```
+
+Visualize a documentação da API em: http://localhost:8000/docs
+
+Você encontra na raiz do projeto um o arquivo `olivas-crud.postman_collection.json` para importar a collection no [Postman](https://www.postman.com/downloads/).
 
 > Caso precise fazer alterações diretamente no banco ou gerar as seeders novamente, use `php artisan cache:clear` para limpar o cache e ver as mudanças.
