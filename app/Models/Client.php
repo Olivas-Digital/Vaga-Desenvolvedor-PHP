@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +77,17 @@ class Client extends Model
     public function sellers(): BelongsToMany
     {
         return $this->belongsToMany(Seller::class);
+    }
+
+    /**
+     * Scope a query to only include clients that match a given name.
+     *
+     * @param Builder $query
+     * @param $name
+     * @return Builder
+     */
+    public function scopeOfName(Builder $query, $name): Builder
+    {
+        return $query->where('name', 'LIKE', "%$name%");
     }
 }

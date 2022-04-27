@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Services\ClientService;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,13 +45,22 @@ class ClientController extends Controller
      * @apiResourceCollection App\Http\Resources\ClientCollection
      * @apiResourceModel App\Models\Client with=clientType,phones,sellers
      *
+     * @param Request $request
      * @return ClientCollection
      */
-    public function index(): ClientCollection
+    public function index(Request $request): ClientCollection
     {
-        $clients = Cache::rememberForever('clients', function () {
-            return Client::with(['sellers'])->paginate();
-        });
+        $filters = $request->validate([
+            'name' => 'string|min:1',
+        ]);
+
+        if ($filters) {
+            $clients = Client::ofName($filters['name'])->with(['sellers'])->paginate();
+        } else {
+            $clients = Cache::rememberForever('clients', function () {
+                return Client::with(['sellers'])->paginate();
+            });
+        }
 
         return new ClientCollection($clients);
     }
