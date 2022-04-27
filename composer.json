@@ -1,10 +1,13 @@
 {
-    "name": "laravel/laravel",
+    "name": "kvn-alcantara/Vaga-Desenvolvedor-PHP",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
+    "description": "Teste para vaga Desenvolvedor PHP na Olivas Digital.",
+    "authors": [
+        {
+            "name": "Kevin de Lima Alcantara",
+            "email": "kevinalcantara37@gmail.com",
+            "role": "Developer"
+        }
     ],
     "license": "MIT",
     "require": {
