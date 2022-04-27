@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -21,3 +22,8 @@ Route::prefix('auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::post('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
 });
+
+Route::resources([
+    'clients' => ClientController::class,
+    'sellers' => SellerController::class,
+]);

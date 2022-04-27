@@ -22,7 +22,7 @@ class AuthTest extends TestCase
             'password' => 'secret',
         ];
 
-        $response = $this->postJson(route('auth.login'), $data)->dump();
+        $response = $this->postJson(route('auth.login'), $data);
 
         $response
             ->assertOk()
