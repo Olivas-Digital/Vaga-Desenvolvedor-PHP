@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ClientCreated;
 use App\Models\Client;
 use App\Models\ClientType;
 use App\Models\Phone;
 use App\Models\Seller;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use Tests\Traits\SignIn;
 
@@ -90,6 +92,8 @@ class ClientTest extends TestCase
 
     public function test_should_create_a_client_with_valid_fields()
     {
+        Mail::fake();
+
         $this->signIn();
 
         $clientType = ClientType::factory()->create();
@@ -116,6 +120,10 @@ class ClientTest extends TestCase
             ->assertJsonStructure([
                 'data' => $this->clientJsonStructure,
             ]);
+
+        Mail::assertQueued(ClientCreated::class, function ($mail) use ($data) {
+            return $mail->hasTo($data['email']);
+        });
     }
 
     public function test_should_get_an_error_creating_client_if_fields_are_invalid()

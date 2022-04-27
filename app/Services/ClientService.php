@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\ClientCreated;
 use App\Models\Client;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -35,7 +36,7 @@ class ClientService
 
         $client->load(['clientType', 'phones', 'sellers']);
 
-        // TODO: dispatch welcome email
+        ClientCreated::dispatch($client);
 
         return $client;
     }
