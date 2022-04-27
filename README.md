@@ -11,14 +11,18 @@
     - extension=pdo_mysql
     - extension=pdo_sqlite
 
+---
+
 ### Instalação 🥱
 
-Utilize o comando abaixo para baixar o repositório do projeto e executar o script de instalação:
+Utilize o comando abaixo para baixar o repositório do projeto e executar o script de instalação.
+
+Git Bash ou similares:
 ```bash
 git clone https://github.com/kvn-alcantara/Vaga-Desenvolvedor-PHP && cd Vaga-Desenvolvedor-PHP && sh ./scripts/install.sh
 ```
 Powershell:
-```powershell
+```bash
 git clone https://github.com/kvn-alcantara/Vaga-Desenvolvedor-PHP; cd Vaga-Desenvolvedor-PHP; ./scripts/install.sh
 ```
 
@@ -32,21 +36,24 @@ Gerar documentação da API:
 php artisan scribe:generate
 ```
 
+Verifique se está tudo ok, rode os testes:
+```bash
+php artisan test
+```
+
 Subir servidor local:
 ```bash
 php artisan serve
 ```
 
-Verifique se está tudo ok, rode os testes:
-```bash
-php artisan test
-```
 Para conseguir enviar emails você vai precisar criar uma conta grátis no [Mailtrap](https://mailtrap.io/) e alterar as variáveis no arquivo `.env` para corresponder as suas credenciais.
 
-## Tudo pronto! 😎
+---
+
+### Tudo pronto! 😎
 
 Visualize a documentação da API em: http://localhost:8000/docs
 
-> Você encontra na raiz do projeto o arquivo `olivas-crud.postman_collection.json` para importar a collection no [Postman](https://www.postman.com/downloads/).
+Você encontra na raiz do projeto o arquivo `olivas-crud.postman_collection.json` para importar a collection no [Postman](https://www.postman.com/downloads/).
 
 > Caso precise fazer alterações diretamente no banco ou gerar as seeders novamente, use `php artisan cache:clear` para limpar o cache e ver as mudanças.
