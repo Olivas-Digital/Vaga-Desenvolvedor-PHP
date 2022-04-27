@@ -9,6 +9,7 @@ use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Services\ClientService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -39,7 +40,9 @@ class ClientController extends Controller
      */
     public function index(): ClientCollection
     {
-        $clients = Client::with(['sellers'])->paginate();
+        $clients = Cache::rememberForever('clients', function () {
+            return Client::with(['sellers'])->paginate();
+        });
 
         return new ClientCollection($clients);
     }
@@ -54,6 +57,8 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request): ClientResource
     {
         $client = $this->clientService->store($request->validated());
+
+        Cache::forget('clients');
 
         return new ClientResource($client);
     }
@@ -83,6 +88,8 @@ class ClientController extends Controller
     {
         $client = $this->clientService->update($client, $request->validated());
 
+        Cache::forget('clients');
+
         return new ClientResource($client);
     }
 
@@ -95,6 +102,8 @@ class ClientController extends Controller
     public function destroy(Client $client): JsonResponse
     {
         $client->delete();
+
+        Cache::forget('clients');
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

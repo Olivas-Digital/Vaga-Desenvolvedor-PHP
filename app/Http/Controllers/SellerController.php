@@ -9,6 +9,7 @@ use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use App\Services\SellerService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -39,7 +40,9 @@ class SellerController extends Controller
      */
     public function index(): SellerCollection
     {
-        $sellers = Seller::with(['clients'])->paginate();
+        $sellers = Cache::rememberForever('clients', function () {
+            return Seller::with(['clients'])->paginate();
+        });
 
         return new SellerCollection($sellers);
     }
@@ -54,6 +57,8 @@ class SellerController extends Controller
     public function store(StoreSellerRequest $request): SellerResource
     {
         $seller = $this->sellerService->store($request->validated());
+
+        Cache::forget('sellers');
 
         return new SellerResource($seller);
     }
@@ -83,6 +88,8 @@ class SellerController extends Controller
     {
         $seller = $this->sellerService->update($seller, $request->validated());
 
+        Cache::forget('sellers');
+
         return new SellerResource($seller);
     }
 
@@ -95,6 +102,8 @@ class SellerController extends Controller
     public function destroy(Seller $seller): JsonResponse
     {
         $seller->delete();
+
+        Cache::forget('sellers');
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
