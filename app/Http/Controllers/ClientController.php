@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @group Clients
+ */
 class ClientController extends Controller
 {
     /**
@@ -34,7 +37,12 @@ class ClientController extends Controller
     }
 
     /**
+     * Index
+     *
      * Display a listing of the resource.
+     *
+     * @apiResourceCollection App\Http\Resources\ClientCollection
+     * @apiResourceModel App\Models\Client with=clientType,phones,sellers
      *
      * @return ClientCollection
      */
@@ -48,7 +56,12 @@ class ClientController extends Controller
     }
 
     /**
+     * Store
+     *
      * Store a newly created resource in storage.
+     *
+     * @apiResource 201 App\Http\Resources\ClientResource
+     * @apiResourceModel App\Models\Client with=clientType,phones,sellers
      *
      * @param StoreClientRequest $request
      * @return ClientResource
@@ -64,7 +77,12 @@ class ClientController extends Controller
     }
 
     /**
+     * Show
+     *
      * Display the specified resource.
+     *
+     * @apiResource App\Http\Resources\ClientResource
+     * @apiResourceModel App\Models\Client with=clientType,phones,sellers
      *
      * @param Client $client
      * @return ClientResource
@@ -77,7 +95,12 @@ class ClientController extends Controller
     }
 
     /**
+     * Update
+     *
      * Update the specified resource in storage.
+     *
+     * @apiResource App\Http\Resources\ClientResource
+     * @apiResourceModel App\Models\Client with=clientType,phones,sellers
      *
      * @param UpdateClientRequest $request
      * @param Client $client
@@ -94,7 +117,11 @@ class ClientController extends Controller
     }
 
     /**
+     * Destroy
+     *
      * Remove the specified resource from storage.
+     *
+     * @response 204 {}
      *
      * @param Client $client
      * @return JsonResponse

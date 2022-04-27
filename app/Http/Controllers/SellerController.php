@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @group Sellers
+ */
 class SellerController extends Controller
 {
     /**
@@ -34,7 +37,12 @@ class SellerController extends Controller
     }
 
     /**
+     * Index
+     *
      * Display a listing of the resource.
+     *
+     * @apiResourceCollection App\Http\Resources\SellerCollection
+     * @apiResourceModel App\Models\Seller with=clients.phones
      *
      * @return SellerCollection
      */
@@ -48,7 +56,12 @@ class SellerController extends Controller
     }
 
     /**
+     * Store
+     *
      * Store a newly created resource in storage.
+     *
+     * @apiResource 201 App\Http\Resources\SellerResource
+     * @apiResourceModel App\Models\Seller with=clients.phones
      *
      * @param StoreSellerRequest $request
      * @return SellerResource
@@ -64,7 +77,12 @@ class SellerController extends Controller
     }
 
     /**
+     * Show
+     *
      * Display the specified resource.
+     *
+     * @apiResource App\Http\Resources\SellerResource
+     * @apiResourceModel App\Models\Seller with=clients.phones
      *
      * @param Seller $seller
      * @return SellerResource
@@ -77,7 +95,12 @@ class SellerController extends Controller
     }
 
     /**
+     * Update
+     *
      * Update the specified resource in storage.
+     *
+     * @apiResource App\Http\Resources\SellerResource
+     * @apiResourceModel App\Models\Seller with=clients.phones
      *
      * @param UpdateSellerRequest $request
      * @param Seller $seller
@@ -94,7 +117,11 @@ class SellerController extends Controller
     }
 
     /**
+     * Destroy
+     *
      * Remove the specified resource from storage.
+     *
+     * @response 204 {}
      *
      * @param Seller $seller
      * @return JsonResponse

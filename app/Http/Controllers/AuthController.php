@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group Users
+ */
 class AuthController extends Controller
 {
     /**
@@ -20,7 +23,13 @@ class AuthController extends Controller
     }
 
     /**
+     * Login
+     *
      * Get a JWT via given credentials.
+     *
+     * @unauthenticated
+     *
+     * @response {"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwib"}
      *
      * @param Request $request
      * @return JsonResponse
@@ -42,7 +51,11 @@ class AuthController extends Controller
     }
 
     /**
+     * Logout
+     *
      * Log the user out (Invalidate the token).
+     *
+     * @response {"message": "Successfully logged out"}
      *
      * @return JsonResponse
      */
@@ -56,7 +69,11 @@ class AuthController extends Controller
     }
 
     /**
+     * Refresh Token
+     *
      * Refresh a token.
+     *
+     * @response {"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwib"}
      *
      * @return JsonResponse
      */
@@ -66,7 +83,14 @@ class AuthController extends Controller
     }
 
     /**
+     * Register
+     *
      * Register a new user and get a JWT.
+     *
+     * @unauthenticated
+     *
+     * @response 201 {"message": "Created successfully"}
+     *
      * @param Request $request
      * @return JsonResponse
      */
