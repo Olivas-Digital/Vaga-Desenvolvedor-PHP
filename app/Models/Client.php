@@ -2,13 +2,33 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Client
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property int $client_type_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read ClientType $clientType
+ * @property-read Collection|Phone[] $phones
+ * @property-read int|null $phones_count
+ * @property-read Collection|Seller[] $sellers
+ * @property-read int|null $sellers_count
+ * @mixin Eloquent
+ */
 class Client extends Model
 {
     use HasFactory, SoftDeletes;

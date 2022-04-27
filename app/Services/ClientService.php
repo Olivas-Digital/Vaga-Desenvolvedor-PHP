@@ -45,7 +45,7 @@ class ClientService
      *
      * @throws Throwable
      */
-    public function update(Client $client, array $validated)
+    public function update(Client $client, array $validated): Client
     {
         DB::transaction(function () use ($client, $validated) {
             $client->update($validated);
@@ -67,8 +67,6 @@ class ClientService
         });
 
         $client->load(['clientType', 'phones', 'sellers']);
-
-        // TODO: dispatch welcome email
 
         return $client;
     }
