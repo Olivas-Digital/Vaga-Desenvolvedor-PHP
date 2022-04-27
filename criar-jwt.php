@@ -1,8 +1,5 @@
 <?php
 
-////FAZER O CRUD NO OUTRO PHP
-//if($_SERVER['REQUEST_METHOD'] == 'PUT') { echo "put"; }
-//if($_SERVER['REQUEST_METHOD'] == 'DELETE') { echo "delete"; }
 
 
     //START AUTENTICATION - VERIFY IF USER WAS INSERTED
@@ -25,11 +22,6 @@
             echo "<br><br><br>";
             var_dump($decode_jwt);
 
-            //Decodificar JWT e retornar em formato OBJETO - exemplo: object(stdClass)#1 (3) { ["user_id"]=> int(12345678) }
-            //$decode_jwt = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $generate_jwt)[1]))));
-            
-            //Decodificar JWT e retornar em formato JSON - exemplo: string(80) "{"user_id":12345678}"
-            //$decode_jwt = base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $generate_jwt)[1])));
 
         } else {
             header("WWW-Authenticate: Basic realm=\"Private Area\"");
@@ -62,7 +54,7 @@
         //$payload = json_encode(['user_id' => 12345,'nome_empresa' => 'SOMMA Investimentos','created'=>date('d/m/Y')]);
         $payload = json_encode([
             'user_id' => 12345,
-            'nome_empresa' => 'SOMMA Investimentos',
+            'nome_empresa' => 'Teste Git',
             'created' => date('d/m/Y')
         ]);
 
