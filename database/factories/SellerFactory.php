@@ -15,7 +15,7 @@ class SellerFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'email' => $this->faker->email,
+            'email' => $this->faker->unique()->safeEmail,
         ];
     }
 }
