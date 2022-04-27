@@ -71,8 +71,6 @@ class ClientController extends Controller
     {
         $client = $this->clientService->store($request->validated());
 
-        Cache::forget('clients');
-
         return new ClientResource($client);
     }
 
@@ -111,8 +109,6 @@ class ClientController extends Controller
     {
         $client = $this->clientService->update($client, $request->validated());
 
-        Cache::forget('clients');
-
         return new ClientResource($client);
     }
 
@@ -129,8 +125,6 @@ class ClientController extends Controller
     public function destroy(Client $client): JsonResponse
     {
         $client->delete();
-
-        Cache::forget('clients');
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
