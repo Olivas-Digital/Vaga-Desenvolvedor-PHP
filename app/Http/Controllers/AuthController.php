@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -47,6 +48,12 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        Log::info('User logs in.', [
+            'user_id' => auth()->id(),
+            'ip' => $request->ip(),
+            'userAgent' => $request->userAgent(),
+        ]);
+
         return $this->respondWithToken($token);
     }
 
@@ -57,29 +64,22 @@ class AuthController extends Controller
      *
      * @response {"message": "Successfully logged out"}
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
+        Log::info('User logs out.', [
+            'user_id' => auth()->id(),
+            'ip' => $request->ip(),
+            'userAgent' => $request->userAgent(),
+        ]);
+
         auth()->logout();
 
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
-    }
-
-    /**
-     * Refresh Token
-     *
-     * Refresh a token.
-     *
-     * @response {"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwib"}
-     *
-     * @return JsonResponse
-     */
-    public function refresh(): JsonResponse
-    {
-        return $this->respondWithToken(auth()->refresh());
     }
 
     /**
@@ -102,7 +102,13 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed|min:6',
         ]);
 
-        User::create($validated);
+        $user = User::create($validated);
+
+        Log::info('User registered.', [
+            'user_id' => $user->id,
+            'ip' => $request->ip(),
+            'userAgent' => $request->userAgent(),
+        ]);
 
         return response()->json([
             'message' => 'Created successfully',
