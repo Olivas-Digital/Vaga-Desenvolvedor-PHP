@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
@@ -31,15 +31,15 @@ class Client extends Model
      */
     protected $with = [
         'phones',
-        'type',
+        'clientType',
     ];
 
     /**
-     * Get the type associated with the client.
+     * Get the type that owns the client.
      */
-    public function type(): HasOne
+    public function clientType(): BelongsTo
     {
-        return $this->hasOne(ClientType::class);
+        return $this->belongsTo(ClientType::class);
     }
 
     /**
@@ -47,7 +47,7 @@ class Client extends Model
      */
     public function phones(): HasMany
     {
-        return $this->hasMany(Phones::class);
+        return $this->hasMany(Phone::class);
     }
 
     /**
