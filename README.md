@@ -47,13 +47,13 @@ ___
 
 ### Escopo do projeto
 
-1) **Criar um CRUD** de Vendedor com os campos
+1) **Criar um CRUD** (frontend) de Vendedor com os campos
     - Nome*
     - Email*
  
 Após a criação do CRUD de Clientes, um vendedor pode possuir 0 ou vários clientes.
     
-2) **Criar um CRUD** de Clientes com os campos
+2) **Criar um CRUD**  (frontend) de Clientes com os campos
     - Nome*
     - Email*
     - Imagem*
