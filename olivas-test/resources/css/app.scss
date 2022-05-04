@@ -1,0 +1,39 @@
+@import './base/index';
+@import './libraries/index';
+@import './form/sendForm';
+@import './clients/clients';
+@import './paginate/pagination';
+@import './paginate/resultItem';
+@import './dropArea/dropArea';
+@import './base/footer';
+
+body {
+    overflow-x: hidden;
+}
+
+::selection {
+  background: rgba($primaryColor, .55);
+  color: $white
+}
+
+.form-control:focus {
+  border-color: $primaryColor;
+  box-shadow: 0 0 0 0.25rem rgb(171 175 60 / 23%)
+}
+
+main {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: auto;
+    min-height: 405px
+}
+
+.search-container {
+    // max-width: 400px;
+    margin: 2rem 0 4rem;
+
+    input {
+        font-size: 1.35rem;
+        margin: 2rem 0;
+    }
+}

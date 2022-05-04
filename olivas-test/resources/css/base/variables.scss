@@ -1,0 +1,18 @@
+$primaryColor: #a2ad3c;
+// $primaryColor: #ee7c2f;
+$white: #fff;
+$black: #222;
+$mainTextColor: #2d2d2d;
+$mainGrey: #ececec;
+$mainSpacing: 0.1rem;
+$mainTransition: all .3s linear;
+$cartTransition: .35s ease-in-out;
+$hoverOpacity: .8;
+
+@mixin mainBorderTitle {
+  border-left: 1rem solid $primaryColor;
+  @media (max-width:310px) {
+    border-left: .1rem;
+  }
+  padding-left: 0.5rem;
+}

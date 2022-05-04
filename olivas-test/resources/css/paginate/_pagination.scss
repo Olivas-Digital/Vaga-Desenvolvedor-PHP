@@ -1,0 +1,48 @@
+.pagination {
+    justify-content: center;
+    margin: 1rem;
+    padding: 3rem 5rem;
+
+    a {
+        // position: relative;
+        color: black;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: $mainTransition;
+
+        &.active {
+            background-color: rgb($primaryColor, .8);
+            color: white;
+        }
+
+        &:hover {
+            opacity: .8;
+        }
+
+        &.disable {
+            cursor: not-allowed;
+            opacity: .65;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                pointer-events: none;
+                cursor: none;
+            }
+        }
+    }
+}
+
+.pagination-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    @media (max-width: 700px) {
+        justify-content: center;
+    }
+}

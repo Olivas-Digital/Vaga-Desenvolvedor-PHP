@@ -1,0 +1,24 @@
+footer {
+    width: 100%;
+    padding: 1.3rem 1rem;
+
+    background-color: $primaryColor;
+    font-size: 1.3rem;
+
+    a {
+        text-decoration: none;
+        color: $white;
+
+        &:hover {
+            color: $white;
+            opacity: .8;
+        }
+    }
+
+    &,
+    address {
+        margin: auto;
+        text-align: center;
+        width: 100%
+    }
+}
