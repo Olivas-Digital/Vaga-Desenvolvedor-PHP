@@ -45,25 +45,6 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    /** Send the password reset notification.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPasswordNotification($token, $this->email));
-    }
-
-    /** Send the welcome notification.
-     *
-     * @return void
-     */
-    public function welcomeNotification()
-    {
-        $this->notify(new WelcomeNotification($this->name));
-    }
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\controllers\SellerController;
-use App\Http\controllers\CustomerController;
+use App\Http\Controllers\SellerController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
